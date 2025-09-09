@@ -54,42 +54,55 @@ const SurakshaLandingPage = () => {
     <div className="min-h-screen bg-background">
       {/* Header */}
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto px-4 flex h-16 items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <img src="/lovable-uploads/ab90ba4e-121b-4049-b65d-dec211ad12c3.png" alt="SurakshaLMS Logo" className="h-8 w-8" />
-            <span className="text-xl font-bold text-gradient">SurakshaLMS</span>
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex flex-col md:flex-row md:items-center justify-between">
+            <div className="flex items-center space-x-3 mb-2 md:mb-0">
+              <img src="/lovable-uploads/ab90ba4e-121b-4049-b65d-dec211ad12c3.png" alt="SurakshaLMS Logo" className="h-10 w-10" />
+              <div>
+                <span className="text-2xl font-bold text-gradient">SurakshaLMS</span>
+                <p className="text-sm text-muted-foreground italic">One LMS, One Nation, One Future</p>
+              </div>
+            </div>
+            <nav className="flex items-center space-x-6">
+              <Button variant="ghost" className="hover:text-primary text-sm">Home</Button>
+              <Button variant="ghost" className="hover:text-primary text-sm">Features</Button>
+              <Button variant="ghost" className="hover:text-primary text-sm">About</Button>
+              <Button className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary-dark hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300">
+                LMS Login
+              </Button>
+            </nav>
           </div>
-          <nav className="hidden md:flex items-center space-x-6">
-            <Button variant="ghost" className="hover:text-primary">Home</Button>
-            <Button variant="ghost" className="hover:text-primary">Features</Button>
-            <Button variant="ghost" className="hover:text-primary">About</Button>
-            <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
-              Login
-            </Button>
-          </nav>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto max-w-7xl">
+      <section className="py-20 px-4 bg-gradient-to-br from-primary/5 via-blue-50 to-background relative overflow-hidden">
+        {/* Abstract Learning Shapes */}
+        <div className="absolute inset-0">
+          <div className="absolute top-10 left-10 w-20 h-20 rounded-full bg-gradient-to-br from-primary/10 to-blue-400/10 animate-pulse"></div>
+          <div className="absolute top-1/3 right-20 w-16 h-16 rotate-45 bg-gradient-to-br from-blue-400/10 to-primary/10 animate-bounce"></div>
+          <div className="absolute bottom-20 left-1/4 w-12 h-12 rounded-full bg-gradient-to-br from-green-400/10 to-primary/10 animate-ping"></div>
+          <div className="absolute top-20 right-1/3 w-8 h-8 rotate-12 bg-gradient-to-br from-purple-400/10 to-blue-400/10 animate-pulse"></div>
+        </div>
+        
+        <div className="container mx-auto max-w-7xl relative z-10">
           <div className="grid lg:grid-cols-3 gap-8 items-center">
             {/* Video Preview */}
             <div className="lg:col-span-2">
-              <Card className="glass-card hover-bounce cursor-pointer group">
+              <Card className="glass-card hover-bounce cursor-pointer group shadow-2xl">
                 <CardContent className="p-0 relative aspect-video">
-                  <div className="absolute inset-0 bg-gradient-to-br from-primary/20 to-primary-dark/30 rounded-lg flex items-center justify-center">
+                  <div className="absolute inset-0 bg-gradient-to-br from-primary/30 via-blue-400/20 to-primary-dark/40 rounded-lg flex items-center justify-center">
                     <Button 
                       size="icon" 
-                      className="h-16 w-16 rounded-full bg-background/90 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 group-hover:scale-110"
+                      className="h-20 w-20 rounded-full bg-background/95 text-primary hover:bg-primary hover:text-primary-foreground transition-all duration-300 group-hover:scale-110 shadow-lg"
                     >
-                      <Play className="h-8 w-8 ml-1" />
+                      <Play className="h-10 w-10 ml-1" />
                     </Button>
                   </div>
                   <img 
                     src="/lovable-uploads/6678135b-8997-4d89-82a1-badde05b90d8.png" 
                     alt="SurakshaLMS Preview" 
-                    className="w-full h-full object-cover rounded-lg opacity-50"
+                    className="w-full h-full object-cover rounded-lg opacity-60"
                   />
                 </CardContent>
               </Card>
@@ -421,11 +434,57 @@ const SurakshaLandingPage = () => {
       </section>
 
       {/* Footer */}
-      <footer className="py-8 px-4 border-t bg-background">
-        <div className="container mx-auto text-center">
-          <p className="text-muted-foreground">
-            2025 Copyright All Right Reserved - SurakshaLMS
-          </p>
+      <footer className="py-12 px-4 border-t bg-gradient-to-br from-muted/30 to-background">
+        <div className="container mx-auto max-w-6xl">
+          <div className="grid md:grid-cols-2 gap-8 mb-8">
+            {/* Left side - SurakshaLMS Contact */}
+            <div>
+              <h3 className="text-xl font-bold text-gradient mb-4 flex items-center space-x-2">
+                <img src="/lovable-uploads/ab90ba4e-121b-4049-b65d-dec211ad12c3.png" alt="SurakshaLMS Logo" className="h-8 w-8" />
+                <span>SurakshaLMS – Contact</span>
+              </h3>
+              <div className="space-y-3 text-muted-foreground">
+                <div className="flex items-center space-x-3">
+                  <Mail className="h-4 w-4 text-primary" />
+                  <span>info@suraksha-lms.com</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <Phone className="h-4 w-4 text-primary" />
+                  <span>+94 11 234 5678</span>
+                </div>
+                <div className="flex items-center space-x-3">
+                  <MapPin className="h-4 w-4 text-primary" />
+                  <span>Colombo, Sri Lanka</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Right side - Categories */}
+            <div>
+              <h3 className="text-xl font-bold text-gradient mb-4">Categories</h3>
+              <div className="space-y-3">
+                <div className="flex items-center space-x-3 text-muted-foreground hover:text-primary cursor-pointer transition-colors">
+                  <BookOpen className="h-4 w-4" />
+                  <span>Online Learning Platforms</span>
+                </div>
+                <div className="flex items-center space-x-3 text-muted-foreground hover:text-primary cursor-pointer transition-colors">
+                  <GraduationCap className="h-4 w-4" />
+                  <span>Educational Management</span>
+                </div>
+                <div className="flex items-center space-x-3 text-muted-foreground hover:text-primary cursor-pointer transition-colors">
+                  <Trophy className="h-4 w-4" />
+                  <span>Student Achievement Tracking</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Bottom copyright */}
+          <div className="border-t pt-8 text-center">
+            <p className="text-muted-foreground">
+              2025 © Copyright All Rights Reserved
+            </p>
+          </div>
         </div>
       </footer>
     </div>
