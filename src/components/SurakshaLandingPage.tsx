@@ -119,8 +119,119 @@ const SurakshaLandingPage = () => {
         </div>
       </section>
 
+      {/* Function Preview Section */}
+      <section className="py-20 px-4">
+        <div className="container mx-auto max-w-7xl">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            {/* Left side - Video/Feature Preview */}
+            <div className="order-2 lg:order-1">
+              <Card className="glass-card hover-bounce group overflow-hidden">
+                <CardContent className="p-0 relative">
+                  <div className="aspect-video bg-gradient-to-br from-primary/10 via-primary/5 to-transparent rounded-lg flex items-center justify-center relative overflow-hidden">
+                    {/* Animated Background Elements */}
+                    <div className="absolute inset-0">
+                      <div className="absolute top-4 left-4 w-8 h-8 rounded-full bg-primary/20 animate-pulse"></div>
+                      <div className="absolute top-1/3 right-8 w-6 h-6 rounded-full bg-blue-400/20 animate-bounce"></div>
+                      <div className="absolute bottom-8 left-1/3 w-4 h-4 rounded-full bg-primary/30 animate-ping"></div>
+                    </div>
+                    
+                    {/* Main Content */}
+                    <div className="relative z-10 text-center p-8">
+                      <div className="mb-6">
+                        <div className="w-20 h-20 mx-auto mb-4 rounded-full bg-primary/20 backdrop-blur-sm flex items-center justify-center">
+                          <Play className="w-10 h-10 text-primary" />
+                        </div>
+                        <h3 className="text-2xl font-bold text-gradient mb-2">Interactive Learning</h3>
+                        <p className="text-muted-foreground">Experience the future of education</p>
+                      </div>
+                      
+                      <div className="grid grid-cols-2 gap-4 text-sm">
+                        <div className="bg-background/50 backdrop-blur-sm rounded-lg p-3">
+                          <div className="w-8 h-8 mx-auto mb-2 rounded-full bg-green-500/20 flex items-center justify-center">
+                            <GraduationCap className="w-4 h-4 text-green-600" />
+                          </div>
+                          <p className="text-xs">Smart Learning</p>
+                        </div>
+                        <div className="bg-background/50 backdrop-blur-sm rounded-lg p-3">
+                          <div className="w-8 h-8 mx-auto mb-2 rounded-full bg-blue-500/20 flex items-center justify-center">
+                            <Users className="w-4 h-4 text-blue-600" />
+                          </div>
+                          <p className="text-xs">Collaboration</p>
+                        </div>
+                        <div className="bg-background/50 backdrop-blur-sm rounded-lg p-3">
+                          <div className="w-8 h-8 mx-auto mb-2 rounded-full bg-purple-500/20 flex items-center justify-center">
+                            <Trophy className="w-4 h-4 text-purple-600" />
+                          </div>
+                          <p className="text-xs">Achievements</p>
+                        </div>
+                        <div className="bg-background/50 backdrop-blur-sm rounded-lg p-3">
+                          <div className="w-8 h-8 mx-auto mb-2 rounded-full bg-orange-500/20 flex items-center justify-center">
+                            <BookOpen className="w-4 h-4 text-orange-600" />
+                          </div>
+                          <p className="text-xs">Resources</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Right side - Title, Paragraph & Logo */}
+            <div className="order-1 lg:order-2 space-y-8">
+              <div className="text-center lg:text-left">
+                <div className="mb-6">
+                  <img 
+                    src="/lovable-uploads/ab90ba4e-121b-4049-b65d-dec211ad12c3.png" 
+                    alt="SurakshaLMS Logo" 
+                    className="w-24 h-24 mx-auto lg:mx-0 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300" 
+                  />
+                </div>
+                
+                <h2 className="text-4xl md:text-5xl font-bold text-gradient mb-6 leading-tight">
+                  Revolutionizing 
+                  <span className="block text-primary">Digital Learning</span>
+                </h2>
+                
+                <p className="text-lg text-muted-foreground leading-relaxed mb-8">
+                  SurakshaLMS empowers educational institutions with cutting-edge technology, 
+                  seamless integration, and intelligent features that transform traditional 
+                  learning into an engaging digital experience. From automated assessments 
+                  to real-time collaboration, we're building the future of education.
+                </p>
+
+                <div className="grid grid-cols-2 gap-4 mb-8">
+                  <Card className="glass-card p-4 text-center hover-bounce">
+                    <div className="text-2xl font-bold text-primary mb-1">98%</div>
+                    <p className="text-xs text-muted-foreground">Satisfaction Rate</p>
+                  </Card>
+                  <Card className="glass-card p-4 text-center hover-bounce">
+                    <div className="text-2xl font-bold text-primary mb-1">24/7</div>
+                    <p className="text-xs text-muted-foreground">Support Available</p>
+                  </Card>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                  <Button size="lg" className="bg-gradient-to-r from-primary to-blue-600 hover:from-primary-dark hover:to-blue-700 text-white shadow-lg hover:shadow-xl transition-all duration-300">
+                    Get Started Today
+                  </Button>
+                  <Button variant="outline" size="lg" className="border-2 border-primary text-primary hover:bg-primary hover:text-white transition-all duration-300">
+                    Watch Demo
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Smart Chat Bot Section */}
-      <section className="py-20 px-4 bg-muted/30">
+      <section className="py-20 px-4 bg-gradient-to-br from-muted/20 via-primary/5 to-muted/30 relative overflow-hidden">
+        {/* Background decoration */}
+        <div className="absolute inset-0">
+          <div className="absolute top-10 left-10 w-32 h-32 rounded-full bg-primary/5 animate-pulse"></div>
+          <div className="absolute bottom-20 right-20 w-40 h-40 rounded-full bg-blue-400/5 animate-bounce"></div>
+        </div>
         <div className="container mx-auto max-w-6xl">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-gradient mb-4">Smart Chat Bot</h2>
@@ -202,33 +313,48 @@ const SurakshaLandingPage = () => {
       </section>
 
       {/* Statistics Section */}
-      <section id="stats-section" className="py-20 px-4">
+      <section id="stats-section" className="py-20 px-4 bg-gradient-to-br from-primary/5 via-transparent to-blue-400/10 relative">
+        {/* Floating elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div className="absolute top-1/4 left-10 w-2 h-2 rounded-full bg-primary/40 animate-ping"></div>
+          <div className="absolute top-3/4 right-1/4 w-3 h-3 rounded-full bg-blue-400/40 animate-pulse"></div>
+          <div className="absolute bottom-1/3 left-1/3 w-1 h-1 rounded-full bg-primary/60 animate-bounce"></div>
+        </div>
         <div className="container mx-auto max-w-6xl">
           <div className="grid md:grid-cols-3 gap-8">
-            <Card className="glass-card text-center hover-bounce animate-counter-up">
-              <CardContent className="p-8">
-                <School className="h-12 w-12 mx-auto mb-4 text-primary" />
-                <div className="text-4xl font-bold text-gradient mb-2">
+            <Card className="glass-card text-center hover-bounce animate-counter-up group relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <CardContent className="p-8 relative z-10">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                  <School className="h-8 w-8 text-primary group-hover:scale-110 transition-transform" />
+                </div>
+                <div className="text-4xl font-bold text-gradient mb-2 group-hover:scale-105 transition-transform">
                   {counts.schools.toLocaleString()}+
                 </div>
                 <p className="text-lg font-medium text-muted-foreground">Schools</p>
               </CardContent>
             </Card>
 
-            <Card className="glass-card text-center hover-bounce animate-counter-up">
-              <CardContent className="p-8">
-                <Users className="h-12 w-12 mx-auto mb-4 text-primary" />
-                <div className="text-4xl font-bold text-gradient mb-2">
+            <Card className="glass-card text-center hover-bounce animate-counter-up group relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-400/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <CardContent className="p-8 relative z-10">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-400/10 flex items-center justify-center group-hover:bg-blue-400/20 transition-colors">
+                  <Users className="h-8 w-8 text-blue-600 group-hover:scale-110 transition-transform" />
+                </div>
+                <div className="text-4xl font-bold text-gradient mb-2 group-hover:scale-105 transition-transform">
                   {counts.students.toLocaleString()}+
                 </div>
                 <p className="text-lg font-medium text-muted-foreground">Students</p>
               </CardContent>
             </Card>
 
-            <Card className="glass-card text-center hover-bounce animate-counter-up">
-              <CardContent className="p-8">
-                <Building2 className="h-12 w-12 mx-auto mb-4 text-primary" />
-                <div className="text-4xl font-bold text-gradient mb-2">
+            <Card className="glass-card text-center hover-bounce animate-counter-up group relative overflow-hidden">
+              <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <CardContent className="p-8 relative z-10">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-green-500/10 flex items-center justify-center group-hover:bg-green-500/20 transition-colors">
+                  <Building2 className="h-8 w-8 text-green-600 group-hover:scale-110 transition-transform" />
+                </div>
+                <div className="text-4xl font-bold text-gradient mb-2 group-hover:scale-105 transition-transform">
                   {counts.organizations.toLocaleString()}+
                 </div>
                 <p className="text-lg font-medium text-muted-foreground">Organizations</p>
