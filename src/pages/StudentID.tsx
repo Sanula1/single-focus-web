@@ -102,7 +102,7 @@ const StudentID = () => {
     else if (scrollY >= vh * 4) {
       const sectionProgress = Math.min((scrollY - vh * 4) / vh, 1);
       translateX = sectionProgress * -350; // Move to left side
-      translateY = vh * 0.1;
+      translateY = vh * 0.2;
       rotateY = sectionProgress * -20;
       rotateX = sectionProgress * 10;
       scale = 1 + sectionProgress * 0.1;
