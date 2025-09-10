@@ -233,4 +233,101 @@ All colors MUST be HSL.
   .typing-delay-1 { animation-delay: 0.5s; }
   .typing-delay-2 { animation-delay: 1s; }
   .typing-delay-3 { animation-delay: 1.5s; }
+
+  /* Advanced Scroll Animations */
+  @keyframes card-float {
+    0%, 100% { 
+      transform: translateY(0px) rotateX(0deg) rotateY(0deg);
+    }
+    50% { 
+      transform: translateY(-20px) rotateX(5deg) rotateY(2deg);
+    }
+  }
+
+  @keyframes card-rotate-in-space {
+    0% { 
+      transform: translateZ(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    }
+    25% { 
+      transform: translateZ(100px) rotateX(10deg) rotateY(15deg) rotateZ(5deg);
+    }
+    50% { 
+      transform: translateZ(200px) rotateX(20deg) rotateY(30deg) rotateZ(10deg);
+    }
+    75% { 
+      transform: translateZ(100px) rotateX(15deg) rotateY(20deg) rotateZ(5deg);
+    }
+    100% { 
+      transform: translateZ(0px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+    }
+  }
+
+  @keyframes background-pulse {
+    0%, 100% { 
+      background: radial-gradient(circle at 50% 50%, hsl(var(--primary) / 0.1) 0%, transparent 70%);
+    }
+    50% { 
+      background: radial-gradient(circle at 50% 50%, hsl(var(--primary) / 0.3) 0%, transparent 70%);
+    }
+  }
+
+  @keyframes meteor-fall {
+    0% {
+      transform: translateX(-100px) translateY(-100px) rotate(45deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      transform: translateX(100vw) translateY(100vh) rotate(45deg);
+      opacity: 0;
+    }
+  }
+
+  .card-float {
+    animation: card-float 6s ease-in-out infinite;
+  }
+
+  .card-rotate-space {
+    animation: card-rotate-in-space 20s linear infinite;
+  }
+
+  .background-pulse {
+    animation: background-pulse 4s ease-in-out infinite;
+  }
+
+  .meteor {
+    animation: meteor-fall 3s linear infinite;
+  }
+
+  /* Scroll-based transforms */
+  .scroll-transform {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  /* 3D Perspective */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+
+  /* Parallax layers */
+  .parallax-slow {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .parallax-medium {
+    transform: translate3d(0, 0, 0);
+  }
+
+  .parallax-fast {
+    transform: translate3d(0, 0, 0);
+  }
 }
