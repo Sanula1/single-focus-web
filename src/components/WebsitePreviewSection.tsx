@@ -30,15 +30,15 @@ const WebsitePreviewSection = () => {
           </p>
         </div>
 
-        <Tabs defaultValue="student" className="w-full max-w-5xl lg:max-w-7xl mx-auto">
-          <TabsList className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 mb-8 md:mb-10 lg:mb-12 bg-muted/50 p-1 rounded-lg h-auto w-full">
+        <Tabs defaultValue="student" className="w-full max-w-5xl md:max-w-7xl mx-auto">
+          <TabsList className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 mb-8 md:mb-12 bg-muted/50 p-1 rounded-lg h-auto w-full">
             {categories.map((category) => (
               <TabsTrigger 
                 key={category.id} 
                 value={category.id} 
-                className="flex flex-col sm:flex-row lg:flex-col items-center gap-2 py-3 md:py-4 px-2 md:px-3 text-xs md:text-sm h-auto w-full"
+                className="flex flex-col sm:flex-row md:flex-col items-center gap-2 py-3 md:py-4 px-2 md:px-3 text-xs md:text-sm h-auto w-full"
               >
-                <category.icon className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 flex-shrink-0" />
+                <category.icon className="w-4 h-4 md:w-6 md:h-6 flex-shrink-0" />
                 <span className="text-center leading-tight">{category.label}</span>
               </TabsTrigger>
             ))}
