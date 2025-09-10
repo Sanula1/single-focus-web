@@ -216,26 +216,41 @@ const Guidance = () => {
       {/* Header */}
       <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-sm border-b">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-4">
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={() => navigate('/')}
-              className="gap-2"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Back to Home
+          <div className="flex items-center gap-3">
+            <img 
+              src="/lovable-uploads/ab90ba4e-121b-4049-b65d-dec211ad12c3.png" 
+              alt="SurakshaLMS Logo" 
+              className="h-8 w-8" 
+            />
+            <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-transparent">
+              Guidance Center
+            </h1>
+          </div>
+          
+          <nav className="hidden md:flex items-center gap-4">
+            <Button variant="ghost" className="text-primary hover:text-primary-dark transition-colors duration-300" onClick={() => navigate('/')}>
+              Home
             </Button>
-            <div className="flex items-center gap-3">
-              <img 
-                src="/lovable-uploads/ab90ba4e-121b-4049-b65d-dec211ad12c3.png" 
-                alt="SurakshaLMS Logo" 
-                className="h-8 w-8" 
-              />
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-transparent">
-                Guidance Center
-              </h1>
-            </div>
+            <Button variant="ghost" className="text-primary hover:text-primary-dark transition-colors duration-300" onClick={() => navigate('/student-id')}>
+              Student ID
+            </Button>
+            <Button variant="ghost" className="text-primary hover:text-primary-dark transition-colors duration-300">
+              Customers
+            </Button>
+            <Button variant="ghost" className="text-primary hover:text-primary-dark transition-colors duration-300">
+              Pricing
+            </Button>
+            <Button variant="outline" className="gap-2 backdrop-blur-sm border-primary/20 hover:bg-primary hover:text-primary-foreground transition-all duration-300">
+              <MessageCircle className="w-4 h-4" />
+              Login to SurakshaLMS
+            </Button>
+          </nav>
+
+          {/* Mobile Menu Button */}
+          <div className="md:hidden">
+            <Button variant="outline" size="sm" className="backdrop-blur-sm border-primary/20">
+              <Building className="w-4 h-4" />
+            </Button>
           </div>
         </div>
       </header>
