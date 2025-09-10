@@ -1,11 +1,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, Calendar, User, MapPin, Phone, Mail, GraduationCap } from "lucide-react";
+import { Clock, CheckCircle2, RotateCcw, Calendar, User, MapPin, Phone, Mail, GraduationCap } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
-import { useNavigate } from "react-router-dom";
 
 const StudentID = () => {
-  const navigate = useNavigate();
   const [scrollY, setScrollY] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
   const phoneRef = useRef(null);
@@ -15,14 +13,12 @@ const StudentID = () => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll);
     
-    // Trigger animations on load
     setTimeout(() => setIsVisible(true), 300);
     
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   useEffect(() => {
-    // Update phone position when scroll changes
     if (phoneRef.current) {
       const rect = phoneRef.current.getBoundingClientRect();
       const centerX = rect.left + rect.width / 2;
@@ -34,7 +30,6 @@ const StudentID = () => {
     }
   }, [scrollY]);
 
-  // Sample student data
   const studentData = {
     id: "123-456-879",
     name: "Martha Petersen", 
@@ -51,7 +46,6 @@ const StudentID = () => {
     faculty: "Computing & Technology"
   };
 
-  // Calculate card position and transform based on scroll
   const getCardTransform = () => {
     const vh = window.innerHeight;
     const vw = window.innerWidth;
@@ -65,53 +59,37 @@ const StudentID = () => {
     let scale = 1;
     let opacity = 1;
     
-    // Section 1: Hero (0-100vh) - CENTER with subtle float
     if (scrollY < vh) {
       const progress = scrollY / vh;
       translateX = Math.sin(progress * Math.PI) * 20;
-      translateY = Math.cos(progress * Math.PI) * 15;
+      translateY = Math.cos(progress * Math.PI) * 15 + 100;
       rotateZ = Math.sin(progress * Math.PI) * 2;
       scale = 1 + Math.sin(progress * Math.PI) * 0.05;
       opacity = 1;
-    }
-    // Section 2: No Fees (100vh-200vh) - Move to RIGHT
-    else if (scrollY >= vh && scrollY < vh * 2) {
+    } else if (scrollY >= vh && scrollY < vh * 2) {
       const sectionProgress = (scrollY - vh) / vh;
-      translateX = sectionProgress * (isMobile ? 100 : vw / 4);
-      translateY = 50;
+      translateX = sectionProgress * (isMobile ? 100 : vw / 3);
+      translateY = 0;
       rotateY = sectionProgress * 15;
-      scale = 1.05;
+      scale = 1;
       opacity = 1;
-    }
-    // Section 3: Phone Section (200vh-300vh) - Align with phone
-    else if (scrollY >= vh * 2 && scrollY < vh * 3) {
+    } else if (scrollY >= vh * 2 && scrollY < vh * 3) {
       const sectionProgress = (scrollY - vh * 2) / vh;
-      const phoneX = phonePosition.x + (isMobile ? 0 : -50);
-      const phoneY = phonePosition.y - 120; // Align with phone screen
+      translateX = 0;
+      translateY = -50;
+      rotateX = sectionProgress * 30;
+      rotateY = sectionProgress * 30;
+      scale = 1;
+      opacity = 1;
+    } else {
+      const sectionProgress = Math.min((scrollY - vh * 3) / vh, 1);
+      const phoneX = phonePosition.x + (isMobile ? 0 : vw / 4);
+      const phoneY = phonePosition.y - 50;
       
       translateX = phoneX * sectionProgress;
-      translateY = phoneY * sectionProgress + 50;
-      rotateY = 20 - sectionProgress * 20;
-      scale = 1.15 - sectionProgress * 0.6;
-      opacity = 1;
-    }
-    // Section 4: Blazing Fast (300vh-400vh) - Centered spin
-    else if (scrollY >= vh * 3 && scrollY < vh * 4) {
-      const sectionProgress = (scrollY - vh * 3) / vh;
-      translateX = 0;
-      translateY = -100;
-      rotateX = sectionProgress * 360;
-      rotateY = sectionProgress * 360;
-      scale = 0.6 + sectionProgress * 0.4;
-      opacity = 0.8 + sectionProgress * 0.2;
-    }
-    // Section 5: Get ID (400vh+) - Move to LEFT
-    else if (scrollY >= vh * 4) {
-      const sectionProgress = Math.min((scrollY - vh * 4) / vh, 1);
-      translateX = -sectionProgress * (isMobile ? 100 : vw / 4);
-      translateY = Math.sin(sectionProgress * Math.PI) * 15;
-      rotateY = -sectionProgress * 25;
-      scale = 1.1;
+      translateY = phoneY * sectionProgress;
+      rotateY = 0;
+      scale = 0.8 - sectionProgress * 0.2;
       opacity = 1;
     }
 
@@ -134,11 +112,29 @@ const StudentID = () => {
   const cardStyle = getCardTransform();
 
   return (
-    <div className="bg-gray-900 text-white overflow-x-hidden relative">
+    <div className="bg-black text-white overflow-x-hidden relative">
+      {/* Navbar */}
+      <div className="fixed top-0 left-0 right-0 z-50 bg-black/50 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-4 flex justify-between items-center py-3">
+          <div className="flex items-center gap-2">
+            <img src="/lovable-uploads/ab90ba4e-121b-4049-b65d-dec211ad12c3.png" alt="Logo" className="w-6 h-6" />
+            <span className="font-bold">SurakshaLMS</span>
+          </div>
+          <nav className="hidden md:flex space-x-8 text-sm">
+            <a href="#" className="hover:text-blue-400">Home</a>
+            <a href="#" className="hover:text-blue-400">Product</a>
+            <a href="#" className="hover:text-blue-400">Feature</a>
+          </nav>
+          <Button className="bg-blue-500 hover:bg-blue-600 rounded-full px-6">
+            Get Student ID
+          </Button>
+        </div>
+      </div>
+
       {/* 3D Container for card */}
       <div className="fixed inset-0 pointer-events-none" style={{ perspective: '1000px' }}>
         <div 
-          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-50 transition-all duration-700 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
+          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40 transition-all duration-700 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
           style={{
             ...cardStyle,
             transformStyle: 'preserve-3d',
@@ -206,102 +202,110 @@ const StudentID = () => {
       </div>
 
       {/* Hero Section */}
-      <section className="min-h-screen relative flex items-center justify-center bg-gray-800">
-        <div className="text-center z-10 px-4 pt-32">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 text-white">
+      <section className="min-h-screen flex flex-col justify-center items-center bg-black pt-20" style={{backgroundImage: "url('https://via.placeholder.com/1920x1080?text=Earth+Background')", backgroundSize: 'cover', backgroundPosition: 'center'}}>
+        <div className="text-center z-10 px-4">
+          <h1 className="text-5xl md:text-7xl font-bold mb-4">
             The Only Student ID
           </h1>
-          <p className="text-lg md:text-xl text-gray-300 mb-12 max-w-xl mx-auto">
+          <p className="text-lg md:text-xl mb-12 max-w-xl mx-auto">
             The best digital student ID for educational institutions
           </p>
-          <div className="h-[40vh] mb-12"></div>
+          <div className="h-64 md:h-80"></div>
           <Button 
-            className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 text-lg rounded-lg"
+            className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full"
           >
             Get Student ID
           </Button>
         </div>
       </section>
 
-      {/* Second Section - No Fees */}
-      <section className="min-h-screen relative flex items-center bg-gray-900">
-        <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center">
+      {/* Get Your ID Section */}
+      <section className="min-h-screen flex items-center bg-gradient-to-br from-black to-gray-900">
+        <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
           <div className="z-10">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
-              No Joining Fees. No Annual Fees.
+            <h2 className="text-4xl md:text-6xl font-bold mb-4">
+              Get your ID in just 5min
             </h2>
             <p className="text-lg text-gray-400 mb-6">
-              SurakshaLMS offers a cost-free student ID platform.
+              Simple 3 step verification with online KYC. verification and instant digital ID unlocked
             </p>
+            <Button 
+              className="bg-blue-500 hover:bg-blue-600 text-white px-8 py-3 rounded-full"
+            >
+              Get Student ID
+            </Button>
           </div>
-          <div className="h-[40vh] flex items-center justify-center"></div>
+          <div className="h-64 md:h-80 flex items-center justify-center"></div>
         </div>
       </section>
 
-      {/* Third Section - Instant Features with Phone */}
-      <section className="min-h-screen relative flex items-center bg-gray-800">
-        <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center">
-          <div className="flex justify-center order-2 lg:order-1" ref={phoneRef}>
-            <div className="w-64 h-[500px] bg-gray-700 rounded-[2rem] p-2 shadow-lg md:w-72 md:h-[560px]">
-              <div className="w-full h-full bg-gray-900 rounded-[1.8rem] flex items-center justify-center">
-                <div className="text-gray-500 text-sm">Card here</div>
-              </div>
+      {/* Blazing Fast Section */}
+      <section className="min-h-screen flex items-center justify-center bg-gradient-to-br from-black to-purple-900/20">
+        <div className="text-center z-10 px-4">
+          <h2 className="text-5xl md:text-7xl font-bold mb-6">
+            Blazing Fast Verification
+          </h2>
+          <div className="h-64 md:h-80 mb-12"></div>
+          <div className="flex flex-col md:flex-row justify-center gap-8 md:gap-16">
+            <div className="flex flex-col items-center">
+              <Clock className="w-8 h-8 mb-2" />
+              <p>Verify in 10 seconds</p>
+            </div>
+            <div className="flex flex-col items-center">
+              <CheckCircle2 className="w-8 h-8 mb-2" />
+              <p>99.9% Success rate</p>
+            </div>
+            <div className="flex flex-col items-center">
+              <RotateCcw className="w-8 h-8 mb-2" />
+              <p>Auto Sync</p>
             </div>
           </div>
-          <div className="order-1 lg:order-2 z-10">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 text-white">
+        </div>
+      </section>
+
+      {/* Instant Verification Section */}
+      <section className="min-h-screen flex items-center bg-black">
+        <div className="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-12 items-center">
+          <div className="z-10 order-1 md:order-2">
+            <h2 className="text-4xl md:text-6xl font-bold mb-4">
               Instant Verification
             </h2>
             <p className="text-lg text-gray-400 mb-6">
-              Link your ID to your phone for seamless access.
+              Link your digital ID to your Apple/Google wallet to start using immediately.
             </p>
           </div>
-        </div>
-      </section>
-
-      {/* Fourth Section - Blazing Fast */}
-      <section className="min-h-screen relative flex items-center justify-center bg-gray-900">
-        <div className="text-center z-10 px-4">
-          <h2 className="text-5xl md:text-6xl font-bold mb-6 text-white">
-            Blazing Fast
-          </h2>
-          <p className="text-lg text-gray-300 mb-12 max-w-xl mx-auto">
-            Ultra-fast verification system
-          </p>
-          <div className="h-[40vh] mb-12 flex items-center justify-center"></div>
-        </div>
-      </section>
-
-      {/* Final Section - Get Your ID */}
-      <section className="min-h-screen relative flex items-center justify-center bg-gray-800">
-        <div className="text-center z-10 px-4 max-w-2xl">
-          <h2 className="text-5xl md:text-6xl font-bold mb-6 text-white">
-            Get Your ID in 5 Minutes
-          </h2>
-          <p className="text-lg text-gray-300 mb-12">
-            Simple 3-step verification process
-          </p>
-          <Button 
-            className="bg-blue-600 hover:bg-blue-700 text-white px-12 py-4 text-lg rounded-lg"
-          >
-            Get Student ID Now
-          </Button>
+          <div className="flex justify-center order-2 md:order-1" ref={phoneRef}>
+            <div className="w-64 md:w-72 h-[500px] md:h-[560px] bg-gray-800 rounded-3xl p-2 shadow-2xl overflow-hidden">
+              <div className="w-full h-full bg-black rounded-3xl p-6 flex flex-col">
+                <p className="text-white font-bold mb-4">Recent Activities</p>
+                <div className="bg-gray-900 p-3 rounded-lg mb-3 flex justify-between">
+                  <span>Lecture Attendance</span>
+                  <span>Today</span>
+                </div>
+                <div className="bg-gray-900 p-3 rounded-lg mb-3 flex justify-between">
+                  <span>Library Access</span>
+                  <span>Yesterday</span>
+                </div>
+                <div className="bg-gray-900 p-3 rounded-lg flex justify-between">
+                  <span>Exam Entry</span>
+                  <span>2 days ago</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 border-t border-gray-700 py-6 z-10 relative">
-        <div className="max-w-6xl mx-auto px-4 text-center">
-          <p className="text-gray-500">© 2025 SurakshaLMS. All rights reserved.</p>
+      <footer className="bg-black py-8 z-10 relative">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center text-gray-500 text-sm">
+          <div className="flex items-center gap-2 mb-4 md:mb-0">
+            <img src="/lovable-uploads/ab90ba4e-121b-4049-b65d-dec211ad12c3.png" alt="Logo" className="w-6 h-6" />
+            <span>SurakshaLMS</span>
+          </div>
+          <p className="mb-4 md:mb-0">© 2025 SurakshaLMS. All rights reserved.</p>
         </div>
       </footer>
-
-      <style>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0); }
-          50% { transform: translateY(-10px); }
-        }
-      `}</style>
     </div>
   );
 };
