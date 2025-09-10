@@ -211,4 +211,26 @@ All colors MUST be HSL.
   .animate-slide-right {
     animation: slide-right 20s linear infinite;
   }
+
+  /* Typing Animation */
+  @keyframes typewriter {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+
+  @keyframes blink {
+    50% { border-color: transparent; }
+  }
+
+  .typing-animation {
+    overflow: hidden;
+    border-right: 2px solid hsl(var(--primary));
+    white-space: nowrap;
+    margin: 0 auto;
+    animation: typewriter 2s steps(40, end), blink 1s step-end infinite;
+  }
+
+  .typing-delay-1 { animation-delay: 0.5s; }
+  .typing-delay-2 { animation-delay: 1s; }
+  .typing-delay-3 { animation-delay: 1.5s; }
 }
