@@ -39,7 +39,6 @@ const StudentID = () => {
   // Calculate card position and transform based on scroll
   const getCardTransform = () => {
     const vh = window.innerHeight;
-    const progress = scrollY / (vh * 4); // 4 sections total
     
     let translateX = 0;
     let translateY = 0;
@@ -48,41 +47,51 @@ const StudentID = () => {
     let rotateZ = 0;
     let scale = 1;
     
-    // Section 1: Hero (0-100vh) - Center floating
+    // Section 1: Hero (0-100vh) - CENTER
     if (scrollY < vh) {
-      translateY = scrollY * 0.2;
+      translateX = 0;
+      translateY = scrollY * 0.1;
       rotateX = Math.sin(scrollY * 0.01) * 5;
       rotateY = Math.cos(scrollY * 0.008) * 10;
       rotateZ = Math.sin(scrollY * 0.005) * 3;
       scale = 1 + Math.sin(scrollY * 0.01) * 0.1;
     }
-    // Section 2: No Fees (100vh-200vh) - Move to right
+    // Section 2: No Fees (100vh-200vh) - Move to SIDE (right)
     else if (scrollY >= vh && scrollY < vh * 2) {
       const sectionProgress = (scrollY - vh) / vh;
-      translateX = sectionProgress * 300; // Move right
-      translateY = vh * 0.2 + sectionProgress * 200;
-      rotateY = 10 + sectionProgress * 20;
-      rotateX = sectionProgress * 15;
-      scale = 1 + sectionProgress * 0.2;
+      translateX = sectionProgress * 400; // Move to right side
+      translateY = vh * 0.1;
+      rotateY = sectionProgress * 25;
+      rotateX = sectionProgress * 10;
+      scale = 1 + sectionProgress * 0.1;
     }
-    // Section 3: Instant Features (200vh-300vh) - Move to phone position
+    // Section 3: Instant Features (200vh-300vh) - Move into PHONE
     else if (scrollY >= vh * 2 && scrollY < vh * 3) {
       const sectionProgress = (scrollY - vh * 2) / vh;
-      translateX = 300 - sectionProgress * 500; // Move left into phone
-      translateY = vh * 0.2 + 200 + sectionProgress * 200;
-      rotateY = 30 - sectionProgress * 40;
-      rotateZ = sectionProgress * 10;
-      scale = 1.2 - sectionProgress * 0.5; // Shrink to fit phone
+      translateX = 400 - sectionProgress * 600; // Move from right to left (into phone)
+      translateY = vh * 0.1 + sectionProgress * 50;
+      rotateY = 25 - sectionProgress * 35;
+      rotateZ = sectionProgress * 5;
+      scale = 1.1 - sectionProgress * 0.4; // Shrink to fit phone
     }
-    // Section 4: Fast Transactions (300vh-400vh) - Center with effects
-    else if (scrollY >= vh * 3) {
+    // Section 4: Blazing Fast (300vh-400vh) - Back to CENTER
+    else if (scrollY >= vh * 3 && scrollY < vh * 4) {
       const sectionProgress = (scrollY - vh * 3) / vh;
       translateX = -200 + sectionProgress * 200; // Move back to center
-      translateY = vh * 0.2 + 400 + sectionProgress * 100;
-      rotateX = sectionProgress * 360; // Full rotation
-      rotateY = sectionProgress * 180;
+      translateY = vh * 0.1 + 50 - sectionProgress * 50;
+      rotateX = sectionProgress * 180; // Rotate while moving
+      rotateY = -10 + sectionProgress * 20;
       rotateZ = sectionProgress * 90;
-      scale = 0.7 + sectionProgress * 0.5;
+      scale = 0.7 + sectionProgress * 0.3; // Scale back up
+    }
+    // Section 5: Get ID (400vh+) - Move to SIDE again
+    else if (scrollY >= vh * 4) {
+      const sectionProgress = Math.min((scrollY - vh * 4) / vh, 1);
+      translateX = sectionProgress * -350; // Move to left side
+      translateY = vh * 0.1;
+      rotateY = sectionProgress * -20;
+      rotateX = sectionProgress * 10;
+      scale = 1 + sectionProgress * 0.1;
     }
 
     return {
