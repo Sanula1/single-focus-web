@@ -79,7 +79,7 @@ const StudentID = () => {
     // Section 2: No Fees (100vh-200vh) - Smooth move to RIGHT side
     else if (scrollY >= vh && scrollY < vh * 2) {
       const sectionProgress = (scrollY - vh) / vh;
-      const easeProgress = Math.pow(sectionProgress, 0.7); // Easing function
+      const easeProgress = Math.pow(sectionProgress, 0.7); 
       
       translateX = easeProgress * (isMobile ? 100 : vw / 4);
       translateY = 50 + Math.sin(sectionProgress * Math.PI) * 20;
@@ -89,44 +89,43 @@ const StudentID = () => {
       scale = 1.05 + easeProgress * 0.1;
       opacity = 1;
     }
-    // Section 3: Phone Section (200vh-300vh) - Move into phone screen with dynamic chasing effect
+    // Section 3: Phone Section (200vh-300vh) - Move into phone screen with precise alignment
     else if (scrollY >= vh * 2 && scrollY < vh * 3) {
       const sectionProgress = (scrollY - vh * 2) / vh;
       const easeProgress = Math.pow(sectionProgress, 0.5);
       
       const startX = isMobile ? 100 : vw / 4;
       const startY = 50;
-      const phoneX = phonePosition.x;
-      const phoneY = phonePosition.y;
+      const phoneX = phonePosition.x + (isMobile ? 0 : -50); // Adjust to align with phone screen
+      const phoneY = phonePosition.y - 50; // Move toward phone top
       
       translateX = startX + (phoneX - startX) * easeProgress;
       translateY = startY + (phoneY - startY) * easeProgress;
       
-      rotateY = 20 - easeProgress * 30;
-      rotateX = 5 + easeProgress * 10;
-      rotateZ = -5 + easeProgress * 10;
+      rotateY = 20 - easeProgress * 20; // Reduce rotation for better alignment
+      rotateX = 5 - easeProgress * 5;
+      rotateZ = -5 + easeProgress * 5;
       scale = 1.15 - easeProgress * 0.55; // Shrink to fit phone
       opacity = 1;
     }
-    // Section 4: Blazing Fast (300vh-400vh) - Dramatic spin back to center with dynamic detach
+    // Section 4: Blazing Fast (300vh-400vh) - Centered with smooth spin
     else if (scrollY >= vh * 3 && scrollY < vh * 4) {
       const sectionProgress = (scrollY - vh * 3) / vh;
       const easeProgress = Math.pow(sectionProgress, 0.8);
       
-      translateX = phonePosition.x * (1 - easeProgress);
-      translateY = phonePosition.y * (1 - easeProgress) + Math.sin(easeProgress * Math.PI) * -30;
+      translateX = 0; // Center horizontally
+      translateY = -50 + Math.sin(easeProgress * Math.PI) * -30; // Slight vertical oscillation
       
-      // Multiple rotations for dramatic effect
       rotateX = easeProgress * 360;
-      rotateY = -10 + easeProgress * 720;
+      rotateY = -10 + easeProgress * 360;
       rotateZ = 5 + easeProgress * 180;
-      scale = 0.6 + easeProgress * 0.5;
+      scale = 0.6 + easeProgress * 0.4;
       opacity = 0.8 + easeProgress * 0.2;
     }
     // Section 5: Get ID (400vh+) - Float to LEFT side with gentle animation
     else if (scrollY >= vh * 4) {
       const sectionProgress = Math.min((scrollY - vh * 4) / vh, 1);
-      const easeProgress = 1 - Math.pow(1 - sectionProgress, 3); // Ease out cubic
+      const easeProgress = 1 - Math.pow(1 - sectionProgress, 3); 
       
       translateX = easeProgress * (isMobile ? -100 : - (vw / 4));
       translateY = Math.sin(sectionProgress * Math.PI * 2) * 15;
@@ -463,7 +462,7 @@ const StudentID = () => {
         </div>
 
         <div className="text-center z-20 px-4">
-          {/* Space for the rotating card */}
+          {/* Space for the centered card */}
           <div className="mb-12 h-64"></div>
 
           <h2 className="text-6xl md:text-8xl font-black mb-8 bg-gradient-to-r from-white via-purple-300 to-pink-300 bg-clip-text text-transparent animate-gradient-x">
