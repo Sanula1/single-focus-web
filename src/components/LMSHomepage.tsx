@@ -4,6 +4,7 @@ import { useState } from "react";
 import LMSCharacter from "./LMSCharacter";
 import SecurityElement from "./SecurityElement";
 import WhiteboardSection from "./WhiteboardSection";
+import VideoSection from "./VideoSection";
 import TextToVideoSections from "./TextToVideoSections";
 const LMSHomepage = () => {
   const [isTransformed, setIsTransformed] = useState(false);
@@ -83,7 +84,7 @@ const LMSHomepage = () => {
         <div className="absolute inset-0 flex flex-col items-center justify-center px-4">
           {/* Mission Statement */}
           <div className="text-center mb-8 z-10">
-            <img alt="SurakshaLMS" className="w-24 sm:w-32 md:w-48 h-auto mb-4 animate-fade-in" src="/lovable-uploads/6678135b-8997-4d89-82a1-badde05b90d8.png" />
+            <img alt="SurakshaLMS" className="h-16 md:h-24 w-auto mb-4 animate-fade-in" src="/lovable-uploads/6678135b-8997-4d89-82a1-badde05b90d8.png" />
             <h2 style={{
               animationDelay: '0.5s'
             }} className="text-2xl font-semibold bg-gradient-to-r from-primary-dark to-primary bg-clip-text text-transparent mb-2 animate-fade-in md:text-2xl">One LMS. One Nation. One Future</h2>
@@ -197,6 +198,9 @@ const LMSHomepage = () => {
 
       {/* Whiteboard Animation Section */}
       <WhiteboardSection />
+
+      {/* Video Learning Section */}
+      <VideoSection />
 
       {/* Text to Video Sections */}
       <TextToVideoSections />
