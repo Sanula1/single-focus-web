@@ -1,6 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, Calendar, User, MapPin, Phone, Mail, GraduationCap } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import { Calendar } from "lucide-react";
+import { User } from "lucide-react";
+import { MapPin } from "lucide-react";
+import { Phone } from "lucide-react";
+import { Mail } from "lucide-react";
+import { GraduationCap } from "lucide-react";
+import { Shield } from "lucide-react";
+import { Zap } from "lucide-react";
+import { Globe } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -561,7 +570,7 @@ const StudentID = () => {
         </div>
       </footer>
 
-      <style jsx>{`
+      <style>{`
         @keyframes speedline {
           0% { transform: translateX(-100%); }
           100% { transform: translateX(200%); }
