@@ -1,6 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, Calendar, User, MapPin, Phone, Mail, GraduationCap } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import { Calendar } from "lucide-react";
+import { User } from "lucide-react";
+import { MapPin } from "lucide-react";
+import { Phone } from "lucide-react";
+import { Mail } from "lucide-react";
+import { GraduationCap } from "lucide-react";
+import { Shield } from "lucide-react";
+import { Zap } from "lucide-react";
+import { Globe } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -96,16 +105,16 @@ const StudentID = () => {
       
       const startX = isMobile ? 100 : vw / 4;
       const startY = 50;
-      const phoneX = phonePosition.x + (isMobile ? 0 : -50); // Adjust to align with phone screen
-      const phoneY = phonePosition.y - 50; // Move toward phone top
+      const phoneX = phonePosition.x + (isMobile ? 0 : -50); // Align with phone screen center
+      const phoneY = phonePosition.y - 100; // Align with phone screen top
       
       translateX = startX + (phoneX - startX) * easeProgress;
       translateY = startY + (phoneY - startY) * easeProgress;
       
-      rotateY = 20 - easeProgress * 20; // Reduce rotation for better alignment
+      rotateY = 20 - easeProgress * 20;
       rotateX = 5 - easeProgress * 5;
       rotateZ = -5 + easeProgress * 5;
-      scale = 1.15 - easeProgress * 0.55; // Shrink to fit phone
+      scale = 1.15 - easeProgress * 0.55; // Shrink to fit phone screen
       opacity = 1;
     }
     // Section 4: Blazing Fast (300vh-400vh) - Centered with smooth spin
@@ -113,9 +122,8 @@ const StudentID = () => {
       const sectionProgress = (scrollY - vh * 3) / vh;
       const easeProgress = Math.pow(sectionProgress, 0.8);
       
-      translateX = 0; // Center horizontally
-      translateY = -50 + Math.sin(easeProgress * Math.PI) * -30; // Slight vertical oscillation
-      
+      translateX = 0; // Perfectly centered horizontally
+      translateY = -100 + Math.sin(easeProgress * Math.PI) * -30; // Centered with slight oscillation
       rotateX = easeProgress * 360;
       rotateY = -10 + easeProgress * 360;
       rotateZ = 5 + easeProgress * 180;
@@ -285,8 +293,8 @@ const StudentID = () => {
             Probably the best digital student ID for educational institutions
           </p>
 
-          {/* Space for floating card */}
-          <div className="h-64 mb-12"></div>
+          {/* Dynamic space for floating card */}
+          <div className="h-[40vh] mb-12"></div>
 
           <Button 
             className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white px-10 py-4 text-lg rounded-full shadow-xl transform hover:scale-105 transition-all duration-300"
@@ -323,11 +331,9 @@ const StudentID = () => {
             </div>
           </div>
           
-          {/* Empty space for card */}
-          <div className="flex justify-center items-center">
-            <div className="w-96 h-64 opacity-0">
-              {/* Placeholder for floating card */}
-            </div>
+          {/* Dynamic space for card */}
+          <div className="h-[40vh] flex items-center justify-center">
+            {/* Placeholder adjusted to card height */}
           </div>
         </div>
       </section>
@@ -462,8 +468,8 @@ const StudentID = () => {
         </div>
 
         <div className="text-center z-20 px-4">
-          {/* Space for the centered card */}
-          <div className="mb-12 h-64"></div>
+          {/* Dynamic space for centered card */}
+          <div className="h-[40vh] mb-12 flex items-center justify-center"></div>
 
           <h2 className="text-6xl md:text-8xl font-black mb-8 bg-gradient-to-r from-white via-purple-300 to-pink-300 bg-clip-text text-transparent animate-gradient-x">
             Blazing Fast
@@ -564,7 +570,7 @@ const StudentID = () => {
         </div>
       </footer>
 
-      <style jsx>{`
+      <style>{`
         @keyframes speedline {
           0% { transform: translateX(-100%); }
           100% { transform: translateX(200%); }

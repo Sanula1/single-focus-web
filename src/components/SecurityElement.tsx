@@ -1,4 +1,7 @@
-import { Shield, Lock, Eye, Fingerprint } from "lucide-react";
+import { Shield } from "lucide-react";
+import { Lock } from "lucide-react";
+import { Eye } from "lucide-react";
+import { Fingerprint } from "lucide-react";
 
 interface SecurityElementProps {
   position: 'top' | 'right' | 'bottom' | 'left';
