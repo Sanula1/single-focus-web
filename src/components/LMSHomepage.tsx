@@ -51,10 +51,13 @@ const LMSHomepage = () => {
           </div>
           <nav className="hidden md:flex items-center gap-4">
             <Button variant="ghost" className="text-primary hover:text-primary-dark transition-colors duration-300">
-              Why Suraksha?
+              Student ID
             </Button>
             <Button variant="ghost" className="text-primary hover:text-primary-dark transition-colors duration-300">
-              For Institutes
+              Customers
+            </Button>
+            <Button variant="ghost" className="text-primary hover:text-primary-dark transition-colors duration-300">
+              Pricing
             </Button>
             <Button variant="ghost" className="text-primary hover:text-primary-dark transition-colors duration-300" onClick={() => window.location.href = '/guidance'}>
               <GraduationCap className="w-4 h-4 mr-2" />
