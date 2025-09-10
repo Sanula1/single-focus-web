@@ -85,7 +85,7 @@ const StudentID = () => {
       scale = 1.1 - sectionProgress * 0.5; // Shrink more to fit phone screen
     }
     // Section 4: Blazing Fast (300vh-400vh) - Back to CENTER
-    else if (scrollY >= vh * 3 && scrollY < vh * 2) {
+    else if (scrollY >= vh * 3 && scrollY < vh * 4) {
       const sectionProgress = (scrollY - vh * 3) / vh;
       const isMobile = window.innerWidth < 1024;
       
