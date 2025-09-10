@@ -6,6 +6,7 @@ import LMSCharacter from "./LMSCharacter";
 import SecurityElement from "./SecurityElement";
 import WhiteboardSection from "./WhiteboardSection";
 import TextToVideoSections from "./TextToVideoSections";
+import WebsitePreviewSection from "./WebsitePreviewSection";
 const LMSHomepage = () => {
   const [isTransformed, setIsTransformed] = useState(false);
   const handleLMSClick = () => {
@@ -360,6 +361,9 @@ const LMSHomepage = () => {
 
       {/* Text to Video Sections */}
       <TextToVideoSections />
+
+      {/* Website Preview Section */}
+      <WebsitePreviewSection />
     </>
   );
 };
