@@ -50,7 +50,7 @@ const LMSHomepage = () => {
             <img src="/lovable-uploads/ab90ba4e-121b-4049-b65d-dec211ad12c3.png" alt="SurakshaLMS Logo" className="h-8 w-8" />
           </div>
           <nav className="hidden md:flex items-center gap-4">
-            <Button variant="ghost" className="text-primary hover:text-primary-dark transition-colors duration-300">
+            <Button variant="ghost" className="text-primary hover:text-primary-dark transition-colors duration-300" onClick={() => window.location.href = '/student-id'}>
               Student ID
             </Button>
             <Button variant="ghost" className="text-primary hover:text-primary-dark transition-colors duration-300">
