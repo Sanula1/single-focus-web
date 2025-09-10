@@ -19,36 +19,36 @@ const WebsitePreviewSection = () => {
   };
 
   return (
-    <div className="py-20 bg-gradient-to-br from-muted/30 to-background">
+    <div className="py-12 md:py-16 lg:py-20 bg-gradient-to-br from-muted/30 to-background">
       <div className="container mx-auto px-4">
-        <div className="text-center mb-16 max-w-6xl mx-auto">
-          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-8 leading-tight">
+        <div className="text-center mb-8 md:mb-12 lg:mb-16 max-w-4xl lg:max-w-6xl mx-auto">
+          <h2 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-4 md:mb-6 lg:mb-8 leading-tight">
             Trusted by Educators Worldwide
           </h2>
-          <p className="text-muted-foreground text-xl md:text-2xl leading-relaxed">
+          <p className="text-muted-foreground text-base md:text-lg lg:text-xl xl:text-2xl leading-relaxed">
             Comprehensive learning management system designed for every role in the education ecosystem
           </p>
         </div>
 
-        <Tabs defaultValue="student" className="w-full max-w-7xl mx-auto">
-          <TabsList className="grid grid-cols-2 md:grid-cols-5 mb-12 bg-muted/50 p-1 rounded-lg h-auto">
+        <Tabs defaultValue="student" className="w-full max-w-5xl lg:max-w-7xl mx-auto">
+          <TabsList className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 mb-8 md:mb-10 lg:mb-12 bg-muted/50 p-1 rounded-lg h-auto w-full">
             {categories.map((category) => (
               <TabsTrigger 
                 key={category.id} 
                 value={category.id} 
-                className="flex flex-col gap-2 py-4 px-3 text-sm h-auto"
+                className="flex flex-col sm:flex-row lg:flex-col items-center gap-2 py-3 md:py-4 px-2 md:px-3 text-xs md:text-sm h-auto w-full"
               >
-                <category.icon className="w-6 h-6" />
+                <category.icon className="w-4 h-4 md:w-5 md:h-5 lg:w-6 lg:h-6 flex-shrink-0" />
                 <span className="text-center leading-tight">{category.label}</span>
               </TabsTrigger>
             ))}
           </TabsList>
 
           {Object.entries(roleDescriptions).map(([key, description]) => (
-            <TabsContent key={key} value={key} className="space-y-8">
-              <div className="text-center max-w-5xl mx-auto">
-                <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl p-8 md:p-12 lg:p-16 border border-primary/20">
-                  <p className="text-lg md:text-xl lg:text-2xl text-foreground leading-relaxed font-medium">
+            <TabsContent key={key} value={key} className="space-y-6 md:space-y-8">
+              <div className="text-center max-w-3xl md:max-w-4xl lg:max-w-5xl mx-auto">
+                <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl md:rounded-2xl p-6 md:p-8 lg:p-12 xl:p-16 border border-primary/20">
+                  <p className="text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl text-foreground leading-relaxed font-medium">
                     {description}
                   </p>
                 </div>
