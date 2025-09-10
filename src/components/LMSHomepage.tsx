@@ -4,6 +4,7 @@ import { useState } from "react";
 import LMSCharacter from "./LMSCharacter";
 import SecurityElement from "./SecurityElement";
 import WhiteboardSection from "./WhiteboardSection";
+import TextToVideoSections from "./TextToVideoSections";
 const LMSHomepage = () => {
   const [isTransformed, setIsTransformed] = useState(false);
   const handleLMSClick = () => {
@@ -196,6 +197,9 @@ const LMSHomepage = () => {
 
       {/* Whiteboard Animation Section */}
       <WhiteboardSection />
+
+      {/* Text to Video Sections */}
+      <TextToVideoSections />
     </>
   );
 };
