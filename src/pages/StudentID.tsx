@@ -68,21 +68,35 @@ const StudentID = () => {
     // Section 3: Instant Features (200vh-300vh) - Move into PHONE
     else if (scrollY >= vh * 2 && scrollY < vh * 3) {
       const sectionProgress = (scrollY - vh * 2) / vh;
-      translateX = 400 - sectionProgress * 600; // Move from right to left (into phone)
-      translateY = vh * 0.1 + sectionProgress * 50;
+      const isMobile = window.innerWidth < 1024; // lg breakpoint
+      
+      if (isMobile) {
+        // On mobile: move from right side to center-left (phone is centered)
+        translateX = 400 - sectionProgress * 500; // Move to left but not too far
+        translateY = vh * 0.1 - sectionProgress * 100; // Move up to align with phone
+      } else {
+        // On desktop: move from right side to left side (phone is on left)
+        translateX = 400 - sectionProgress * 700; // Move further left for desktop
+        translateY = vh * 0.1 + sectionProgress * 20;
+      }
+      
       rotateY = 25 - sectionProgress * 35;
       rotateZ = sectionProgress * 5;
-      scale = 1.1 - sectionProgress * 0.4; // Shrink to fit phone
+      scale = 1.1 - sectionProgress * 0.5; // Shrink more to fit phone screen
     }
     // Section 4: Blazing Fast (300vh-400vh) - Back to CENTER
     else if (scrollY >= vh * 3 && scrollY < vh * 4) {
       const sectionProgress = (scrollY - vh * 3) / vh;
-      translateX = -200 + sectionProgress * 200; // Move back to center
-      translateY = vh * 0.1 + 50 - sectionProgress * 50;
+      const isMobile = window.innerWidth < 1024;
+      
+      // Start from the phone position and move back to center
+      const startX = isMobile ? -100 : -300; // Starting position from section 3
+      translateX = startX + sectionProgress * Math.abs(startX); // Move back to center (0)
+      translateY = vh * 0.1 + (isMobile ? -100 : 20) - sectionProgress * (isMobile ? -100 : 70);
       rotateX = sectionProgress * 180; // Rotate while moving
       rotateY = -10 + sectionProgress * 20;
       rotateZ = sectionProgress * 90;
-      scale = 0.7 + sectionProgress * 0.3; // Scale back up
+      scale = 0.6 + sectionProgress * 0.4; // Scale back up
     }
     // Section 5: Get ID (400vh+) - Move to SIDE again
     else if (scrollY >= vh * 4) {
