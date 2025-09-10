@@ -3,7 +3,6 @@ import { ArrowRight, LogIn, MessageCircle, Users, GraduationCap, Building, Spark
 import { useState } from "react";
 import LMSCharacter from "./LMSCharacter";
 import SecurityElement from "./SecurityElement";
-import VideoSlide from "./VideoSlide";
 const LMSHomepage = () => {
   const [isTransformed, setIsTransformed] = useState(false);
   const handleLMSClick = () => {
@@ -173,9 +172,6 @@ const LMSHomepage = () => {
           <MessageCircle className="w-6 h-6" />
         </Button>
       </div>
-
-      {/* Video Section */}
-      <VideoSlide />
 
       {/* Footer Stats */}
       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-8 text-xs text-muted-foreground opacity-60">

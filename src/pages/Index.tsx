@@ -1,7 +1,7 @@
-import SurakshaLandingPage from "@/components/SurakshaLandingPage";
+import LMSHomepage from "@/components/LMSHomepage";
 
 const Index = () => {
-  return <SurakshaLandingPage />;
+  return <LMSHomepage />;
 };
 
 export default Index;
