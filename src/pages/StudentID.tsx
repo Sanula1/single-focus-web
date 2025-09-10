@@ -289,6 +289,25 @@ const StudentID = () => {
         <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center">
           <div className="flex justify-center order-2 lg:order-1">
             {/* Phone mockup */}
+            <h2 className="text-5xl md:text-6xl font-bold mb-6">
+              Instant<br />
+              Verification
+            </h2>
+            <p className="text-xl text-white/70 mb-8">
+              Link your digital student ID to your mobile device for instant verification 
+              and seamless access to campus facilities.
+            </p>
+            <div className="w-16 h-1 bg-primary mb-8"></div>
+            
+            {/* Feature icons */}
+            <div className="flex gap-6">
+              <Shield className="w-8 h-8 text-white/60" />
+              <Zap className="w-8 h-8 text-white/60" />
+              <Globe className="w-8 h-8 text-white/60" />
+            </div>
+          </div>
+          
+          <div className="order-1 lg:order-2 z-20">
             <div className="w-64 h-[500px] bg-gradient-to-b from-gray-800 to-gray-900 rounded-[3rem] p-4 shadow-2xl z-20">
               <div className="w-full h-full bg-black rounded-[2.5rem] overflow-hidden">
                 {/* Phone content - card will move into here */}
@@ -316,25 +335,7 @@ const StudentID = () => {
                 </div>
               </div>
             </div>
-          </div>
-          
-          <div className="order-1 lg:order-2 z-20">
-            <h2 className="text-5xl md:text-6xl font-bold mb-6">
-              Instant<br />
-              Verification
-            </h2>
-            <p className="text-xl text-white/70 mb-8">
-              Link your digital student ID to your mobile device for instant verification 
-              and seamless access to campus facilities.
-            </p>
-            <div className="w-16 h-1 bg-primary mb-8"></div>
-            
-            {/* Feature icons */}
-            <div className="flex gap-6">
-              <Shield className="w-8 h-8 text-white/60" />
-              <Zap className="w-8 h-8 text-white/60" />
-              <Globe className="w-8 h-8 text-white/60" />
-            </div>
+         
           </div>
         </div>
       </section>
