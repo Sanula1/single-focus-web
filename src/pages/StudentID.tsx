@@ -36,21 +36,121 @@ const StudentID = () => {
     faculty: "Computing & Technology"
   };
 
-  // Calculate card transform based on scroll
-  const cardTransform = {
-    transform: `
-      translateY(${scrollY * 0.5}px) 
-      translateX(${Math.sin(scrollY * 0.01) * 50}px)
-      rotateX(${scrollY * 0.05}deg) 
-      rotateY(${scrollY * 0.02}deg)
-      rotateZ(${Math.sin(scrollY * 0.005) * 5}deg)
-      scale(${1 + scrollY * 0.0002})
-    `,
+  // Calculate card position and transform based on scroll
+  const getCardTransform = () => {
+    const vh = window.innerHeight;
+    const progress = scrollY / (vh * 4); // 4 sections total
+    
+    let translateX = 0;
+    let translateY = 0;
+    let rotateX = 0;
+    let rotateY = 0;
+    let rotateZ = 0;
+    let scale = 1;
+    
+    // Section 1: Hero (0-100vh) - Center floating
+    if (scrollY < vh) {
+      translateY = scrollY * 0.2;
+      rotateX = Math.sin(scrollY * 0.01) * 5;
+      rotateY = Math.cos(scrollY * 0.008) * 10;
+      rotateZ = Math.sin(scrollY * 0.005) * 3;
+      scale = 1 + Math.sin(scrollY * 0.01) * 0.1;
+    }
+    // Section 2: No Fees (100vh-200vh) - Move to right
+    else if (scrollY >= vh && scrollY < vh * 2) {
+      const sectionProgress = (scrollY - vh) / vh;
+      translateX = sectionProgress * 300; // Move right
+      translateY = vh * 0.2 + sectionProgress * 200;
+      rotateY = 10 + sectionProgress * 20;
+      rotateX = sectionProgress * 15;
+      scale = 1 + sectionProgress * 0.2;
+    }
+    // Section 3: Instant Features (200vh-300vh) - Move to phone position
+    else if (scrollY >= vh * 2 && scrollY < vh * 3) {
+      const sectionProgress = (scrollY - vh * 2) / vh;
+      translateX = 300 - sectionProgress * 500; // Move left into phone
+      translateY = vh * 0.2 + 200 + sectionProgress * 200;
+      rotateY = 30 - sectionProgress * 40;
+      rotateZ = sectionProgress * 10;
+      scale = 1.2 - sectionProgress * 0.5; // Shrink to fit phone
+    }
+    // Section 4: Fast Transactions (300vh-400vh) - Center with effects
+    else if (scrollY >= vh * 3) {
+      const sectionProgress = (scrollY - vh * 3) / vh;
+      translateX = -200 + sectionProgress * 200; // Move back to center
+      translateY = vh * 0.2 + 400 + sectionProgress * 100;
+      rotateX = sectionProgress * 360; // Full rotation
+      rotateY = sectionProgress * 180;
+      rotateZ = sectionProgress * 90;
+      scale = 0.7 + sectionProgress * 0.5;
+    }
+
+    return {
+      transform: `
+        translateX(${translateX}px) 
+        translateY(${translateY}px) 
+        rotateX(${rotateX}deg) 
+        rotateY(${rotateY}deg)
+        rotateZ(${rotateZ}deg)
+        scale(${scale})
+      `,
+    };
   };
 
   return (
-    <div className="bg-black text-white overflow-x-hidden">
-      {/* Hero Section - Similar to credit card site */}
+    <div className="bg-black text-white overflow-x-hidden relative">
+      {/* Single Floating Student ID Card - Fixed positioned and moves through sections */}
+      <div 
+        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 preserve-3d transition-transform duration-75 ease-out perspective-1000"
+        style={getCardTransform()}
+      >
+        <Card className="w-96 h-60 bg-gradient-to-br from-slate-100 to-slate-300 text-black shadow-2xl border-0 overflow-hidden relative">
+          {/* Logo */}
+          <div className="absolute top-4 right-4">
+            <img src="/lovable-uploads/ab90ba4e-121b-4049-b65d-dec211ad12c3.png" alt="Logo" className="w-8 h-8" />
+          </div>
+          
+          {/* Lightning bolt */}
+          <div className="absolute top-4 right-16">
+            <div className="w-6 h-6 bg-black text-white flex items-center justify-center rounded transform rotate-12">
+              <Zap className="w-4 h-4" />
+            </div>
+          </div>
+          
+          <CardContent className="p-6 h-full flex flex-col justify-between">
+            <div>
+              <div className="flex items-center gap-3 mb-4">
+                <img 
+                  src={studentData.photo} 
+                  alt="Student" 
+                  className="w-12 h-12 rounded-full object-cover border-2 border-gray-300"
+                />
+                <div className="text-left">
+                  <p className="font-bold text-lg">{studentData.name.toUpperCase()}</p>
+                  <p className="text-sm text-gray-600">Student ID Card</p>
+                </div>
+              </div>
+              
+              <div className="text-2xl font-mono tracking-[0.3em] mb-2 text-center">
+                5304 4641 1234 5678
+              </div>
+            </div>
+            
+            <div className="flex justify-between items-end">
+              <div>
+                <p className="text-xs text-gray-500 uppercase">Valid Thru</p>
+                <p className="font-mono text-sm">09/30</p>
+              </div>
+              <div className="text-right">
+                <p className="text-xs text-gray-500 uppercase">Suraksha</p>
+                <p className="font-bold text-lg">LMS</p>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Hero Section */}
       <section className="min-h-screen relative flex items-center justify-center perspective-1000">
         {/* Animated Background */}
         <div className="absolute inset-0 background-pulse" />
@@ -107,7 +207,7 @@ const StudentID = () => {
         </header>
 
         {/* Main Hero Content */}
-        <div className="text-center z-10 px-4">
+        <div className="text-center z-10 px-4 pt-32">
           <h1 className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-white to-primary bg-clip-text text-transparent">
             The Only Student ID
           </h1>
@@ -115,51 +215,11 @@ const StudentID = () => {
             Probably the best digital student ID for educational institutions
           </p>
 
-          {/* Floating Student ID Card */}
-          <div 
-            className="mx-auto preserve-3d scroll-transform card-float"
-            style={cardTransform}
-          >
-            <Card className="w-96 h-60 bg-gradient-to-br from-slate-100 to-slate-300 text-black shadow-2xl border-0 overflow-hidden relative">
-              <div className="absolute top-4 right-4">
-                <img src="/lovable-uploads/ab90ba4e-121b-4049-b65d-dec211ad12c3.png" alt="Logo" className="w-8 h-8" />
-              </div>
-              
-              <CardContent className="p-6 h-full flex flex-col justify-between">
-                <div>
-                  <div className="flex items-center gap-3 mb-4">
-                    <img 
-                      src={studentData.photo} 
-                      alt="Student" 
-                      className="w-12 h-12 rounded-full object-cover"
-                    />
-                    <div className="text-left">
-                      <p className="font-bold text-lg">{studentData.name.toUpperCase()}</p>
-                      <p className="text-sm text-gray-600">Student ID</p>
-                    </div>
-                  </div>
-                  
-                  <div className="text-2xl font-mono tracking-wider mb-2">
-                    {studentData.id.replace(/-/g, '  ')}
-                  </div>
-                </div>
-                
-                <div className="flex justify-between items-end">
-                  <div>
-                    <p className="text-xs text-gray-500">VALID THRU</p>
-                    <p className="font-mono">{studentData.dateOfIssue}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="text-xs text-gray-500">SURAKSHA</p>
-                    <p className="font-bold">LMS</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+          {/* Space for floating card - it will appear here via fixed positioning */}
+          <div className="h-60 mb-12"></div>
 
           <Button 
-            className="mt-12 bg-primary hover:bg-primary/80 text-white px-8 py-3 text-lg"
+            className="bg-primary hover:bg-primary/80 text-white px-8 py-3 text-lg"
           >
             Get Student ID
           </Button>
@@ -169,7 +229,7 @@ const StudentID = () => {
       {/* Second Section - No Fees */}
       <section className="min-h-screen relative flex items-center bg-gradient-to-br from-gray-900 to-black">
         <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center">
-          <div>
+          <div className="z-20">
             <h2 className="text-5xl md:text-6xl font-bold mb-6">
               No Joining Fees.<br />
               No Annual Fees.
@@ -180,39 +240,11 @@ const StudentID = () => {
             </p>
           </div>
           
-          <div 
-            className="flex justify-center"
-            style={{
-              transform: `
-                translateY(${(scrollY - 800) * 0.3}px) 
-                rotateY(${(scrollY - 800) * 0.1}deg)
-                scale(${1 + (scrollY - 800) * 0.0001})
-              `
-            }}
-          >
-            <Card className="w-80 h-52 bg-gradient-to-br from-slate-200 to-slate-400 text-black shadow-2xl border-0 overflow-hidden">
-              <CardContent className="p-6 h-full flex flex-col justify-between">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <p className="font-bold text-lg">{studentData.name.toUpperCase()}</p>
-                    <p className="text-sm text-gray-600">Digital Student ID</p>
-                  </div>
-                  <IdCard className="w-6 h-6 text-gray-700" />
-                </div>
-                
-                <div className="text-xl font-mono tracking-wider text-center">
-                  {studentData.id}
-                </div>
-                
-                <div className="flex justify-between items-end">
-                  <div>
-                    <p className="text-xs text-gray-500">ISSUED</p>
-                    <p className="font-mono text-sm">{studentData.dateOfIssue}</p>
-                  </div>
-                  <p className="font-bold text-lg">SURAKSHA LMS</p>
-                </div>
-              </CardContent>
-            </Card>
+          {/* Empty space for card to move into */}
+          <div className="flex justify-center">
+            <div className="w-80 h-52 opacity-0">
+              {/* Placeholder space for the moving card */}
+            </div>
           </div>
         </div>
       </section>
@@ -220,62 +252,30 @@ const StudentID = () => {
       {/* Third Section - Instant Features */}
       <section className="min-h-screen relative flex items-center bg-black">
         <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center">
-          <div 
-            className="flex justify-center order-2 lg:order-1"
-            style={{
-              transform: `
-                translateY(${(scrollY - 1600) * -0.2}px) 
-                rotateX(${(scrollY - 1600) * 0.05}deg)
-                rotateZ(${Math.sin((scrollY - 1600) * 0.01) * 10}deg)
-              `
-            }}
-          >
-            <div className="relative">
-              {/* Phone mockup */}
-              <div className="w-64 h-[500px] bg-gradient-to-b from-gray-800 to-gray-900 rounded-[3rem] p-4 shadow-2xl">
-                <div className="w-full h-full bg-black rounded-[2.5rem] overflow-hidden">
-                  {/* Student ID in phone */}
-                  <div className="p-6 h-full flex flex-col justify-center">
-                    <Card className="w-full h-40 bg-gradient-to-br from-slate-100 to-slate-300 text-black shadow-lg border-0">
-                      <CardContent className="p-4 h-full flex flex-col justify-between">
-                        <div className="flex items-center gap-2">
-                          <img 
-                            src={studentData.photo} 
-                            alt="Student" 
-                            className="w-8 h-8 rounded-full object-cover"
-                          />
-                          <div>
-                            <p className="font-bold text-sm">{studentData.name}</p>
-                            <p className="text-xs text-gray-600">{studentData.course}</p>
-                          </div>
-                        </div>
-                        
-                        <div className="text-center">
-                          <div className="text-lg font-mono">{studentData.id}</div>
-                          <div className="text-xs text-gray-500 mt-1">{studentData.faculty}</div>
-                        </div>
-                        
-                        <div className="flex justify-between text-xs">
-                          <span>{studentData.dateOfIssue}</span>
-                          <span>VALID</span>
-                        </div>
-                      </CardContent>
-                    </Card>
-                    
-                    {/* App features */}
-                    <div className="mt-4 space-y-2">
-                      <div className="flex items-center gap-3 text-white/80">
-                        <div className="w-2 h-2 bg-primary rounded-full"></div>
-                        <span className="text-sm">Grocery Shop - $34</span>
-                      </div>
-                      <div className="flex items-center gap-3 text-white/80">
-                        <div className="w-2 h-2 bg-primary rounded-full"></div>
-                        <span className="text-sm">Patrol - $49</span>
-                      </div>
-                      <div className="flex items-center gap-3 text-white/80">
-                        <div className="w-2 h-2 bg-primary rounded-full"></div>
-                        <span className="text-sm">Experience - $258</span>
-                      </div>
+          <div className="flex justify-center order-2 lg:order-1">
+            {/* Phone mockup */}
+            <div className="w-64 h-[500px] bg-gradient-to-b from-gray-800 to-gray-900 rounded-[3rem] p-4 shadow-2xl z-20">
+              <div className="w-full h-full bg-black rounded-[2.5rem] overflow-hidden">
+                {/* Phone content - card will move into here */}
+                <div className="p-6 h-full flex flex-col justify-center">
+                  {/* Space for the moving card */}
+                  <div className="w-full h-40 mb-4 opacity-0">
+                    {/* Placeholder for card */}
+                  </div>
+                  
+                  {/* App features */}
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-3 text-white/80">
+                      <div className="w-2 h-2 bg-primary rounded-full"></div>
+                      <span className="text-sm">Grocery Shop - $34</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-white/80">
+                      <div className="w-2 h-2 bg-primary rounded-full"></div>
+                      <span className="text-sm">Patrol - $49</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-white/80">
+                      <div className="w-2 h-2 bg-primary rounded-full"></div>
+                      <span className="text-sm">Experience - $258</span>
                     </div>
                   </div>
                 </div>
@@ -283,7 +283,7 @@ const StudentID = () => {
             </div>
           </div>
           
-          <div className="order-1 lg:order-2">
+          <div className="order-1 lg:order-2 z-20">
             <h2 className="text-5xl md:text-6xl font-bold mb-6">
               Instant<br />
               Verification
@@ -321,43 +321,9 @@ const StudentID = () => {
           ))}
         </div>
 
-        <div className="text-center z-10 px-4">
-          <div 
-            className="mb-8"
-            style={{
-              transform: `
-                translateY(${(scrollY - 2400) * 0.3}px)
-                rotateX(${(scrollY - 2400) * 0.02}deg)
-                scale(${1 + (scrollY - 2400) * 0.0001})
-              `
-            }}
-          >
-            <Card className="w-80 h-52 mx-auto bg-gradient-to-br from-slate-100 to-slate-300 text-black shadow-2xl border-0">
-              <CardContent className="p-6 h-full flex flex-col justify-between">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <p className="font-bold text-lg">{studentData.name.toUpperCase()}</p>
-                    <p className="text-sm text-gray-600">Student Access Card</p>
-                  </div>
-                  <div className="w-8 h-8 bg-gray-800 rounded-sm flex items-center justify-center">
-                    <div className="w-4 h-6 bg-white rounded-sm"></div>
-                  </div>
-                </div>
-                
-                <div className="text-xl font-mono tracking-wider text-center">
-                  {studentData.id}
-                </div>
-                
-                <div className="flex justify-between items-end">
-                  <div>
-                    <p className="text-xs text-gray-500">EXP</p>
-                    <p className="font-mono text-sm">09/30</p>
-                  </div>
-                  <p className="font-bold text-lg">VISA</p>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+        <div className="text-center z-20 px-4">
+          {/* Space for the rotating card */}
+          <div className="mb-8 h-52"></div>
 
           <h2 className="text-5xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-white via-purple-300 to-pink-300 bg-clip-text text-transparent">
             Blazing Fast Verification
@@ -382,7 +348,7 @@ const StudentID = () => {
 
       {/* Final Section - Get Your ID */}
       <section className="min-h-screen relative flex items-center justify-center bg-gradient-to-t from-black via-gray-900 to-black">
-        <div className="text-center z-10 px-4 max-w-4xl">
+        <div className="text-center z-20 px-4 max-w-4xl">
           <h2 className="text-5xl md:text-7xl font-bold mb-6">
             Get your Student ID in<br />
             <span className="bg-gradient-to-r from-primary to-purple-400 bg-clip-text text-transparent">
@@ -395,41 +361,6 @@ const StudentID = () => {
             and instant digital student ID unlock
           </p>
 
-          <div 
-            className="mb-12"
-            style={{
-              transform: `
-                translateY(${(scrollY - 3200) * 0.2}px)
-                rotateY(${(scrollY - 3200) * 0.05}deg)
-              `
-            }}
-          >
-            <Card className="w-72 h-44 mx-auto bg-gradient-to-br from-slate-100 to-slate-300 text-black shadow-2xl border-0">
-              <CardContent className="p-4 h-full flex flex-col justify-between">
-                <div className="flex items-center gap-2">
-                  <img 
-                    src={studentData.photo} 
-                    alt="Student" 
-                    className="w-10 h-10 rounded-full object-cover"
-                  />
-                  <div className="text-left">
-                    <p className="font-bold text-sm">{studentData.name.toUpperCase()}</p>
-                    <p className="text-xs text-gray-600">Digital Student ID</p>
-                  </div>
-                </div>
-                
-                <div className="text-lg font-mono tracking-wider text-center">
-                  {studentData.id}
-                </div>
-                
-                <div className="flex justify-between items-end text-xs">
-                  <span>EXP: {studentData.dateOfIssue}</span>
-                  <span className="font-bold">SURAKSHA LMS</span>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
           <Button 
             className="bg-primary hover:bg-primary/80 text-white px-12 py-4 text-lg rounded-full"
           >
@@ -439,7 +370,7 @@ const StudentID = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-black border-t border-gray-800 py-12">
+      <footer className="bg-black border-t border-gray-800 py-12 z-20 relative">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center gap-3 mb-4 md:mb-0">
