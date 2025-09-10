@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, Download, Eye, Edit, Share2, IdCard, Calendar, User, MapPin, Phone, Mail, GraduationCap, Shield, Zap, Globe } from "lucide-react";
+import { ArrowLeft, Calendar, User, MapPin, Phone, Mail, GraduationCap } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -55,7 +55,7 @@ const StudentID = () => {
   const getCardTransform = () => {
     const vh = window.innerHeight;
     const vw = window.innerWidth;
-    const isMobile = vw < 1024;
+    const isMobile = vw < 768;
     
     let translateX = 0;
     let translateY = 0;
@@ -81,7 +81,7 @@ const StudentID = () => {
       const sectionProgress = (scrollY - vh) / vh;
       const easeProgress = Math.pow(sectionProgress, 0.7); // Easing function
       
-      translateX = easeProgress * (isMobile ? 150 : 350);
+      translateX = easeProgress * (isMobile ? 100 : vw / 4);
       translateY = 50 + Math.sin(sectionProgress * Math.PI) * 20;
       rotateY = easeProgress * 20;
       rotateX = Math.sin(sectionProgress * Math.PI) * 5;
@@ -89,19 +89,18 @@ const StudentID = () => {
       scale = 1.05 + easeProgress * 0.1;
       opacity = 1;
     }
-    // Section 3: Phone Section (200vh-300vh) - Move into phone screen
+    // Section 3: Phone Section (200vh-300vh) - Move into phone screen with dynamic chasing effect
     else if (scrollY >= vh * 2 && scrollY < vh * 3) {
       const sectionProgress = (scrollY - vh * 2) / vh;
       const easeProgress = Math.pow(sectionProgress, 0.5);
       
-      // Calculate phone position dynamically
-      const phoneX = isMobile ? -50 : -300;
-      const phoneY = isMobile ? -50 : 0;
+      const startX = isMobile ? 100 : vw / 4;
+      const startY = 50;
+      const phoneX = phonePosition.x;
+      const phoneY = phonePosition.y;
       
-      // Move from right side position to phone position
-      const startX = isMobile ? 150 : 350;
       translateX = startX + (phoneX - startX) * easeProgress;
-      translateY = 50 + (phoneY - 50) * easeProgress;
+      translateY = startY + (phoneY - startY) * easeProgress;
       
       rotateY = 20 - easeProgress * 30;
       rotateX = 5 + easeProgress * 10;
@@ -109,18 +108,13 @@ const StudentID = () => {
       scale = 1.15 - easeProgress * 0.55; // Shrink to fit phone
       opacity = 1;
     }
-    // Section 4: Blazing Fast (300vh-400vh) - Dramatic spin back to center
+    // Section 4: Blazing Fast (300vh-400vh) - Dramatic spin back to center with dynamic detach
     else if (scrollY >= vh * 3 && scrollY < vh * 4) {
       const sectionProgress = (scrollY - vh * 3) / vh;
       const easeProgress = Math.pow(sectionProgress, 0.8);
       
-      // Starting from phone position
-      const phoneX = isMobile ? -50 : -300;
-      const phoneY = isMobile ? -50 : 0;
-      
-      // Spin and move to center
-      translateX = phoneX * (1 - easeProgress);
-      translateY = phoneY * (1 - easeProgress) + Math.sin(easeProgress * Math.PI) * -30;
+      translateX = phonePosition.x * (1 - easeProgress);
+      translateY = phonePosition.y * (1 - easeProgress) + Math.sin(easeProgress * Math.PI) * -30;
       
       // Multiple rotations for dramatic effect
       rotateX = easeProgress * 360;
@@ -134,7 +128,7 @@ const StudentID = () => {
       const sectionProgress = Math.min((scrollY - vh * 4) / vh, 1);
       const easeProgress = 1 - Math.pow(1 - sectionProgress, 3); // Ease out cubic
       
-      translateX = easeProgress * (isMobile ? -120 : -280);
+      translateX = easeProgress * (isMobile ? -100 : - (vw / 4));
       translateY = Math.sin(sectionProgress * Math.PI * 2) * 15;
       rotateY = easeProgress * -25;
       rotateX = Math.sin(sectionProgress * Math.PI) * 8;
@@ -167,61 +161,72 @@ const StudentID = () => {
       <div className="fixed inset-0 pointer-events-none" style={{ perspective: '1200px' }}>
         {/* Single Floating Student ID Card */}
         <div 
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30"
+          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 transition-all duration-700 ${isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}
           style={{
             ...cardStyle,
             transformStyle: 'preserve-3d',
             willChange: 'transform'
           }}
         >
-          <Card className="w-[380px] h-[240px] bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300 text-black shadow-2xl border-0 overflow-hidden relative">
+          <Card className="w-[380px] h-[240px] bg-gradient-to-br from-slate-100 via-slate-200 to-slate-300 text-black shadow-2xl border-0 overflow-hidden relative md:w-[400px] md:h-[250px]">
             {/* Holographic effect overlay */}
             <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-50 pointer-events-none" />
+            
+            {/* Institution Name */}
+            <div className="absolute top-4 left-4 text-xl font-bold">Suraksha LMS</div>
             
             {/* Logo */}
             <div className="absolute top-4 right-4">
               <img src="/lovable-uploads/ab90ba4e-121b-4049-b65d-dec211ad12c3.png" alt="Logo" className="w-10 h-10 drop-shadow-lg" />
             </div>
             
-            {/* Lightning bolt */}
-            <div className="absolute top-4 right-20">
-              <div className="w-8 h-8 bg-gradient-to-br from-yellow-400 to-yellow-600 text-black flex items-center justify-center rounded-lg transform rotate-12 shadow-lg">
-                <Zap className="w-5 h-5" />
-              </div>
-            </div>
-            
-            <CardContent className="p-6 h-full flex flex-col justify-between relative">
-              <div>
-                <div className="flex items-center gap-4 mb-4">
-                  <img 
-                    src={studentData.photo} 
-                    alt="Student" 
-                    className="w-16 h-16 rounded-full object-cover border-3 border-white shadow-lg"
-                  />
-                  <div className="text-left">
-                    <p className="font-bold text-xl leading-tight">{studentData.name.toUpperCase()}</p>
-                    <p className="text-sm text-gray-600 font-medium">Student ID Card</p>
-                  </div>
-                </div>
-                
-                <div className="text-2xl font-mono tracking-[0.35em] mb-3 text-center font-bold">
-                  5304 4641 1234 5678
-                </div>
-              </div>
-              
-              <div className="flex justify-between items-end">
+            <CardContent className="p-4 h-full flex flex-col">
+              <div className="flex gap-4">
+                <img 
+                  src={studentData.photo} 
+                  alt="Student" 
+                  className="w-20 h-20 rounded object-cover border-2 border-white shadow-lg"
+                />
                 <div>
-                  <p className="text-xs text-gray-500 uppercase tracking-wider">Valid Thru</p>
-                  <p className="font-mono text-base font-bold">09/30</p>
-                </div>
-                <div className="text-right">
-                  <p className="text-xs text-gray-500 uppercase tracking-wider">Suraksha</p>
-                  <p className="font-black text-2xl bg-gradient-to-r from-gray-700 to-black bg-clip-text text-transparent">LMS</p>
+                  <p className="font-bold text-lg">{studentData.name.toUpperCase()}</p>
+                  <p className="text-sm text-gray-600 font-medium">Student ID Card</p>
+                  <p className="text-xs mt-1">ID: {studentData.id}</p>
+                  <p className="text-xs">Course: {studentData.course}</p>
+                  <p className="text-xs">Year: {studentData.year}</p>
                 </div>
               </div>
               
-              {/* Chip simulation */}
-              <div className="absolute left-6 top-24 w-12 h-10 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded opacity-80 shadow-inner" />
+              <div className="mt-4 text-xs grid grid-cols-2 gap-2">
+                <div className="flex items-center gap-1">
+                  <Calendar className="w-3 h-3" />
+                  DOB: {studentData.dateOfBirth}
+                </div>
+                <div className="flex items-center gap-1">
+                  <User className="w-3 h-3" />
+                  Gender: {studentData.gender}
+                </div>
+                <div className="flex items-center gap-1 col-span-2">
+                  <MapPin className="w-3 h-3" />
+                  Address: {studentData.address}
+                </div>
+                <div className="flex items-center gap-1">
+                  <Phone className="w-3 h-3" />
+                  {studentData.phone}
+                </div>
+                <div className="flex items-center gap-1">
+                  <Mail className="w-3 h-3" />
+                  {studentData.email}
+                </div>
+                <div className="flex items-center gap-1 col-span-2">
+                  <GraduationCap className="w-3 h-3" />
+                  Faculty: {studentData.faculty}
+                </div>
+              </div>
+              
+              <div className="mt-auto flex justify-between text-xs text-gray-500">
+                <p>Issued: {studentData.dateOfIssue}</p>
+                <p className="italic">Signature: {studentData.signature}</p>
+              </div>
             </CardContent>
           </Card>
         </div>
@@ -334,7 +339,7 @@ const StudentID = () => {
           <div className="flex justify-center order-2 lg:order-1" ref={phoneRef}>
             {/* Phone mockup */}
             <div className="relative">
-              <div className="w-72 h-[600px] bg-gradient-to-b from-gray-800 to-gray-900 rounded-[3rem] p-3 shadow-2xl">
+              <div className="w-72 h-[600px] bg-gradient-to-b from-gray-800 to-gray-900 rounded-[3rem] p-3 shadow-2xl md:w-80 md:h-[640px]">
                 {/* Phone notch */}
                 <div className="absolute top-3 left-1/2 transform -translate-x-1/2 w-32 h-7 bg-black rounded-full"></div>
                 
@@ -342,7 +347,7 @@ const StudentID = () => {
                   {/* Phone screen content */}
                   <div className="p-6 h-full flex flex-col justify-center">
                     {/* Space for the moving card */}
-                    <div className="w-full h-48 mb-6 flex items-center justify-center">
+                    <div className="w-full h-48 mb-6 flex items-center justify-center md:h-52">
                       <div className="text-white/20 text-sm">Card animates here</div>
                     </div>
                     
