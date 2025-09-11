@@ -163,7 +163,7 @@ const StudentID = () => {
     // Section 1: Hero (0-100vh) - perfectly centered (then shifted down by baseOffsetY)
     if (scrollY < vh) {
       translateX = 0;
-      translateY = Math.sin(scrollY * 0.01) * 10;
+      translateY = Math.sin(scrollY * 0.02) * 10;
       rotateX = Math.sin(scrollY * 0.008) * 3;
       rotateY = Math.cos(scrollY * 0.006) * 5;
       rotateZ = Math.sin(scrollY * 0.004) * 2;
