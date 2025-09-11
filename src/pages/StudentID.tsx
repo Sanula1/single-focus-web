@@ -1,435 +1,581 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, Download, Eye, Edit, Share2, IdCard, Calendar, User, MapPin, Phone, Mail, GraduationCap, Shield, Zap, Globe, Building } from "lucide-react";
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { 
+  Card, CardContent, 
+  Button,
+  Alert, AlertDescription
+} from '@/components/ui/alert';
+import { 
+  Wifi, 
+  Smartphone, 
+  User, 
+  Mail, 
+  Phone, 
+  MapPin, 
+  GraduationCap, 
+  Calendar, 
+  Hash, 
+  Shield, 
+  Zap,
+  CreditCard,
+  Nfc,
+  QrCode,
+  Download,
+  Share2,
+  Eye,
+  Settings,
+  Star,
+  CheckCircle,
+  Radio,
+  Globe,
+  Copy,
+  ExternalLink,
+  Menu,
+  ArrowRight,
+  Users,
+  BookOpen,
+  Award,
+  TrendingUp
+} from 'lucide-react';
 
-const StudentID = () => {
-  const navigate = useNavigate();
-  const [scrollY, setScrollY] = useState(0);
-  const [isVisible, setIsVisible] = useState(false);
+const StudentIDCard = () => {
+  const [isFlipped, setIsFlipped] = useState(false);
+  const [tapCount, setTapCount] = useState(847);
+  const [isNfcActive, setIsNfcActive] = useState(false);
+  const [glowEffect, setGlowEffect] = useState(false);
+  const [showQR, setShowQR] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY);
-    window.addEventListener("scroll", handleScroll);
-    
-    // Trigger animations on load
-    setTimeout(() => setIsVisible(true), 300);
-    
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Sample student data
+  // Student data
   const studentData = {
-    id: "123-456-879",
-    name: "Martha Petersen", 
-    dateOfBirth: "11/02/1987",
-    gender: "Female",
-    dateOfIssue: "01/02/2020",
-    signature: "Martha",
-    photo: "/lovable-uploads/4dd5ef0e-aca6-4da1-b2b8-a00536175721.png",
-    email: "martha.petersen@surakshalms.edu.lk",
-    phone: "+94 77 123 4567",
-    address: "123 Galle Road, Colombo 03",
-    course: "Software Engineering",
+    id: "SLK-2024-CS-0847",
+    name: "Amara Dilshan",
+    email: "amara.dilshan@surakshalms.edu.lk",
+    phone: "+94 77 234 5678",
+    course: "Computer Science & Engineering",
     year: "3rd Year",
-    faculty: "Computing & Technology"
+    faculty: "Faculty of Computing",
+    university: "SurakshaLMS Institute",
+    validUntil: "Dec 2026",
+    issueDate: "Jan 2024",
+    photo: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face",
+    nfcId: "NFC_847_2024",
+    status: "active",
+    permissions: ["library", "cafeteria", "lab_access", "parking", "gym"],
+    studentUrl: `${window.location.origin}/student/amara-dilshan-847`
   };
 
-  // Calculate card position and transform based on scroll
-  const getCardTransform = () => {
-    const vh = window.innerHeight;
-    
-    let translateX = 0;
-    let translateY = 0;
-    let rotateX = 0;
-    let rotateY = 0;
-    let rotateZ = 0;
-    let scale = 1;
-    
-    // Section 1: Hero (0-100vh) - CENTER
-    if (scrollY < vh) {
-      translateX = 0;
-      translateY = scrollY * 0.1;
-      rotateX = Math.sin(scrollY * 0.01) * 5;
-      rotateY = Math.cos(scrollY * 0.008) * 10;
-      rotateZ = Math.sin(scrollY * 0.005) * 3;
-      scale = 1 + Math.sin(scrollY * 0.01) * 0.1;
-    }
-    // Section 2: No Fees (100vh-200vh) - Move to SIDE (right)
-    else if (scrollY >= vh && scrollY < vh * 2) {
-      const sectionProgress = (scrollY - vh) / vh;
-      translateX = sectionProgress * 400; // Move to right side
-      translateY = vh * 0.1;
-      rotateY = sectionProgress * 25;
-      rotateX = sectionProgress * 10;
-      scale = 1 + sectionProgress * 0.1;
-    }
-    // Section 3: Instant Features (200vh-300vh) - Move into PHONE
-    else if (scrollY >= vh * 2 && scrollY < vh * 3) {
-      const sectionProgress = (scrollY - vh * 2) / vh;
-      const isMobile = window.innerWidth < 1024; // lg breakpoint
-      
-      if (isMobile) {
-        // On mobile: move from right side to center-left (phone is centered)
-        translateX = 400 - sectionProgress * 500; // Move to left but not too far
-        translateY = vh * 0.1 - sectionProgress * 100; // Move up to align with phone
-      } else {
-        // On desktop: move from right side to left side (phone is on left)
-        translateX = 400 - sectionProgress * 700; // Move further left for desktop
-        translateY = vh * 0.1 + sectionProgress * 20;
-      }
-      
-      rotateY = 25 - sectionProgress * 35;
-      rotateZ = sectionProgress * 5;
-      scale = 1.1 - sectionProgress * 0.5; // Shrink more to fit phone screen
-    }
-    // Section 4: Blazing Fast (300vh-400vh) - Back to CENTER
-    else if (scrollY >= vh * 3 && scrollY < vh * 4) {
-      const sectionProgress = (scrollY - vh * 3) / vh;
-      const isMobile = window.innerWidth < 1024;
-      
-      // Start from the phone position and move back to center
-      const startX = isMobile ? -100 : -300; // Starting position from section 3
-      translateX = startX + sectionProgress * Math.abs(startX); // Move back to center (0)
-      translateY = vh * 0.1 + (isMobile ? -100 : 20) - sectionProgress * (isMobile ? -100 : 70);
-      rotateX = sectionProgress * 180; // Rotate while moving
-      rotateY = -10 + sectionProgress * 20;
-      rotateZ = sectionProgress * 90;
-      scale = 0.6 + sectionProgress * 0.4; // Scale back up
-    }
-    // Section 5: Get ID (400vh+) - Move to SIDE again
-    else if (scrollY >= vh * 4) {
-      const sectionProgress = Math.min((scrollY - vh * 4) / vh, 1);
-      translateX = sectionProgress * -350; // Move to left side
-      translateY = vh * 0.2;
-      rotateY = sectionProgress * -20;
-      rotateX = sectionProgress * 10;
-      scale = 1 + sectionProgress * 0.1;
-    }
+  const stats = [
+    { number: "15.2K", label: "Active Students", icon: Users },
+    { number: "98.7%", label: "Success Rate", icon: TrendingUp },
+    { number: "24/7", label: "System Uptime", icon: Shield }
+  ];
 
-    return {
-      transform: `
-        translateX(${translateX}px) 
-        translateY(${translateY}px) 
-        rotateX(${rotateX}deg) 
-        rotateY(${rotateY}deg)
-        rotateZ(${rotateZ}deg)
-        scale(${scale})
-      `,
+  // Mouse move effect
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setMousePosition({ x: e.clientX, y: e.clientY });
     };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
+  // Simulate NFC tap with enhanced effects
+  const handleNfcTap = () => {
+    setTapCount(prev => prev + 1);
+    setIsNfcActive(true);
+    setGlowEffect(true);
+    
+    setTimeout(() => {
+      setIsNfcActive(false);
+      setGlowEffect(false);
+    }, 2000);
+
+    setTimeout(() => {
+      alert('✅ Student verified successfully!\nAccess granted to campus facilities.');
+    }, 500);
+  };
+
+  const copyStudentUrl = () => {
+    navigator.clipboard.writeText(studentData.studentUrl);
+    alert('Student URL copied to clipboard!');
   };
 
   return (
-    <div className="bg-black text-white overflow-x-hidden relative">
-      {/* Single Floating Student ID Card - Fixed positioned and moves through sections */}
-      <div 
-        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 preserve-3d transition-transform duration-75 ease-out perspective-1000"
-        style={getCardTransform()}
-      >
-        <Card className="w-96 h-60 bg-gradient-to-br from-slate-100 to-slate-300 text-black shadow-2xl border-0 overflow-hidden relative">
-          {/* Logo */}
-          <div className="absolute top-4 right-4">
-            <img src="/lovable-uploads/ab90ba4e-121b-4049-b65d-dec211ad12c3.png" alt="Logo" className="w-8 h-8" />
-          </div>
-          
-          {/* Lightning bolt */}
-          <div className="absolute top-4 right-16">
-            <div className="w-6 h-6 bg-black text-white flex items-center justify-center rounded transform rotate-12">
-              <Zap className="w-4 h-4" />
-            </div>
-          </div>
-          
-          <CardContent className="p-6 h-full flex flex-col justify-between">
-            <div>
-              <div className="flex items-center gap-3 mb-4">
-                <img 
-                  src={studentData.photo} 
-                  alt="Student" 
-                  className="w-12 h-12 rounded-full object-cover border-2 border-gray-300"
-                />
-                <div className="text-left">
-                  <p className="font-bold text-lg">{studentData.name.toUpperCase()}</p>
-                  <p className="text-sm text-gray-600">Student ID Card</p>
-                </div>
-              </div>
-              
-              <div className="text-2xl font-mono tracking-[0.3em] mb-2 text-center">
-                5304 4641 1234 5678
-              </div>
-            </div>
-            
-            <div className="flex justify-between items-end">
-              <div>
-                <p className="text-xs text-gray-500 uppercase">Valid Thru</p>
-                <p className="font-mono text-sm">09/30</p>
-              </div>
-              <div className="text-right">
-                <p className="text-xs text-gray-500 uppercase">Suraksha</p>
-                <p className="font-bold text-lg">LMS</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Hero Section */}
-      <section className="min-h-screen relative flex items-center justify-center perspective-1000">
-        {/* Animated Background */}
-        <div className="absolute inset-0 background-pulse" />
+    <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950 relative overflow-hidden">
+      
+      {/* Animated background with glowing orbs */}
+      <div className="absolute inset-0">
+        {/* Large glowing orbs */}
+        <div className="absolute top-20 right-20 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
+        <div className="absolute bottom-20 left-20 w-80 h-80 bg-cyan-500/10 rounded-full blur-3xl animate-pulse delay-1000"></div>
+        <div className="absolute top-1/2 left-1/2 w-64 h-64 bg-purple-500/10 rounded-full blur-3xl animate-pulse delay-500"></div>
         
-        {/* Falling Meteors */}
-        {[...Array(15)].map((_, i) => (
+        {/* Floating particles */}
+        {[...Array(30)].map((_, i) => (
           <div
             key={i}
-            className="absolute w-1 h-20 bg-gradient-to-t from-primary to-transparent meteor"
+            className="absolute w-1 h-1 bg-blue-400/30 rounded-full animate-pulse"
             style={{
               left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
               animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${2 + Math.random() * 2}s`
+              animationDuration: `${2 + Math.random() * 3}s`
             }}
           />
         ))}
 
-        {/* Floating Particles */}
-        <div className="absolute inset-0">
-          {[...Array(50)].map((_, i) => (
-            <div 
-              key={i} 
-              className="absolute w-1 h-1 bg-primary/40 rounded-full animate-pulse"
-              style={{
-                left: `${Math.random() * 100}%`,
-                top: `${Math.random() * 100}%`,
-                animationDelay: `${Math.random() * 3}s`,
-                transform: `translateY(${scrollY * (0.1 + Math.random() * 0.2)}px)`
-              }}
-            />
-          ))}
-        </div>
+        {/* Grid pattern */}
+        <div 
+          className="absolute inset-0 opacity-[0.02]"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(59, 130, 246, 0.5) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(59, 130, 246, 0.5) 1px, transparent 1px)
+            `,
+            backgroundSize: '50px 50px'
+          }}
+        ></div>
+      </div>
 
-        {/* Header */}
-        <header className="absolute top-0 left-0 right-0 p-6 flex justify-between items-center z-50">
+      {/* Header Navigation */}
+      <header className="relative z-50 px-6 py-6">
+        <nav className="max-w-7xl mx-auto flex items-center justify-between">
+          {/* Logo */}
           <div className="flex items-center gap-3">
-            <img src="/lovable-uploads/ab90ba4e-121b-4049-b65d-dec211ad12c3.png" alt="SurakshaLMS Logo" className="h-8 w-8" />
-          </div>
-          
-          <nav className="hidden md:flex items-center gap-4">
-            <Button variant="ghost" className="text-white/80 hover:text-white transition-colors duration-300" onClick={() => navigate('/')}>
-              Home
-            </Button>
-            <Button variant="ghost" className="text-white/80 hover:text-white transition-colors duration-300">
-              Customers
-            </Button>
-            <Button variant="ghost" className="text-white/80 hover:text-white transition-colors duration-300">
-              Pricing
-            </Button>
-            <Button variant="ghost" className="text-white/80 hover:text-white transition-colors duration-300" onClick={() => navigate('/guidance')}>
-              <GraduationCap className="w-4 h-4 mr-2" />
-              Guidance
-            </Button>
-            <Button variant="outline" className="gap-2 backdrop-blur-sm border-primary/20 hover:bg-primary hover:text-primary-foreground transition-all duration-300">
-              <IdCard className="w-4 h-4" />
-              Login to SurakshaLMS
-            </Button>
-          </nav>
-
-          {/* Mobile Menu Button */}
-          <div className="md:hidden">
-            <Button variant="outline" size="sm" className="backdrop-blur-sm border-primary/20 text-white/80">
-              <Building className="w-4 h-4" />
-            </Button>
-          </div>
-        </header>
-
-        {/* Main Hero Content */}
-        <div className="text-center z-10 px-4 pt-32">
-          <h1 className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-white to-primary bg-clip-text text-transparent">
-            The Only Student ID
-          </h1>
-          <p className="text-xl md:text-2xl text-white/70 mb-12">
-            Probably the best digital student ID for educational institutions
-          </p>
-
-          {/* Space for floating card - it will appear here via fixed positioning */}
-          <div className="h-60 mb-12"></div>
-
-          <Button 
-            className="bg-primary hover:bg-primary/80 text-white px-8 py-3 text-lg"
-          >
-            Get Student ID
-          </Button>
-        </div>
-      </section>
-
-      {/* Second Section - No Fees */}
-      <section className="min-h-screen relative flex items-center bg-gradient-to-br from-gray-900 to-black">
-        <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center">
-          <div className="z-20">
-            <h2 className="text-5xl md:text-6xl font-bold mb-6">
-              No Joining Fees.<br />
-              No Annual Fees.
-            </h2>
-            <p className="text-xl text-white/70 leading-relaxed">
-              While many digital ID systems come with hidden costs, SurakshaLMS provides a comprehensive 
-              student identification platform without charging any setup or annual maintenance fees.
-            </p>
-          </div>
-          
-          {/* Empty space for card to move into */}
-          <div className="flex justify-center">
-            <div className="w-80 h-52 opacity-0">
-              {/* Placeholder space for the moving card */}
+            <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center">
+              <CreditCard className="w-6 h-6 text-white" />
             </div>
+            <span className="text-2xl font-bold text-white">SurakshaLMS</span>
           </div>
-        </div>
-      </section>
 
-      {/* Third Section - Instant Features */}
-      <section className="min-h-screen relative flex items-center bg-black">
-        <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-12 items-center">
-          <div className="flex justify-center order-2 lg:order-1">
-            {/* Phone mockup */}
-            <div className="w-64 h-[500px] bg-gradient-to-b from-gray-800 to-gray-900 rounded-[3rem] p-4 shadow-2xl z-20">
-              <div className="w-full h-full bg-black rounded-[2.5rem] overflow-hidden">
-                {/* Phone content - card will move into here */}
-                <div className="p-6 h-full flex flex-col justify-center">
-                  {/* Space for the moving card */}
-                  <div className="w-full h-40 mb-4 opacity-0">
-                    {/* Placeholder for card */}
+          {/* Navigation Links */}
+          <div className="hidden md:flex items-center gap-8">
+            <a href="#" className="text-gray-300 hover:text-white transition-colors">How it works</a>
+            <a href="#" className="text-gray-300 hover:text-white transition-colors">Solutions</a>
+            <a href="#" className="text-gray-300 hover:text-white transition-colors">About us</a>
+            <a href="#" className="text-gray-300 hover:text-white transition-colors">Students</a>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="flex items-center gap-4">
+            <Button variant="ghost" className="text-white hover:bg-white/10">
+              Log in
+            </Button>
+            <Button className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white border-0">
+              Get Started
+            </Button>
+          </div>
+
+          {/* Mobile menu */}
+          <Button variant="ghost" className="md:hidden text-white">
+            <Menu className="w-6 h-6" />
+          </Button>
+        </nav>
+      </header>
+
+      {/* Main Content */}
+      <main className="relative z-10">
+        
+        {/* Hero Section */}
+        <section className="max-w-7xl mx-auto px-6 pt-12 pb-20">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            
+            {/* Left Content */}
+            <div className="space-y-8">
+              <div className="space-y-6">
+                <h1 className="text-6xl lg:text-7xl font-bold text-white leading-tight">
+                  Platform to help you
+                  <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent"> verify</span>
+                  <br />easily
+                </h1>
+                
+                <p className="text-xl text-gray-400 leading-relaxed max-w-lg">
+                  Students never need to go home or use the bank to do this. Only 
+                  through this platform, all verification activities can be completed.
+                </p>
+              </div>
+
+              <div className="flex flex-wrap gap-4">
+                <Button 
+                  onClick={handleNfcTap}
+                  className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white px-8 py-3 text-lg"
+                >
+                  Get Verified
+                </Button>
+                <Button variant="outline" className="border-white/20 text-white hover:bg-white/10 px-8 py-3 text-lg">
+                  How It Works
+                </Button>
+              </div>
+
+              {/* Payment methods equivalent */}
+              <div className="flex items-center gap-6 pt-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-8 bg-blue-600 rounded flex items-center justify-center">
+                    <span className="text-white text-xs font-bold">NFC</span>
                   </div>
-                  
-                  {/* App features */}
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-3 text-white/80">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <span className="text-sm">Grocery Shop - $34</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-white/80">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <span className="text-sm">Patrol - $49</span>
-                    </div>
-                    <div className="flex items-center gap-3 text-white/80">
-                      <div className="w-2 h-2 bg-primary rounded-full"></div>
-                      <span className="text-sm">Experience - $258</span>
-                    </div>
+                  <div className="w-12 h-8 bg-gradient-to-r from-orange-400 to-red-500 rounded flex items-center justify-center">
+                    <QrCode className="w-4 h-4 text-white" />
+                  </div>
+                  <div className="w-12 h-8 bg-green-600 rounded flex items-center justify-center">
+                    <Smartphone className="w-4 h-4 text-white" />
                   </div>
                 </div>
               </div>
             </div>
+
+            {/* Right - Floating Card System */}
+            <div className="relative h-[600px] flex items-center justify-center">
+              
+              {/* Main Student ID Card - Center */}
+              <div 
+                className="absolute z-30 transform-gpu transition-all duration-300"
+                style={{
+                  transform: `
+                    translateX(${(mousePosition.x - window.innerWidth / 2) * 0.02}px) 
+                    translateY(${(mousePosition.y - window.innerHeight / 2) * 0.02}px)
+                    rotateX(${(mousePosition.y - window.innerHeight / 2) * -0.01}deg)
+                    rotateY(${(mousePosition.x - window.innerWidth / 2) * 0.01}deg)
+                  `
+                }}
+              >
+                <div 
+                  className={`relative cursor-pointer transition-all duration-700 preserve-3d ${
+                    isFlipped ? 'rotate-y-180' : ''
+                  } ${glowEffect ? 'animate-pulse' : ''}`}
+                  onClick={() => setIsFlipped(!isFlipped)}
+                >
+                  {/* Card with holographic effect */}
+                  <div className={`relative w-80 h-48 backface-hidden ${
+                    glowEffect ? 'ring-4 ring-cyan-400/50 shadow-2xl shadow-cyan-500/25' : 'shadow-2xl'
+                  }`}>
+                    <div className="absolute inset-0 bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 rounded-2xl">
+                      {/* Holographic overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-tr from-cyan-500/10 via-transparent to-blue-500/10 rounded-2xl"></div>
+                      
+                      {/* Card content */}
+                      <div className="relative p-6 h-full flex flex-col justify-between text-white">
+                        
+                        {/* Header */}
+                        <div className="flex justify-between items-start">
+                          <div className="flex items-center gap-3">
+                            <img 
+                              src={studentData.photo}
+                              alt={studentData.name}
+                              className="w-12 h-12 rounded-full border-2 border-cyan-400/50 object-cover"
+                            />
+                            <div>
+                              <h3 className="font-bold text-lg">{studentData.name}</h3>
+                              <p className="text-gray-300 text-sm">{studentData.course}</p>
+                            </div>
+                          </div>
+                          
+                          {/* NFC chip */}
+                          <div className={`relative w-12 h-8 rounded-lg transition-all duration-300 ${
+                            isNfcActive ? 'bg-gradient-to-r from-green-400 to-cyan-400' : 'bg-gradient-to-r from-yellow-400 to-orange-500'
+                          }`}>
+                            <div className="absolute inset-1 bg-gradient-to-br from-white/20 to-transparent rounded"></div>
+                            {isNfcActive && (
+                              <div className="absolute inset-0 bg-white/20 animate-ping rounded-lg"></div>
+                            )}
+                            <Nfc className={`absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-4 h-4 text-white ${
+                              isNfcActive ? 'animate-pulse' : ''
+                            }`} />
+                          </div>
+                        </div>
+
+                        {/* Card number */}
+                        <div className="text-center">
+                          <div className="font-mono text-xl tracking-[0.3em] mb-2 text-cyan-100">
+                            {studentData.id.replace(/-/g, ' ')}
+                          </div>
+                        </div>
+
+                        {/* Footer */}
+                        <div className="flex justify-between items-end">
+                          <div>
+                            <p className="text-gray-400 text-xs uppercase">Valid Thru</p>
+                            <p className="font-mono text-sm">{studentData.validUntil}</p>
+                          </div>
+                          <div className="text-right">
+                            <p className="text-gray-400 text-xs uppercase">SurakshaLMS</p>
+                            <p className="font-bold text-lg bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                              STUDENT
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Card back */}
+                  <div className="absolute inset-0 backface-hidden rotate-y-180">
+                    <div className="w-80 h-48 bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 rounded-2xl shadow-2xl p-6">
+                      <div className="h-full flex flex-col justify-center text-white">
+                        <h3 className="text-lg font-bold mb-4 text-center">Access Permissions</h3>
+                        <div className="grid grid-cols-2 gap-2 mb-4">
+                          {studentData.permissions.map((permission, index) => (
+                            <div key={index} className="flex items-center gap-2 text-sm">
+                              <CheckCircle className="w-3 h-3 text-green-400" />
+                              <span className="capitalize">{permission.replace('_', ' ')}</span>
+                            </div>
+                          ))}
+                        </div>
+                        <div className="text-center">
+                          <div className="w-16 h-16 bg-white rounded-lg mx-auto flex items-center justify-center">
+                            <QrCode className="w-10 h-10 text-black" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Floating Activity Cards */}
+              <div className="absolute top-20 left-0 z-20 bg-slate-800/80 backdrop-blur-sm rounded-xl p-4 border border-slate-600/50">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                    <BookOpen className="w-4 h-4 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-white text-sm font-medium">Library Access</p>
+                    <p className="text-gray-400 text-xs">2 min ago</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="absolute bottom-20 right-0 z-20 bg-slate-800/80 backdrop-blur-sm rounded-xl p-4 border border-slate-600/50">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                    <Shield className="w-4 h-4 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-white text-sm font-medium">Verification</p>
+                    <p className="text-gray-400 text-xs">Successful</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="absolute top-1/2 right-20 z-20 bg-slate-800/80 backdrop-blur-sm rounded-xl p-4 border border-slate-600/50">
+                <div className="flex items-center gap-3 mb-2">
+                  <div className="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center">
+                    <Award className="w-4 h-4 text-white" />
+                  </div>
+                  <div>
+                    <p className="text-white text-sm font-medium">Lab Access</p>
+                    <p className="text-gray-400 text-xs">Active</p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Mobile device mockup */}
+              <div className="absolute bottom-0 right-10 z-25">
+                <div className="w-32 h-60 bg-gradient-to-b from-slate-800 to-slate-900 rounded-[2rem] p-2 shadow-2xl border border-slate-600/30">
+                  <div className="w-full h-full bg-black rounded-[1.5rem] p-3">
+                    <div className="text-center text-white space-y-2">
+                      <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-full mx-auto mb-2 flex items-center justify-center">
+                        <Nfc className="w-4 h-4" />
+                      </div>
+                      <p className="text-xs">Ready to Tap</p>
+                      <div className="space-y-1">
+                        {[...Array(3)].map((_, i) => (
+                          <div key={i} className="flex justify-between text-xs text-gray-400">
+                            <span>Activity {i + 1}</span>
+                            <span className="text-green-400">✓</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Glowing connection lines */}
+              <svg className="absolute inset-0 w-full h-full pointer-events-none">
+                <defs>
+                  <linearGradient id="glowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stopColor="rgba(34, 211, 238, 0.4)" />
+                    <stop offset="50%" stopColor="rgba(59, 130, 246, 0.8)" />
+                    <stop offset="100%" stopColor="rgba(34, 211, 238, 0.4)" />
+                  </linearGradient>
+                </defs>
+                
+                {/* Animated connection lines */}
+                <path
+                  d="M 200 150 Q 300 100 400 200"
+                  stroke="url(#glowGradient)"
+                  strokeWidth="2"
+                  fill="none"
+                  className="animate-pulse"
+                />
+                <path
+                  d="M 200 350 Q 300 300 380 420"
+                  stroke="url(#glowGradient)"
+                  strokeWidth="2"
+                  fill="none"
+                  className="animate-pulse"
+                  style={{ animationDelay: '1s' }}
+                />
+              </svg>
+            </div>
           </div>
-          
-          <div className="order-1 lg:order-2 z-20">
-            <h2 className="text-5xl md:text-6xl font-bold mb-6">
-              Instant<br />
-              Verification
+        </section>
+
+        {/* Stats Section */}
+        <section className="max-w-7xl mx-auto px-6 py-20">
+          <div className="grid md:grid-cols-3 gap-8">
+            {stats.map((stat, index) => (
+              <div key={index} className="text-center space-y-4">
+                <div className="text-5xl font-bold text-white">{stat.number}</div>
+                <div className="text-gray-400 text-lg flex items-center justify-center gap-2">
+                  <stat.icon className="w-5 h-5" />
+                  {stat.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Features Section */}
+        <section className="max-w-7xl mx-auto px-6 py-20">
+          <div className="text-center mb-16">
+            <h2 className="text-5xl lg:text-6xl font-bold text-white mb-6">
+              Smart Solutions for the
+              <br />
+              <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+                automated world
+              </span>
             </h2>
-            <p className="text-xl text-white/70 mb-8">
-              Link your digital student ID to your mobile device for instant verification 
-              and seamless access to campus facilities.
-            </p>
-            <div className="w-16 h-1 bg-primary mb-8"></div>
-            
-            {/* Feature icons */}
-            <div className="flex gap-6">
-              <Shield className="w-8 h-8 text-white/60" />
-              <Zap className="w-8 h-8 text-white/60" />
-              <Globe className="w-8 h-8 text-white/60" />
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {/* Feature 1 */}
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 to-blue-500/10 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
+              <div className="relative bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-8 hover:border-cyan-500/30 transition-all duration-300">
+                <div className="w-12 h-12 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center mb-6">
+                  <Shield className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-white mb-4">Amazing security. It sets us apart</h3>
+                <p className="text-gray-400 leading-relaxed">
+                  Deep card budgetics, business variant sustainable questioning varies magic.
+                </p>
+              </div>
+            </div>
+
+            {/* Feature 2 */}
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
+              <div className="relative bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-8 hover:border-blue-500/30 transition-all duration-300">
+                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-xl flex items-center justify-center mb-6">
+                  <Zap className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-white mb-4">The complexity of simplicity</h3>
+                <p className="text-gray-400 leading-relaxed">
+                  Deep card budgetics, business variant sustainable questioning varies magic.
+                </p>
+              </div>
+            </div>
+
+            {/* Feature 3 */}
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
+              <div className="relative bg-slate-800/50 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-8 hover:border-purple-500/30 transition-all duration-300">
+                <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center mb-6">
+                  <Star className="w-6 h-6 text-white" />
+                </div>
+                <h3 className="text-xl font-bold text-white mb-4">Real Innovation. Real Advantage.</h3>
+                <p className="text-gray-400 leading-relaxed">
+                  Deep card budgetics, business variant sustainable questioning varies magic.
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* Fourth Section - Fast Transactions */}
-      <section className="min-h-screen relative flex items-center justify-center bg-black overflow-hidden">
-        {/* Animated background rays */}
-        <div className="absolute inset-0">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute w-1 h-full bg-gradient-to-t from-purple-500/20 via-pink-500/20 to-transparent"
-              style={{
-                left: `${i * 5}%`,
-                transform: `rotate(${15 + i * 2}deg) translateY(${Math.sin(scrollY * 0.01 + i) * 20}px)`,
-                transformOrigin: 'bottom center'
-              }}
-            />
-          ))}
-        </div>
-
-        <div className="text-center z-20 px-4">
-          {/* Space for the rotating card */}
-          <div className="mb-8 h-52"></div>
-
-          <h2 className="text-5xl md:text-7xl font-bold mb-8 bg-gradient-to-r from-white via-purple-300 to-pink-300 bg-clip-text text-transparent">
-            Blazing Fast Verification
-          </h2>
-          
-          <div className="flex flex-col md:flex-row gap-8 justify-center items-center text-white/70">
-            <div className="flex items-center gap-3">
-              <Calendar className="w-6 h-6" />
-              <span>Verify in 10 seconds</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <Shield className="w-6 h-6" />
-              <span>99.9% Success rate</span>
-            </div>
-            <div className="flex items-center gap-3">
-              <Zap className="w-6 h-6" />
-              <span>Auto Verification</span>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Final Section - Get Your ID */}
-      <section className="min-h-screen relative flex items-center justify-center bg-gradient-to-t from-black via-gray-900 to-black">
-        <div className="text-center z-20 px-4 max-w-4xl">
-          <h2 className="text-5xl md:text-7xl font-bold mb-6">
-            Get your Student ID in<br />
-            <span className="bg-gradient-to-r from-primary to-purple-400 bg-clip-text text-transparent">
-              just 5min
+        {/* CTA Section */}
+        <section className="max-w-4xl mx-auto px-6 py-20 text-center">
+          <h2 className="text-5xl lg:text-6xl font-bold text-white mb-8">
+            Subscribe to Our
+            <br />
+            <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
+              Newsletter
             </span>
           </h2>
           
-          <p className="text-xl text-white/70 mb-12 max-w-2xl mx-auto">
-            Simple 3 step verification with online identity verification 
-            and instant digital student ID unlock
-          </p>
+          <div className="max-w-md mx-auto">
+            <div className="flex gap-4">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="flex-1 bg-slate-800/50 border border-slate-700/50 rounded-xl px-6 py-4 text-white placeholder-gray-400 focus:outline-none focus:border-cyan-500/50"
+              />
+              <Button className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white px-8 py-4">
+                Subscribe
+                <ArrowRight className="w-4 h-4 ml-2" />
+              </Button>
+            </div>
+          </div>
+        </section>
+      </main>
 
+      {/* Enhanced Action Panel */}
+      <div className="fixed bottom-6 right-6 z-50">
+        <div className="bg-slate-800/90 backdrop-blur-sm border border-slate-700/50 rounded-2xl p-4 space-y-3">
           <Button 
-            className="bg-primary hover:bg-primary/80 text-white px-12 py-4 text-lg rounded-full"
+            onClick={handleNfcTap}
+            className={`w-full transition-all duration-300 ${
+              isNfcActive 
+                ? 'bg-gradient-to-r from-green-500 to-cyan-500 animate-pulse' 
+                : 'bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600'
+            }`}
           >
-            Get Student ID
+            <Radio className={`w-4 h-4 mr-2 ${isNfcActive ? 'animate-spin' : ''}`} />
+            {isNfcActive ? 'Verifying...' : `NFC Tap (${tapCount})`}
           </Button>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-black border-t border-gray-800 py-12 z-20 relative">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center gap-3 mb-4 md:mb-0">
-              <img src="/lovable-uploads/ab90ba4e-121b-4049-b65d-dec211ad12c3.png" alt="Logo" className="w-6 h-6" />
-              <span className="font-bold">SurakshaLMS</span>
-            </div>
-            
-            <div className="text-center mb-4 md:mb-0">
-              <p className="text-white/60">Design by SurakshaLMS Team</p>
-            </div>
-            
-            <div className="flex gap-6">
-              <Button variant="ghost" size="sm" className="text-white/60 hover:text-white">LinkedIn</Button>
-              <Button variant="ghost" size="sm" className="text-white/60 hover:text-white">Know More</Button>
-            </div>
-          </div>
           
-          <div className="text-center mt-8">
-            <p className="text-white/40 text-sm">All copyright reserved to @surakshalms</p>
+          <div className="grid grid-cols-2 gap-2">
+            <Button 
+              onClick={() => setShowQR(!showQR)}
+              variant="outline" 
+              size="sm"
+              className="border-slate-600/50 text-white hover:bg-slate-700/50"
+            >
+              <QrCode className="w-4 h-4" />
+            </Button>
+            <Button 
+              onClick={copyStudentUrl}
+              variant="outline" 
+              size="sm"
+              className="border-slate-600/50 text-white hover:bg-slate-700/50"
+            >
+              <Share2 className="w-4 h-4" />
+            </Button>
           </div>
         </div>
-      </footer>
+      </div>
+
+      {/* Custom CSS for 3D effects */}
+      <style jsx>{`
+        .perspective-1000 {
+          perspective: 1000px;
+        }
+        .preserve-3d {
+          transform-style: preserve-3d;
+        }
+        .backface-hidden {
+          backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+          transform: rotateY(180deg);
+        }
+        .transform-gpu {
+          transform: translate3d(0, 0, 0);
+        }
+      `}</style>
     </div>
   );
 };
 
-export default StudentID;
+export default StudentIDCard;
