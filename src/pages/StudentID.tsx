@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { ArrowLeft, Download, Eye, Edit, Share2, IdCard, Calendar, User, MapPin, Phone, Mail, GraduationCap, Shield, Zap, Globe, Building } from "lucide-react";
+import { ArrowLeft, Download, Eye, Edit, Share2, IdCard, Calendar, User, MapPin, Phone, Mail, GraduationCap, Shield, Zap, Globe, Building, ChevronLeft, ChevronRight } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -8,165 +8,296 @@ const StudentID = () => {
   const navigate = useNavigate();
   const [scrollY, setScrollY] = useState(0);
   const [isVisible, setIsVisible] = useState(false);
+  const [currentPage, setCurrentPage] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
+    const handleResize = () => setIsMobile(window.innerWidth < 1024);
+    
     window.addEventListener("scroll", handleScroll);
+    window.addEventListener("resize", handleResize);
+    handleResize(); // Initial check
     
     // Trigger animations on load
     setTimeout(() => setIsVisible(true), 300);
     
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
-  // Sample student data
-  const studentData = {
-    id: "123-456-879",
-    name: "Martha Petersen", 
-    dateOfBirth: "11/02/1987",
-    gender: "Female",
-    dateOfIssue: "01/02/2020",
-    signature: "Martha",
-    photo: "/lovable-uploads/4dd5ef0e-aca6-4da1-b2b8-a00536175721.png",
-    email: "martha.petersen@surakshalms.edu.lk",
-    phone: "+94 77 123 4567",
-    address: "123 Galle Road, Colombo 03",
-    course: "Software Engineering",
-    year: "3rd Year",
-    faculty: "Computing & Technology"
+  // Handle page navigation with touch support
+  const nextPage = () => {
+    if (currentPage < studentPages.length - 1) {
+      setCurrentPage(currentPage + 1);
+    }
   };
 
-  // Calculate card position and transform based on scroll
+  const prevPage = () => {
+    if (currentPage > 0) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  // Touch handlers for mobile
+  const [touchStart, setTouchStart] = useState(0);
+  const [touchEnd, setTouchEnd] = useState(0);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe) nextPage();
+    if (isRightSwipe) prevPage();
+  };
+
+  // Student pages data for pagination
+  const studentPages = [
+    {
+      id: "123-456-879",
+      name: "Martha Petersen", 
+      dateOfBirth: "11/02/1987",
+      gender: "Female",
+      dateOfIssue: "01/02/2020",
+      signature: "Martha",
+      photo: "/lovable-uploads/4dd5ef0e-aca6-4da1-b2b8-a00536175721.png",
+      email: "martha.petersen@surakshalms.edu.lk",
+      phone: "+94 77 123 4567",
+      address: "123 Galle Road, Colombo 03",
+      course: "Software Engineering",
+      year: "3rd Year",
+      faculty: "Computing & Technology"
+    },
+    {
+      id: "987-654-321",
+      name: "John Silva", 
+      dateOfBirth: "05/15/1998",
+      gender: "Male",
+      dateOfIssue: "01/02/2020",
+      signature: "John Silva",
+      photo: "/lovable-uploads/6678135b-8997-4d89-82a1-badde05b90d8.png",
+      email: "john.silva@surakshalms.edu.lk",
+      phone: "+94 71 987 6543",
+      address: "456 Kandy Road, Colombo 07",
+      course: "Computer Science",
+      year: "2nd Year",
+      faculty: "Computing & Technology"
+    },
+    {
+      id: "555-777-999",
+      name: "Priya Fernando", 
+      dateOfBirth: "22/08/1999",
+      gender: "Female",
+      dateOfIssue: "01/02/2020",
+      signature: "Priya Fernando",
+      photo: "/lovable-uploads/be56f96f-f152-4139-a2d1-ee8183f95216.png",
+      email: "priya.fernando@surakshalms.edu.lk",
+      phone: "+94 76 555 7777",
+      address: "789 Gampaha Road, Colombo 11",
+      course: "Information Systems",
+      year: "1st Year",
+      faculty: "Computing & Technology"
+    }
+  ];
+
+  const currentStudent = studentPages[currentPage];
+
+  // Premium card positioning system with perfect centering
   const getCardTransform = () => {
     const vh = window.innerHeight;
+    const vw = window.innerWidth;
+    const centerX = 0; // Always centered horizontally
+    const centerY = 0; // Always centered vertically
     
-    let translateX = 0;
-    let translateY = 0;
+    let translateX = centerX;
+    let translateY = centerY;
     let rotateX = 0;
     let rotateY = 0;
     let rotateZ = 0;
     let scale = 1;
     
-    // Section 1: Hero (0-100vh) - CENTER
+    // Smooth easing function for premium feel
+    const easeInOutCubic = (t: number) => t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
+    
+    // Section 1: Hero (0-100vh) - Perfect CENTER with subtle float
     if (scrollY < vh) {
-      translateX = 0;
-      translateY = scrollY * 0.1;
-      rotateX = Math.sin(scrollY * 0.01) * 5;
-      rotateY = Math.cos(scrollY * 0.008) * 10;
-      rotateZ = Math.sin(scrollY * 0.005) * 3;
-      scale = 1 + Math.sin(scrollY * 0.01) * 0.1;
+      const progress = scrollY / vh;
+      translateX = centerX;
+      translateY = centerY + Math.sin(scrollY * 0.01) * 10;
+      rotateX = Math.sin(scrollY * 0.008) * 3;
+      rotateY = Math.cos(scrollY * 0.006) * 5;
+      rotateZ = Math.sin(scrollY * 0.004) * 2;
+      scale = 1 + Math.sin(scrollY * 0.008) * 0.05;
     }
-    // Section 2: No Fees (100vh-200vh) - Move to SIDE (right)
+    // Section 2: No Fees (100vh-200vh) - Smooth slide to right
     else if (scrollY >= vh && scrollY < vh * 2) {
-      const sectionProgress = (scrollY - vh) / vh;
-      translateX = sectionProgress * 400; // Move to right side
-      translateY = vh * 0.1;
-      rotateY = sectionProgress * 25;
-      rotateX = sectionProgress * 10;
-      scale = 1 + sectionProgress * 0.1;
+      const progress = easeInOutCubic((scrollY - vh) / vh);
+      translateX = centerX + progress * (isMobile ? 250 : 350);
+      translateY = centerY - progress * 50;
+      rotateY = progress * 15;
+      rotateZ = progress * 5;
+      scale = 1 + progress * 0.1;
     }
-    // Section 3: Instant Features (200vh-300vh) - Move into PHONE
+    // Section 3: Instant Features (200vh-300vh) - Move to phone with precision
     else if (scrollY >= vh * 2 && scrollY < vh * 3) {
-      const sectionProgress = (scrollY - vh * 2) / vh;
-      const isMobile = window.innerWidth < 1024; // lg breakpoint
+      const progress = easeInOutCubic((scrollY - vh * 2) / vh);
       
       if (isMobile) {
-        // On mobile: move from right side to center-left (phone is centered)
-        translateX = 400 - sectionProgress * 500; // Move to left but not too far
-        translateY = vh * 0.1 - sectionProgress * 100; // Move up to align with phone
+        // Mobile: slide to center-left for phone alignment
+        translateX = centerX + 250 - progress * 300;
+        translateY = centerY - 50 - progress * 80;
+        scale = 1.1 - progress * 0.45; // Shrink to fit phone
       } else {
-        // On desktop: move from right side to left side (phone is on left)
-        translateX = 400 - sectionProgress * 700; // Move further left for desktop
-        translateY = vh * 0.1 + sectionProgress * 20;
+        // Desktop: slide to left side for phone
+        translateX = centerX + 350 - progress * 550;
+        translateY = centerY - 50 - progress * 30;
+        scale = 1.1 - progress * 0.4;
       }
       
-      rotateY = 25 - sectionProgress * 35;
-      rotateZ = sectionProgress * 5;
-      scale = 1.1 - sectionProgress * 0.5; // Shrink more to fit phone screen
+      rotateY = 15 - progress * 25;
+      rotateZ = 5 + progress * 10;
     }
-    // Section 4: Blazing Fast (300vh-400vh) - Back to CENTER
+    // Section 4: Blazing Fast (300vh-400vh) - Return to center with style
     else if (scrollY >= vh * 3 && scrollY < vh * 4) {
-      const sectionProgress = (scrollY - vh * 3) / vh;
-      const isMobile = window.innerWidth < 1024;
+      const progress = easeInOutCubic((scrollY - vh * 3) / vh);
       
-      // Start from the phone position and move back to center
-      const startX = isMobile ? -100 : -300; // Starting position from section 3
-      translateX = startX + sectionProgress * Math.abs(startX); // Move back to center (0)
-      translateY = vh * 0.1 + (isMobile ? -100 : 20) - sectionProgress * (isMobile ? -100 : 70);
-      rotateX = sectionProgress * 180; // Rotate while moving
-      rotateY = -10 + sectionProgress * 20;
-      rotateZ = sectionProgress * 90;
-      scale = 0.6 + sectionProgress * 0.4; // Scale back up
+      // Calculate starting position from previous section
+      const startX = isMobile ? -50 : -200;
+      const startY = isMobile ? -130 : -80;
+      const startScale = isMobile ? 0.65 : 0.7;
+      
+      translateX = startX + progress * Math.abs(startX);
+      translateY = startY + progress * Math.abs(startY);
+      rotateX = progress * 360; // Full rotation
+      rotateY = -10 + progress * 15;
+      rotateZ = 15 - progress * 15;
+      scale = startScale + progress * (1 - startScale);
     }
-    // Section 5: Get ID (400vh+) - Move to SIDE again
+    // Section 5: Get ID (400vh+) - Final slide to left
     else if (scrollY >= vh * 4) {
-      const sectionProgress = Math.min((scrollY - vh * 4) / vh, 1);
-      translateX = sectionProgress * -350; // Move to left side
-      translateY = vh * 0.2;
-      rotateY = sectionProgress * -20;
-      rotateX = sectionProgress * 10;
-      scale = 1 + sectionProgress * 0.1;
+      const progress = Math.min(easeInOutCubic((scrollY - vh * 4) / vh), 1);
+      translateX = centerX - progress * (isMobile ? 200 : 300);
+      translateY = centerY + progress * 30;
+      rotateY = progress * -12;
+      rotateZ = progress * 8;
+      scale = 1 + progress * 0.15;
     }
 
     return {
       transform: `
-        translateX(${translateX}px) 
-        translateY(${translateY}px) 
+        translate3d(${translateX}px, ${translateY}px, 0) 
         rotateX(${rotateX}deg) 
         rotateY(${rotateY}deg)
         rotateZ(${rotateZ}deg)
         scale(${scale})
       `,
+      transition: 'transform 0.1s cubic-bezier(0.4, 0, 0.2, 1)'
     };
   };
 
   return (
     <div className="bg-black text-white overflow-x-hidden relative">
-      {/* Single Floating Student ID Card - Fixed positioned and moves through sections */}
+      {/* Pagination Controls - Fixed at top */}
+      <div className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 flex items-center gap-4 bg-black/50 backdrop-blur-sm rounded-full px-4 py-2">
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={prevPage}
+          disabled={currentPage === 0}
+          className="text-white/70 hover:text-white disabled:opacity-30 h-8 w-8 p-0 rounded-full"
+        >
+          <ChevronLeft className="w-4 h-4" />
+        </Button>
+        
+        <div className="flex gap-2">
+          {studentPages.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentPage(index)}
+              className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                index === currentPage ? 'bg-blue-500 w-4' : 'bg-white/30 hover:bg-white/50'
+              }`}
+            />
+          ))}
+        </div>
+        
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={nextPage}
+          disabled={currentPage === studentPages.length - 1}
+          className="text-white/70 hover:text-white disabled:opacity-30 h-8 w-8 p-0 rounded-full"
+        >
+          <ChevronRight className="w-4 h-4" />
+        </Button>
+      </div>
+
+      {/* Premium Floating Student ID Card with perfect centering */}
       <div 
-        className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-30 preserve-3d transition-transform duration-75 ease-out perspective-1000"
-        style={getCardTransform()}
+        className="fixed top-1/2 left-1/2 z-30 will-change-transform"
+        style={{
+          ...getCardTransform(),
+          transformOrigin: 'center center',
+          perspective: '1000px'
+        }}
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
       >
-        <Card className="w-96 h-60 bg-gradient-to-br from-slate-100 to-slate-300 text-black shadow-2xl border-0 overflow-hidden relative">
+        <Card className={`w-80 h-52 md:w-96 md:h-60 bg-gradient-to-br from-slate-50 to-slate-200 text-black shadow-2xl border-0 overflow-hidden relative transition-all duration-500 ${
+          isMobile ? 'active:scale-95' : 'hover:shadow-3xl'
+        }`}>
           {/* Logo */}
-          <div className="absolute top-4 right-4">
-            <img src="/lovable-uploads/ab90ba4e-121b-4049-b65d-dec211ad12c3.png" alt="Logo" className="w-8 h-8" />
+          <div className="absolute top-3 right-3 md:top-4 md:right-4">
+            <img src="/lovable-uploads/ab90ba4e-121b-4049-b65d-dec211ad12c3.png" alt="Logo" className="w-6 h-6 md:w-8 md:h-8" />
           </div>
           
           {/* Lightning bolt */}
-          <div className="absolute top-4 right-16">
-            <div className="w-6 h-6 bg-black text-white flex items-center justify-center rounded transform rotate-12">
-              <Zap className="w-4 h-4" />
+          <div className="absolute top-3 right-12 md:top-4 md:right-16">
+            <div className="w-5 h-5 md:w-6 md:h-6 bg-black text-white flex items-center justify-center rounded transform rotate-12">
+              <Zap className="w-3 h-3 md:w-4 md:h-4" />
             </div>
           </div>
           
-          <CardContent className="p-6 h-full flex flex-col justify-between">
+          <CardContent className="p-4 md:p-6 h-full flex flex-col justify-between">
             <div>
-              <div className="flex items-center gap-3 mb-4">
+              <div className="flex items-center gap-2 md:gap-3 mb-3 md:mb-4">
                 <img 
-                  src={studentData.photo} 
+                  src={currentStudent.photo} 
                   alt="Student" 
-                  className="w-12 h-12 rounded-full object-cover border-2 border-gray-300"
+                  className="w-10 h-10 md:w-12 md:h-12 rounded-full object-cover border-2 border-gray-300"
                 />
                 <div className="text-left">
-                  <p className="font-bold text-lg">{studentData.name.toUpperCase()}</p>
-                  <p className="text-sm text-gray-600">Student ID Card</p>
+                  <p className="font-bold text-sm md:text-lg">{currentStudent.name.toUpperCase()}</p>
+                  <p className="text-xs md:text-sm text-gray-600">Student ID Card</p>
                 </div>
               </div>
               
-              <div className="text-2xl font-mono tracking-[0.3em] mb-2 text-center">
-                5304 4641 1234 5678
+              <div className="text-lg md:text-2xl font-mono tracking-[0.2em] md:tracking-[0.3em] mb-2 text-center">
+                {currentStudent.id.replace(/-/g, ' ')}
               </div>
             </div>
             
             <div className="flex justify-between items-end">
               <div>
                 <p className="text-xs text-gray-500 uppercase">Valid Thru</p>
-                <p className="font-mono text-sm">09/30</p>
+                <p className="font-mono text-xs md:text-sm">09/30</p>
               </div>
               <div className="text-right">
                 <p className="text-xs text-gray-500 uppercase">Suraksha</p>
-                <p className="font-bold text-lg">LMS</p>
+                <p className="font-bold text-sm md:text-lg">LMS</p>
               </div>
             </div>
           </CardContent>
@@ -251,7 +382,16 @@ const StudentID = () => {
           </p>
 
           {/* Space for floating card - it will appear here via fixed positioning */}
-          <div className="h-60 mb-12"></div>
+          <div className="h-52 md:h-60 mb-12"></div>
+          
+          {/* Student info display */}
+          <div className="bg-white/10 backdrop-blur-sm rounded-xl p-4 md:p-6 max-w-md mx-auto mb-8">
+            <div className="text-center space-y-2">
+              <p className="text-white/90 font-semibold">{currentStudent.name}</p>
+              <p className="text-white/70 text-sm">{currentStudent.course} - {currentStudent.year}</p>
+              <p className="text-white/60 text-xs">{currentStudent.faculty}</p>
+            </div>
+          </div>
 
           <Button 
             className="bg-primary hover:bg-primary/80 text-white px-8 py-3 text-lg"
