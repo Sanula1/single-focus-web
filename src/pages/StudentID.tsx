@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, Download, Eye, Edit, Share2, IdCard, Calendar, User, MapPin, Phone, Mail, GraduationCap, Shield, Zap, Globe, Building, ChevronLeft, ChevronRight } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 const StudentID = () => {
@@ -63,6 +63,13 @@ const StudentID = () => {
     if (isRightSwipe) prevPage();
   };
 
+  // Anchors for precise card alignment
+  const heroAnchorRef = useRef<HTMLDivElement | null>(null);
+  const feesAnchorRef = useRef<HTMLDivElement | null>(null);
+  const phoneAnchorRef = useRef<HTMLDivElement | null>(null);
+  const fastAnchorRef = useRef<HTMLDivElement | null>(null);
+  const ctaAnchorRef = useRef<HTMLDivElement | null>(null);
+
   // Student pages data for pagination
   const studentPages = [
     {
@@ -113,6 +120,17 @@ const StudentID = () => {
   ];
 
   const currentStudent = studentPages[currentPage];
+
+  // Math helpers and anchor geometry
+  const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+  const clamp = (n: number, min = 0, max = 1) => Math.min(max, Math.max(min, n));
+  const getDelta = (ref: React.RefObject<HTMLDivElement>) => {
+    const rect = ref.current?.getBoundingClientRect();
+    if (!rect) return { x: 0, y: 0 };
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    return { x: cx - window.innerWidth / 2, y: cy - window.innerHeight / 2 };
+  };
 
   // Premium card positioning system with perfect centering
   const getCardTransform = () => {
