@@ -8,6 +8,7 @@ import WhiteboardSection from "./WhiteboardSection";
 import TextToVideoSections from "./TextToVideoSections";
 import WebsitePreviewSection from "./WebsitePreviewSection";
 import AwardsSection from "./AwardsSection";
+import ServicesSection from "./ServicesSection";
 const LMSHomepage = () => {
   const [isTransformed, setIsTransformed] = useState(false);
   const handleLMSClick = () => {
@@ -210,6 +211,9 @@ const LMSHomepage = () => {
 
       {/* Awards Section */}
       <AwardsSection />
+
+      {/* Services Section */}
+      <ServicesSection />
 
       {/* Website Preview Section */}
       <WebsitePreviewSection />
