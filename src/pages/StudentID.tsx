@@ -137,7 +137,6 @@ const StudentID = () => {
     const vh = window.innerHeight;
     const vw = window.innerWidth;
 
-    // dynamic flags
     const mobile = vw < 1024;
 
     // animated values
@@ -153,12 +152,12 @@ const StudentID = () => {
     const clampPx = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
     const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
 
-    // CARD HALF WIDTH (approx, matches w-80/md:w-96)
-    const cardHalf = mobile ? 160 : 192;
-    const maxX = vw / 2 - cardHalf - 16; // keep fully inside viewport with 16px margin
+    // Keep fully visible horizontally based on card width
+    const cardHalf = mobile ? 160 : 192; // matches w-80/md:w-96
+    const maxX = vw / 2 - cardHalf - 16; // 16px safety margin
     const minX = -maxX;
 
-    // Section 1: Hero (0-100vh) - Perfect CENTER with subtle float
+    // Section 1: Hero (0-100vh) - perfectly centered
     if (scrollY < vh) {
       translateX = 0;
       translateY = Math.sin(scrollY * 0.01) * 10;
@@ -167,60 +166,58 @@ const StudentID = () => {
       rotateZ = Math.sin(scrollY * 0.004) * 2;
       scale = 1 + Math.sin(scrollY * 0.008) * 0.05;
     }
-    // Section 2: No Fees (100vh-200vh) - Smooth slide to RIGHT (esp. on mobile)
+    // Section 2: No Fees (100vh-200vh) - card to RIGHT, copy on LEFT
     else if (scrollY >= vh && scrollY < vh * 2) {
       const progress = easeInOutCubic((scrollY - vh) / vh);
-      translateX = progress * (mobile ? 160 : 320);
-      translateY = -progress * 40;
-      rotateY = progress * 12;
-      rotateZ = progress * 4;
-      scale = 1 + progress * 0.08;
+      const targetRight = mobile ? maxX : Math.min(maxX, 420);
+      translateX = targetRight * progress; // smooth approach to edge
+      translateY = -progress * 36;
+      rotateY = progress * 10;
+      rotateZ = progress * 3.5;
+      scale = 1 + progress * 0.06;
     }
-    // Section 3: Instant Features (200vh-300vh)
+    // Section 3: Instant Verification (200vh-300vh) - into phone
     else if (scrollY >= vh * 2 && scrollY < vh * 3) {
       const progress = easeInOutCubic((scrollY - vh * 2) / vh);
-      if (mobile) {
-        // keep card visible and slightly towards right while moving up
-        translateX = 140 - progress * 180;
-        translateY = -30 - progress * 60;
-        scale = 1.05 - progress * 0.35;
-      } else {
-        // desktop: glide towards phone (left area)
-        translateX = 300 - progress * 520;
-        translateY = -40 - progress * 40;
-        scale = 1.08 - progress * 0.38;
-      }
-      rotateY = 12 - progress * 22;
-      rotateZ = 4 + progress * 10;
+      const startX = mobile ? maxX : Math.min(maxX, 420);
+      const endX = mobile ? 0 : -Math.min(maxX, 380);
+      translateX = startX + (endX - startX) * progress; // right -> center/left
+      translateY = -20 - progress * 40;
+      rotateY = 10 - progress * 18;
+      rotateZ = 4 + progress * 8;
+      scale = (mobile ? 1.0 : 1.04) - progress * (mobile ? 0.18 : 0.22);
     }
-    // Section 4: Blazing Fast (300vh-400vh) - Return to center elegantly
+    // Section 4: Blazing Fast (300vh-400vh) - back to CENTER cleanly
     else if (scrollY >= vh * 3 && scrollY < vh * 4) {
       const progress = easeInOutCubic((scrollY - vh * 3) / vh);
-      const startX = mobile ? -40 : -180;
-      const startY = mobile ? -120 : -80;
-      const startScale = mobile ? 0.7 : 0.72;
-      translateX = startX + progress * Math.abs(startX);
-      translateY = startY + progress * Math.abs(startY);
-      rotateX = progress * 360;
-      rotateY = -8 + progress * 14;
-      rotateZ = 12 - progress * 12;
+      const startX = -Math.min(maxX, 380);
+      const startY = mobile ? -110 : -80;
+      const startScale = mobile ? 0.82 : 0.85;
+      translateX = startX * (1 - progress);
+      translateY = startY * (1 - progress);
+      rotateX = progress * 180; // toned-down spin
+      rotateY = -6 + progress * 10;
+      rotateZ = 10 - progress * 10;
       scale = startScale + progress * (1 - startScale);
     }
-    // Section 5: Get ID (400vh+) - Slide to LEFT slightly and fade out before footer
+    // Section 5: CTA (400vh+) - slight LEFT and fade BEFORE footer
     else if (scrollY >= vh * 4) {
       const progress = Math.min(easeInOutCubic((scrollY - vh * 4) / vh), 1);
-      translateX = -progress * (mobile ? 160 : 260);
-      translateY = progress * 24;
-      rotateY = progress * -10;
-      rotateZ = progress * 6;
-      scale = 1 + progress * 0.12;
+      const targetLeft = -Math.min(maxX, 240);
+      translateX = targetLeft * progress;
+      translateY = progress * 20;
+      rotateY = progress * -8;
+      rotateZ = progress * 5;
+      scale = 1 + progress * 0.08;
 
-      // Fade out between 4.7vh and 5vh
-      const fadeOut = clampPx((scrollY - vh * 4.7) / (vh * 0.3), 0, 1);
-      opacity = 1 - fadeOut;
+      // fade out earlier so it never sits on footer
+      const fadeStart = vh * 4.45;
+      const fadeEnd = vh * 4.75;
+      const fade = clampPx((scrollY - fadeStart) / (fadeEnd - fadeStart), 0, 1);
+      opacity = 1 - fade;
     }
 
-    // Keep card fully on screen
+    // Final safety clamp
     translateX = clampPx(translateX, minX, maxX);
 
     return {
