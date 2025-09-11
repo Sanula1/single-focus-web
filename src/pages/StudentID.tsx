@@ -136,93 +136,98 @@ const StudentID = () => {
   const getCardTransform = () => {
     const vh = window.innerHeight;
     const vw = window.innerWidth;
-    const centerX = 0; // Always centered horizontally
-    const centerY = 0; // Always centered vertically
-    
-    let translateX = centerX;
-    let translateY = centerY;
+
+    // dynamic flags
+    const mobile = vw < 1024;
+
+    // animated values
+    let translateX = 0;
+    let translateY = 0;
     let rotateX = 0;
     let rotateY = 0;
     let rotateZ = 0;
     let scale = 1;
-    
-    // Smooth easing function for premium feel
-    const easeInOutCubic = (t: number) => t < 0.5 ? 4 * t * t * t : (t - 1) * (2 * t - 2) * (2 * t - 2) + 1;
-    
+    let opacity = 1;
+
+    // helpers
+    const clampPx = (n: number, min: number, max: number) => Math.min(max, Math.max(min, n));
+    const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+    // CARD HALF WIDTH (approx, matches w-80/md:w-96)
+    const cardHalf = mobile ? 160 : 192;
+    const maxX = vw / 2 - cardHalf - 16; // keep fully inside viewport with 16px margin
+    const minX = -maxX;
+
     // Section 1: Hero (0-100vh) - Perfect CENTER with subtle float
     if (scrollY < vh) {
-      const progress = scrollY / vh;
-      translateX = centerX;
-      translateY = centerY + Math.sin(scrollY * 0.01) * 10;
+      translateX = 0;
+      translateY = Math.sin(scrollY * 0.01) * 10;
       rotateX = Math.sin(scrollY * 0.008) * 3;
       rotateY = Math.cos(scrollY * 0.006) * 5;
       rotateZ = Math.sin(scrollY * 0.004) * 2;
       scale = 1 + Math.sin(scrollY * 0.008) * 0.05;
     }
-    // Section 2: No Fees (100vh-200vh) - Smooth slide to right
+    // Section 2: No Fees (100vh-200vh) - Smooth slide to RIGHT (esp. on mobile)
     else if (scrollY >= vh && scrollY < vh * 2) {
       const progress = easeInOutCubic((scrollY - vh) / vh);
-      translateX = centerX + progress * (isMobile ? 250 : 350);
-      translateY = centerY - progress * 50;
-      rotateY = progress * 15;
-      rotateZ = progress * 5;
-      scale = 1 + progress * 0.1;
+      translateX = progress * (mobile ? 160 : 320);
+      translateY = -progress * 40;
+      rotateY = progress * 12;
+      rotateZ = progress * 4;
+      scale = 1 + progress * 0.08;
     }
-    // Section 3: Instant Features (200vh-300vh) - Move to phone with precision
+    // Section 3: Instant Features (200vh-300vh)
     else if (scrollY >= vh * 2 && scrollY < vh * 3) {
       const progress = easeInOutCubic((scrollY - vh * 2) / vh);
-      
-      if (isMobile) {
-        // Mobile: slide to center-left for phone alignment
-        translateX = centerX + 250 - progress * 300;
-        translateY = centerY - 50 - progress * 80;
-        scale = 1.1 - progress * 0.45; // Shrink to fit phone
+      if (mobile) {
+        // keep card visible and slightly towards right while moving up
+        translateX = 140 - progress * 180;
+        translateY = -30 - progress * 60;
+        scale = 1.05 - progress * 0.35;
       } else {
-        // Desktop: slide to left side for phone
-        translateX = centerX + 350 - progress * 550;
-        translateY = centerY - 50 - progress * 30;
-        scale = 1.1 - progress * 0.4;
+        // desktop: glide towards phone (left area)
+        translateX = 300 - progress * 520;
+        translateY = -40 - progress * 40;
+        scale = 1.08 - progress * 0.38;
       }
-      
-      rotateY = 15 - progress * 25;
-      rotateZ = 5 + progress * 10;
+      rotateY = 12 - progress * 22;
+      rotateZ = 4 + progress * 10;
     }
-    // Section 4: Blazing Fast (300vh-400vh) - Return to center with style
+    // Section 4: Blazing Fast (300vh-400vh) - Return to center elegantly
     else if (scrollY >= vh * 3 && scrollY < vh * 4) {
       const progress = easeInOutCubic((scrollY - vh * 3) / vh);
-      
-      // Calculate starting position from previous section
-      const startX = isMobile ? -50 : -200;
-      const startY = isMobile ? -130 : -80;
-      const startScale = isMobile ? 0.65 : 0.7;
-      
+      const startX = mobile ? -40 : -180;
+      const startY = mobile ? -120 : -80;
+      const startScale = mobile ? 0.7 : 0.72;
       translateX = startX + progress * Math.abs(startX);
       translateY = startY + progress * Math.abs(startY);
-      rotateX = progress * 360; // Full rotation
-      rotateY = -10 + progress * 15;
-      rotateZ = 15 - progress * 15;
+      rotateX = progress * 360;
+      rotateY = -8 + progress * 14;
+      rotateZ = 12 - progress * 12;
       scale = startScale + progress * (1 - startScale);
     }
-    // Section 5: Get ID (400vh+) - Final slide to left
+    // Section 5: Get ID (400vh+) - Slide to LEFT slightly and fade out before footer
     else if (scrollY >= vh * 4) {
       const progress = Math.min(easeInOutCubic((scrollY - vh * 4) / vh), 1);
-      translateX = centerX - progress * (isMobile ? 200 : 300);
-      translateY = centerY + progress * 30;
-      rotateY = progress * -12;
-      rotateZ = progress * 8;
-      scale = 1 + progress * 0.15;
+      translateX = -progress * (mobile ? 160 : 260);
+      translateY = progress * 24;
+      rotateY = progress * -10;
+      rotateZ = progress * 6;
+      scale = 1 + progress * 0.12;
+
+      // Fade out between 4.7vh and 5vh
+      const fadeOut = clampPx((scrollY - vh * 4.7) / (vh * 0.3), 0, 1);
+      opacity = 1 - fadeOut;
     }
 
+    // Keep card fully on screen
+    translateX = clampPx(translateX, minX, maxX);
+
     return {
-      transform: `
-        translate3d(${translateX}px, ${translateY}px, 0) 
-        rotateX(${rotateX}deg) 
-        rotateY(${rotateY}deg)
-        rotateZ(${rotateZ}deg)
-        scale(${scale})
-      `,
-      transition: 'transform 0.1s cubic-bezier(0.4, 0, 0.2, 1)'
-    };
+      transform: `translate(-50%, -50%) translate3d(${translateX}px, ${translateY}px, 0) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg) scale(${scale})`,
+      transition: 'transform 0.1s cubic-bezier(0.4, 0, 0.2, 1)',
+      opacity,
+    } as React.CSSProperties;
   };
 
   return (
@@ -391,7 +396,7 @@ const StudentID = () => {
         </header>
 
         {/* Main Hero Content */}
-        <div className="text-center z-10 px-4 pt-32">
+        <div className="text-left md:text-center z-10 px-4 pt-32">
           <h1 className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-white to-primary bg-clip-text text-transparent">
             The Only Student ID
           </h1>
