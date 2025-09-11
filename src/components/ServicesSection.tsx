@@ -227,6 +227,10 @@ const ServicesSection = () => {
     ]
   };
 
+  // Determine visible services count per category
+  const items = servicesByCategory[selectedCategory] ?? [];
+  const visibleServices = selectedCategory === "Crypto" ? items.slice(0, 3) : items;
+
   return (
     <div className="py-16 bg-gradient-to-br from-background via-muted/10 to-primary-light/5">
       <div className="container mx-auto px-4">
@@ -265,7 +269,7 @@ const ServicesSection = () => {
           {/* Services Grid */}
           <div className="lg:w-3/4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {servicesByCategory[selectedCategory]?.map((service, index) => (
+              {visibleServices.map((service, index) => (
                 <div
                   key={index}
                   className="relative group cursor-pointer transform transition-all duration-300 hover:scale-105"
