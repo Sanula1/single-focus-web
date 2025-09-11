@@ -1,4 +1,8 @@
+import { useState } from "react";
+
 const ServicesSection = () => {
+  const [selectedCategory, setSelectedCategory] = useState("Crypto");
+
   const categories = [
     "Crypto",
     "Makeup Artist", 
@@ -10,32 +14,218 @@ const ServicesSection = () => {
     "Courses"
   ];
 
-  const services = [
-    {
-      title: "SEO",
-      description: "Learn more"
-    },
-    {
-      title: "SOCIAL MEDIA MARKETING",
-      description: "Learn more"
-    },
-    {
-      title: "PPC ADVERTISING", 
-      description: "Learn more"
-    },
-    {
-      title: "EMAIL MARKETING",
-      description: "Learn more"
-    },
-    {
-      title: "INFLUENCER MARKETING",
-      description: "Learn more"
-    },
-    {
-      title: "CONTENT WRITING",
-      description: "Learn more"
-    }
-  ];
+  const servicesByCategory = {
+    "Crypto": [
+      {
+        title: "BLOCKCHAIN DEVELOPMENT",
+        description: "Learn more",
+        videoUrl: "https://www.youtube.com/embed/OTy5UUFCS-I?si=VrVnQVwupYz76fVd"
+      },
+      {
+        title: "CRYPTO TRADING BOTS",
+        description: "Learn more"
+      },
+      {
+        title: "NFT MARKETPLACE",
+        description: "Learn more"
+      },
+      {
+        title: "DEFI PROTOCOLS",
+        description: "Learn more"
+      },
+      {
+        title: "SMART CONTRACTS",
+        description: "Learn more"
+      },
+      {
+        title: "CRYPTO WALLETS",
+        description: "Learn more"
+      }
+    ],
+    "Makeup Artist": [
+      {
+        title: "BRIDAL MAKEUP",
+        description: "Learn more",
+        videoUrl: "https://www.youtube.com/embed/sdXII5RKMTY?si=bCmaVIbfhhsHWj6P"
+      },
+      {
+        title: "SPECIAL EFFECTS MAKEUP",
+        description: "Learn more"
+      },
+      {
+        title: "FASHION MAKEUP",
+        description: "Learn more"
+      },
+      {
+        title: "EDITORIAL MAKEUP",
+        description: "Learn more"
+      },
+      {
+        title: "CELEBRITY MAKEUP",
+        description: "Learn more"
+      },
+      {
+        title: "MAKEUP TUTORIALS",
+        description: "Learn more"
+      }
+    ],
+    "Yoga": [
+      {
+        title: "HATHA YOGA",
+        description: "Learn more"
+      },
+      {
+        title: "VINYASA FLOW",
+        description: "Learn more"
+      },
+      {
+        title: "MEDITATION CLASSES",
+        description: "Learn more"
+      },
+      {
+        title: "PRENATAL YOGA",
+        description: "Learn more"
+      },
+      {
+        title: "HOT YOGA",
+        description: "Learn more"
+      },
+      {
+        title: "YIN YOGA",
+        description: "Learn more"
+      }
+    ],
+    "Sports": [
+      {
+        title: "PERSONAL TRAINING",
+        description: "Learn more"
+      },
+      {
+        title: "TEAM COACHING",
+        description: "Learn more"
+      },
+      {
+        title: "FITNESS PROGRAMS",
+        description: "Learn more"
+      },
+      {
+        title: "SPORTS NUTRITION",
+        description: "Learn more"
+      },
+      {
+        title: "INJURY PREVENTION",
+        description: "Learn more"
+      },
+      {
+        title: "PERFORMANCE ANALYSIS",
+        description: "Learn more"
+      }
+    ],
+    "Real Estate": [
+      {
+        title: "PROPERTY LISTING",
+        description: "Learn more"
+      },
+      {
+        title: "HOME STAGING",
+        description: "Learn more"
+      },
+      {
+        title: "MARKET ANALYSIS",
+        description: "Learn more"
+      },
+      {
+        title: "INVESTMENT ADVICE",
+        description: "Learn more"
+      },
+      {
+        title: "PROPERTY MANAGEMENT",
+        description: "Learn more"
+      },
+      {
+        title: "VIRTUAL TOURS",
+        description: "Learn more"
+      }
+    ],
+    "Photography": [
+      {
+        title: "WEDDING PHOTOGRAPHY",
+        description: "Learn more"
+      },
+      {
+        title: "PORTRAIT SESSIONS",
+        description: "Learn more"
+      },
+      {
+        title: "COMMERCIAL SHOOTS",
+        description: "Learn more"
+      },
+      {
+        title: "EVENT PHOTOGRAPHY",
+        description: "Learn more"
+      },
+      {
+        title: "PRODUCT PHOTOGRAPHY",
+        description: "Learn more"
+      },
+      {
+        title: "PHOTO EDITING",
+        description: "Learn more"
+      }
+    ],
+    "Charity": [
+      {
+        title: "FUNDRAISING CAMPAIGNS",
+        description: "Learn more"
+      },
+      {
+        title: "VOLUNTEER COORDINATION",
+        description: "Learn more"
+      },
+      {
+        title: "COMMUNITY OUTREACH",
+        description: "Learn more"
+      },
+      {
+        title: "DONATION MANAGEMENT",
+        description: "Learn more"
+      },
+      {
+        title: "AWARENESS PROGRAMS",
+        description: "Learn more"
+      },
+      {
+        title: "IMPACT REPORTING",
+        description: "Learn more"
+      }
+    ],
+    "Courses": [
+      {
+        title: "ONLINE LEARNING",
+        description: "Learn more"
+      },
+      {
+        title: "SKILL DEVELOPMENT",
+        description: "Learn more"
+      },
+      {
+        title: "CERTIFICATION PROGRAMS",
+        description: "Learn more"
+      },
+      {
+        title: "TUTORING SERVICES",
+        description: "Learn more"
+      },
+      {
+        title: "WORKSHOP CREATION",
+        description: "Learn more"
+      },
+      {
+        title: "COURSE MARKETING",
+        description: "Learn more"
+      }
+    ]
+  };
 
   return (
     <div className="py-16 bg-gradient-to-br from-background via-muted/10 to-primary-light/5">
@@ -58,7 +248,12 @@ const ServicesSection = () => {
                 {categories.map((category, index) => (
                   <div
                     key={index}
-                    className="p-3 bg-purple-50 rounded-lg border border-purple-200 text-gray-600 hover:bg-purple-100 transition-colors cursor-pointer"
+                    onClick={() => setSelectedCategory(category)}
+                    className={`p-3 rounded-lg border transition-colors cursor-pointer ${
+                      selectedCategory === category 
+                        ? 'bg-purple-200 border-purple-400 text-purple-800 font-medium' 
+                        : 'bg-purple-50 border-purple-200 text-gray-600 hover:bg-purple-100'
+                    }`}
                   >
                     {category}
                   </div>
@@ -70,22 +265,38 @@ const ServicesSection = () => {
           {/* Services Grid */}
           <div className="lg:w-3/4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {services.map((service, index) => (
+              {servicesByCategory[selectedCategory]?.map((service, index) => (
                 <div
                   key={index}
                   className="relative group cursor-pointer transform transition-all duration-300 hover:scale-105"
                 >
-                  <div className="h-40 bg-gradient-to-br from-purple-600 via-purple-500 to-blue-600 rounded-xl p-6 flex flex-col justify-between text-white shadow-lg">
-                    <div>
-                      <h3 className="text-lg font-bold mb-2 leading-tight">
-                        {service.title}
-                      </h3>
+                  {service.videoUrl ? (
+                    <div className="h-40 rounded-xl overflow-hidden shadow-lg">
+                      <iframe
+                        width="100%"
+                        height="100%"
+                        src={service.videoUrl}
+                        title={service.title}
+                        frameBorder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerPolicy="strict-origin-when-cross-origin"
+                        allowFullScreen
+                        className="rounded-xl"
+                      />
                     </div>
-                    <div className="flex items-center text-sm font-medium">
-                      {service.description}
-                      <span className="ml-2">›</span>
+                  ) : (
+                    <div className="h-40 bg-gradient-to-br from-purple-600 via-purple-500 to-blue-600 rounded-xl p-6 flex flex-col justify-between text-white shadow-lg">
+                      <div>
+                        <h3 className="text-lg font-bold mb-2 leading-tight">
+                          {service.title}
+                        </h3>
+                      </div>
+                      <div className="flex items-center text-sm font-medium">
+                        {service.description}
+                        <span className="ml-2">›</span>
+                      </div>
                     </div>
-                  </div>
+                  )}
                 </div>
               ))}
             </div>
