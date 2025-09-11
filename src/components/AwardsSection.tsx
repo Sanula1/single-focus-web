@@ -28,12 +28,29 @@ const AwardsSection = () => {
   ];
 
   return (
-    <div className="py-12 md:py-16 lg:py-20 bg-gradient-to-br from-white via-gray-50 to-purple-50 relative overflow-hidden">
-      {/* Background decorative elements matching the reference */}
-      <div className="absolute top-10 left-10 w-16 h-16 bg-emerald-400 rounded-lg transform rotate-45 opacity-30"></div>
-      <div className="absolute top-20 right-20 w-8 h-8 bg-blue-500 rounded-full opacity-40"></div>
-      <div className="absolute bottom-20 right-10 w-24 h-24 bg-gradient-to-br from-emerald-400 to-pink-400 rounded-full opacity-25"></div>
-      <div className="absolute bottom-10 left-20 w-12 h-6 bg-pink-400 rounded-full opacity-30"></div>
+    <div className="py-12 md:py-16 lg:py-20 bg-gradient-to-br from-background via-muted/20 to-primary-light/10 relative overflow-hidden">
+      {/* Floating Particles Background matching homepage */}
+      <div className="absolute inset-0 overflow-hidden">
+        {[...Array(20)].map((_, i) => <div key={i} className="absolute w-1 h-1 bg-primary/20 rounded-full animate-pulse" style={{
+          left: `${Math.random() * 100}%`,
+          top: `${Math.random() * 100}%`,
+          animationDelay: `${Math.random() * 3}s`,
+          animationDuration: `${2 + Math.random() * 3}s`,
+          transform: `scale(${0.5 + Math.random() * 1.5})`
+        }} />)}
+      </div>
+
+      {/* Geometric Background Elements matching homepage */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-10 left-10 w-16 h-16 border border-primary/50 rounded-lg rotate-45 animate-pulse"></div>
+        <div className="absolute top-20 right-20 w-12 h-12 border border-primary/30 rounded-full animate-bounce" style={{
+          animationDuration: '3s'
+        }}></div>
+        <div className="absolute bottom-20 right-10 w-20 h-20 border-2 border-primary/40 rounded-full animate-ping" style={{
+          animationDuration: '4s'
+        }}></div>
+        <div className="absolute bottom-10 left-20 w-14 h-6 border border-primary/30 rounded-full animate-pulse"></div>
+      </div>
 
       <div className="container mx-auto px-4 relative z-10">
         <div className="text-center mb-8 md:mb-16 max-w-4xl mx-auto">
