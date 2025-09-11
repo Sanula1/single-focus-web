@@ -139,6 +139,9 @@ const StudentID = () => {
 
     const mobile = vw < 1024;
 
+    // Consistent vertical offset so start and end positions are lowered equally
+    const baseOffsetY = mobile ? 36 : 64; // push card down by same amount across all sections
+
     // animated values
     let translateX = 0;
     let translateY = 0;
@@ -157,7 +160,7 @@ const StudentID = () => {
     const maxX = vw / 2 - cardHalf - 16; // 16px safety margin
     const minX = -maxX;
 
-    // Section 1: Hero (0-100vh) - perfectly centered
+    // Section 1: Hero (0-100vh) - perfectly centered (then shifted down by baseOffsetY)
     if (scrollY < vh) {
       translateX = 0;
       translateY = Math.sin(scrollY * 0.01) * 10;
@@ -217,8 +220,9 @@ const StudentID = () => {
       opacity = 1 - fade;
     }
 
-    // Final safety clamp
+    // Final safety clamp and global vertical shift
     translateX = clampPx(translateX, minX, maxX);
+    translateY += baseOffsetY; // apply same downward offset for start and end positions
 
     return {
       transform: `translate(-50%, -50%) translate3d(${translateX}px, ${translateY}px, 0) rotateX(${rotateX}deg) rotateY(${rotateY}deg) rotateZ(${rotateZ}deg) scale(${scale})`,
