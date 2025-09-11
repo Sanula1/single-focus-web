@@ -9,6 +9,7 @@ import TextToVideoSections from "./TextToVideoSections";
 import WebsitePreviewSection from "./WebsitePreviewSection";
 import AwardsSection from "./AwardsSection";
 import ServicesSection from "./ServicesSection";
+import Footer from "./Footer";
 const LMSHomepage = () => {
   const [isTransformed, setIsTransformed] = useState(false);
   const handleLMSClick = () => {
@@ -19,13 +20,13 @@ const LMSHomepage = () => {
   return (
     <>
       {/* Main LMS Homepage Section */}
-      <div className="min-h-screen bg-gradient-to-br from-background via-muted/20 to-primary-light/10 relative overflow-hidden">
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-sky-50/30 to-white relative overflow-hidden">
         {/* Sri Lankan Flag Accent */}
         <div className="absolute top-4 right-4 w-8 h-6 bg-gradient-to-r from-orange-500 via-red-500 to-yellow-500 rounded-sm opacity-60 z-20 shadow-lg"></div>
         
         {/* Floating Particles Background */}
         <div className="absolute inset-0 overflow-hidden">
-          {[...Array(30)].map((_, i) => <div key={i} className="absolute w-1 h-1 bg-primary/30 rounded-full animate-pulse" style={{
+          {[...Array(30)].map((_, i) => <div key={i} className="absolute w-1 h-1 bg-blue-400/40 rounded-full animate-pulse" style={{
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
             animationDelay: `${Math.random() * 3}s`,
@@ -36,14 +37,14 @@ const LMSHomepage = () => {
 
         {/* Geometric Background Elements */}
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-20 w-32 h-32 border-2 border-primary rounded-full animate-spin" style={{
+          <div className="absolute top-20 left-20 w-32 h-32 border-2 border-blue-400/30 rounded-full animate-spin" style={{
             animationDuration: '20s'
           }}></div>
-          <div className="absolute top-40 right-32 w-24 h-24 border border-primary/50 rounded-full animate-pulse"></div>
-          <div className="absolute bottom-32 left-40 w-20 h-20 border border-primary rotate-45 animate-bounce" style={{
+          <div className="absolute top-40 right-32 w-24 h-24 border border-blue-400/40 rounded-full animate-pulse"></div>
+          <div className="absolute bottom-32 left-40 w-20 h-20 border border-blue-500/50 rotate-45 animate-bounce" style={{
             animationDuration: '3s'
           }}></div>
-          <div className="absolute bottom-20 right-20 w-28 h-28 border-2 border-primary/30 rounded-full animate-ping" style={{
+          <div className="absolute bottom-20 right-20 w-28 h-28 border-2 border-blue-400/40 rounded-full animate-ping" style={{
             animationDuration: '4s'
           }}></div>
         </div>
@@ -217,6 +218,9 @@ const LMSHomepage = () => {
 
       {/* Website Preview Section */}
       <WebsitePreviewSection />
+
+      {/* Footer */}
+      <Footer />
     </>
   );
 };

@@ -232,7 +232,7 @@ const ServicesSection = () => {
   const visibleServices = selectedCategory === "Crypto" ? items.slice(0, 3) : items;
 
   return (
-    <div className="py-16 bg-gradient-to-br from-background via-muted/10 to-primary-light/5">
+    <div className="py-16 bg-gradient-to-br from-blue-50 via-sky-50/50 to-white relative overflow-hidden">
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
@@ -244,8 +244,8 @@ const ServicesSection = () => {
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Sidebar Categories */}
           <div className="lg:w-1/4">
-            <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-purple-200">
-              <h3 className="text-lg font-semibold text-gray-700 mb-4 border-b border-purple-200 pb-2">
+            <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-6 shadow-lg border border-blue-200">
+              <h3 className="text-lg font-semibold text-gray-700 mb-4 border-b border-blue-200 pb-2">
                 Line style
               </h3>
               <div className="space-y-3">
@@ -255,8 +255,8 @@ const ServicesSection = () => {
                     onClick={() => setSelectedCategory(category)}
                     className={`p-3 rounded-lg border transition-colors cursor-pointer ${
                       selectedCategory === category 
-                        ? 'bg-purple-200 border-purple-400 text-purple-800 font-medium' 
-                        : 'bg-purple-50 border-purple-200 text-gray-600 hover:bg-purple-100'
+                        ? 'bg-blue-200 border-blue-400 text-blue-800 font-medium' 
+                        : 'bg-blue-50 border-blue-200 text-gray-600 hover:bg-blue-100'
                     }`}
                   >
                     {category}
@@ -289,7 +289,7 @@ const ServicesSection = () => {
                       />
                     </div>
                   ) : (
-                    <div className="h-40 bg-gradient-to-br from-purple-600 via-purple-500 to-blue-600 rounded-xl p-6 flex flex-col justify-between text-white shadow-lg">
+                    <div className="h-40 bg-gradient-to-br from-blue-600 via-blue-500 to-sky-600 rounded-xl p-6 flex flex-col justify-between text-white shadow-lg">
                       <div>
                         <h3 className="text-lg font-bold mb-2 leading-tight">
                           {service.title}
@@ -303,21 +303,6 @@ const ServicesSection = () => {
                   )}
                 </div>
               ))}
-            </div>
-          </div>
-        </div>
-
-        {/* About Section */}
-        <div className="mt-16">
-          <div className="bg-gradient-to-r from-purple-800 via-purple-700 to-blue-800 rounded-2xl p-8 md:p-12 text-white">
-            <h2 className="text-2xl md:text-3xl font-bold text-center mb-8">
-              ABOUT BRANDWISE: OUR DIGITAL MISSION
-            </h2>
-            <div className="bg-white/10 rounded-xl p-6 md:p-8 backdrop-blur-sm min-h-[200px] flex items-center justify-center">
-              <div className="text-center text-white/80">
-                <div className="text-6xl mb-4">📱</div>
-                <p className="text-lg">Digital Innovation Space</p>
-              </div>
             </div>
           </div>
         </div>

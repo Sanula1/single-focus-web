@@ -28,10 +28,10 @@ const AwardsSection = () => {
   ];
 
   return (
-    <div className="py-12 md:py-16 lg:py-20 bg-gradient-to-br from-background via-muted/20 to-primary-light/10 relative overflow-hidden">
+    <div className="py-12 md:py-16 lg:py-20 bg-gradient-to-br from-blue-50 via-sky-50/30 to-white relative overflow-hidden">
       {/* Floating Particles Background matching homepage */}
       <div className="absolute inset-0 overflow-hidden">
-        {[...Array(20)].map((_, i) => <div key={i} className="absolute w-1 h-1 bg-primary/20 rounded-full animate-pulse" style={{
+        {[...Array(20)].map((_, i) => <div key={i} className="absolute w-1 h-1 bg-blue-400/30 rounded-full animate-pulse" style={{
           left: `${Math.random() * 100}%`,
           top: `${Math.random() * 100}%`,
           animationDelay: `${Math.random() * 3}s`,
@@ -42,14 +42,14 @@ const AwardsSection = () => {
 
       {/* Geometric Background Elements matching homepage */}
       <div className="absolute inset-0 opacity-10">
-        <div className="absolute top-10 left-10 w-16 h-16 border border-primary/50 rounded-lg rotate-45 animate-pulse"></div>
-        <div className="absolute top-20 right-20 w-12 h-12 border border-primary/30 rounded-full animate-bounce" style={{
+        <div className="absolute top-10 left-10 w-16 h-16 border border-blue-400/50 rounded-lg rotate-45 animate-pulse"></div>
+        <div className="absolute top-20 right-20 w-12 h-12 border border-blue-400/40 rounded-full animate-bounce" style={{
           animationDuration: '3s'
         }}></div>
-        <div className="absolute bottom-20 right-10 w-20 h-20 border-2 border-primary/40 rounded-full animate-ping" style={{
+        <div className="absolute bottom-20 right-10 w-20 h-20 border-2 border-blue-500/50 rounded-full animate-ping" style={{
           animationDuration: '4s'
         }}></div>
-        <div className="absolute bottom-10 left-20 w-14 h-6 border border-primary/30 rounded-full animate-pulse"></div>
+        <div className="absolute bottom-10 left-20 w-14 h-6 border border-blue-400/40 rounded-full animate-pulse"></div>
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
