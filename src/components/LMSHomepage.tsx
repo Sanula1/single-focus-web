@@ -22,7 +22,7 @@ const LMSHomepage = () => {
       {/* Main LMS Homepage Section */}
       <div className="min-h-screen bg-gradient-to-br from-blue-50 via-sky-50/30 to-white relative overflow-hidden">
         {/* Sri Lankan Flag Accent */}
-        <div className="absolute top-4 right-4 w-8 h-6 bg-gradient-to-r from-orange-500 via-red-500 to-yellow-500 rounded-sm opacity-60 z-20 shadow-lg"></div>
+        <div className="absolute top-4 right-4 w-8 h-6 bg-gradient-to-r from-blue-400 via-blue-500 to-blue-600 rounded-sm opacity-70 z-20 shadow-lg"></div>
         
         {/* Floating Particles Background */}
         <div className="absolute inset-0 overflow-hidden">
@@ -55,20 +55,20 @@ const LMSHomepage = () => {
             <img src="/lovable-uploads/ab90ba4e-121b-4049-b65d-dec211ad12c3.png" alt="SurakshaLMS Logo" className="h-8 w-8" />
           </div>
           <nav className="hidden md:flex items-center gap-4">
-            <Button variant="ghost" className="text-primary hover:text-primary-dark transition-colors duration-300" onClick={() => window.location.href = '/student-id'}>
+            <Button variant="ghost" className="text-blue-600 hover:text-blue-700 transition-colors duration-300" onClick={() => window.location.href = '/student-id'}>
               Student ID
             </Button>
-            <Button variant="ghost" className="text-primary hover:text-primary-dark transition-colors duration-300">
+            <Button variant="ghost" className="text-blue-600 hover:text-blue-700 transition-colors duration-300">
               Customers
             </Button>
-            <Button variant="ghost" className="text-primary hover:text-primary-dark transition-colors duration-300">
+            <Button variant="ghost" className="text-blue-600 hover:text-blue-700 transition-colors duration-300">
               Pricing
             </Button>
-            <Button variant="ghost" className="text-primary hover:text-primary-dark transition-colors duration-300" onClick={() => window.location.href = '/guidance'}>
+            <Button variant="ghost" className="text-blue-600 hover:text-blue-700 transition-colors duration-300" onClick={() => window.location.href = '/guidance'}>
               <GraduationCap className="w-4 h-4 mr-2" />
               Guidance
             </Button>
-            <Button variant="outline" className="gap-2 backdrop-blur-sm border-primary/20 hover:bg-primary hover:text-primary-foreground transition-all duration-300">
+            <Button variant="outline" className="gap-2 backdrop-blur-sm border-blue-400/30 hover:bg-blue-600 hover:text-white transition-all duration-300">
               <LogIn className="w-4 h-4" />
               Login to SurakshaLMS
             </Button>
@@ -77,7 +77,7 @@ const LMSHomepage = () => {
 
         {/* Mobile Menu Button */}
         <div className="md:hidden absolute top-6 right-6 z-20">
-          <Button variant="outline" size="sm" className="backdrop-blur-sm border-primary/20">
+          <Button variant="outline" size="sm" className="backdrop-blur-sm border-blue-400/30">
             <Building className="w-4 h-4" />
           </Button>
         </div>
@@ -189,15 +189,15 @@ const LMSHomepage = () => {
         {/* Footer Stats */}
         <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-8 text-xs text-muted-foreground opacity-60">
           <div className="text-center">
-            <div className="font-semibold text-primary">10K+</div>
+            <div className="font-semibold text-blue-600">10K+</div>
             <div>Students</div>
           </div>
           <div className="text-center">
-            <div className="font-semibold text-primary">500+</div>
+            <div className="font-semibold text-blue-600">500+</div>
             <div>Teachers</div>
           </div>
           <div className="text-center">
-            <div className="font-semibold text-primary">50+</div>
+            <div className="font-semibold text-blue-600">50+</div>
             <div>Institutes</div>
           </div>
         </div>
