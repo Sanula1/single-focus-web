@@ -4,10 +4,9 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Truck, MapPin, Clock, User, Phone, Calendar, DollarSign, Bus, AlertCircle, Users, ShieldAlert } from 'lucide-react';
+import { Truck, MapPin, Clock, User, Phone, Calendar, DollarSign, Bus, AlertCircle, Users } from 'lucide-react';
 import { getStudentTransportEnrollments, TransportEnrollment } from '@/api/studentTransport.api';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
-import { AccessControl } from '@/utils/permissions';
 const ParentTransport = () => {
   const {
     selectedChild,
@@ -23,37 +22,6 @@ const ParentTransport = () => {
   const [selectedTransport, setSelectedTransport] = useState<TransportEnrollment | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [expandedCards, setExpandedCards] = useState<Set<string>>(new Set());
-
-  // Check if user has permission to view transport
-  const hasTransportAccess = user?.role ? AccessControl.hasPermission(user.role as any, 'view-transport') : false;
-
-  // If no access, show unauthorized message
-  if (!hasTransportAccess) {
-    return (
-      <div className="container mx-auto p-6 space-y-6">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-2">
-            <Truck className="h-6 w-6 text-primary" />
-            <h1 className="text-3xl font-bold text-foreground">Parent Transport</h1>
-          </div>
-        </div>
-        <Card>
-          <CardContent className="p-6">
-            <div className="text-center space-y-4">
-              <ShieldAlert className="h-16 w-16 mx-auto text-destructive" />
-              <h3 className="text-xl font-semibold">Access Denied</h3>
-              <p className="text-muted-foreground">
-                You do not have permission to access the transport section. Please contact your administrator if you believe this is an error.
-              </p>
-              <p className="text-sm text-muted-foreground">
-                Your role: <Badge variant="secondary">{user?.role || 'Unknown'}</Badge>
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
 
   // Mock children data - in real app this would come from user.children or API
   const mockChildren = [{
