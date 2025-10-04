@@ -4,10 +4,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogClose } from '@/components/ui/dialog';
-import { Truck, MapPin, Clock, User, Phone, Calendar, DollarSign, Bus, AlertCircle, X, Plus } from 'lucide-react';
+import { Truck, MapPin, Clock, User, Phone, Calendar, DollarSign, Bus, AlertCircle, X, Plus, ShieldAlert } from 'lucide-react';
 import { getStudentTransportEnrollments, TransportEnrollment } from '@/api/studentTransport.api';
 import { useAppNavigation } from '@/hooks/useAppNavigation';
 import { TransportEnrollmentDialog } from '@/components/forms/TransportEnrollmentDialog';
+import { AccessControl } from '@/utils/permissions';
 const Transport = () => {
   const {
     selectedInstitute,
@@ -23,6 +24,37 @@ const Transport = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogTransport, setDialogTransport] = useState<TransportEnrollment | null>(null);
   const [enrollmentDialogOpen, setEnrollmentDialogOpen] = useState(false);
+
+  // Check if user has permission to view transport
+  const hasTransportAccess = user?.role ? AccessControl.hasPermission(user.role as any, 'view-transport') : false;
+
+  // If no access, show unauthorized message
+  if (!hasTransportAccess) {
+    return (
+      <div className="container mx-auto p-6 space-y-6">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2">
+            <Truck className="h-6 w-6 text-primary" />
+            <h1 className="text-3xl font-bold text-foreground">Transport Services</h1>
+          </div>
+        </div>
+        <Card>
+          <CardContent className="p-6">
+            <div className="text-center space-y-4">
+              <ShieldAlert className="h-16 w-16 mx-auto text-destructive" />
+              <h3 className="text-xl font-semibold">Access Denied</h3>
+              <p className="text-muted-foreground">
+                You do not have permission to access the transport section. Please contact your administrator if you believe this is an error.
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Your role: <Badge variant="secondary">{user?.role || 'Unknown'}</Badge>
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
   useEffect(() => {
     // Use the logged-in user's ID for loading transport enrollments
     if (user?.id) {
