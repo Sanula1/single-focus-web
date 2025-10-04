@@ -638,7 +638,9 @@ const AppContent = ({ initialPage }: AppContentProps) => {
 
     // For Teacher role
     if (userRole === 'Teacher') {
-      if (!selectedInstitute && currentPage !== 'institutes' && currentPage !== 'select-institute') {
+      // Transport pages don't require institute selection
+      const transportPages = ['transport', 'parent-transport', 'transport-selection', 'transport-attendance'];
+      if (!selectedInstitute && currentPage !== 'institutes' && currentPage !== 'select-institute' && !transportPages.includes(currentPage)) {
         return <InstituteSelector />;
       }
 
@@ -707,6 +709,16 @@ const AppContent = ({ initialPage }: AppContentProps) => {
           return <Appearance />;
         case 'institute-profile':
           return <InstituteProfile />;
+        case 'transport':
+          return <Transport />;
+        case 'parent-transport':
+          return <ParentTransport />;
+        case 'student-transport':
+          return <StudentTransport />;
+        case 'transport-selection':
+          return <TransportSelection />;
+        case 'transport-attendance':
+          return <TransportAttendance />;
         default:
           return <Dashboard />;
       }
@@ -714,7 +726,9 @@ const AppContent = ({ initialPage }: AppContentProps) => {
 
     // For AttendanceMarker role
     if (userRole === 'AttendanceMarker') {
-      if (!selectedInstitute && currentPage !== 'select-institute') {
+      // Transport pages don't require institute selection
+      const transportPages = ['transport', 'parent-transport', 'transport-selection', 'transport-attendance'];
+      if (!selectedInstitute && currentPage !== 'select-institute' && !transportPages.includes(currentPage)) {
         return <InstituteSelector />;
       }
 
@@ -753,13 +767,25 @@ const AppContent = ({ initialPage }: AppContentProps) => {
         return <InstituteProfile />;
       case 'settings':
           return <Settings />;
+        case 'transport':
+          return <Transport />;
+        case 'parent-transport':
+          return <ParentTransport />;
+        case 'student-transport':
+          return <StudentTransport />;
+        case 'transport-selection':
+          return <TransportSelection />;
+        case 'transport-attendance':
+          return <TransportAttendance />;
         default:
           return <Dashboard />;
       }
     }
 
     // For InstituteAdmin and other roles - full access within their institute
-    if (!selectedInstitute && currentPage !== 'institutes' && currentPage !== 'select-institute') {
+    // Transport pages don't require institute selection
+    const transportPages = ['transport', 'parent-transport', 'transport-selection', 'transport-attendance'];
+    if (!selectedInstitute && currentPage !== 'institutes' && currentPage !== 'select-institute' && !transportPages.includes(currentPage)) {
       return <InstituteSelector />;
     }
 
@@ -868,6 +894,16 @@ const AppContent = ({ initialPage }: AppContentProps) => {
         return <Appearance />;
       case 'institute-profile':
         return <InstituteProfile />;
+      case 'transport':
+        return <Transport />;
+      case 'parent-transport':
+        return <ParentTransport />;
+      case 'student-transport':
+        return <StudentTransport />;
+      case 'transport-selection':
+        return <TransportSelection />;
+      case 'transport-attendance':
+        return <TransportAttendance />;
       default:
         return <Dashboard />;
     }
