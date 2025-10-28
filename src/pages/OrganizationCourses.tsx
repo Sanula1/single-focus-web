@@ -24,7 +24,8 @@ const OrganizationCourses = () => {
   const { organization } = useOutletContext<{ organization: { id: string; name: string } | null }>();
   const { backendUrl, accessToken, user, getCurrentRole } = useUserRole();
   const [causes, setCauses] = useState<Cause[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
@@ -39,7 +40,6 @@ const OrganizationCourses = () => {
 
   const fetchData = async () => {
     if (!backendUrl || !accessToken || !id) {
-      setLoading(false);
       return;
     }
 
@@ -63,6 +63,7 @@ const OrganizationCourses = () => {
       const causesData = await causesResponse.json();
       setCauses(causesData.data);
       setTotalPages(causesData.pagination.totalPages);
+      setDataLoaded(true);
       
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -71,18 +72,6 @@ const OrganizationCourses = () => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchData();
-  }, [id, page, backendUrl, accessToken, navigate]);
-
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
 
   return (
     <main className="flex-1">
@@ -102,7 +91,12 @@ const OrganizationCourses = () => {
                 <h2 className="text-2xl font-bold mb-2">{organization?.name} Courses</h2>
                 <p className="text-muted-foreground">Available courses in this organization</p>
               </div>
-              {canCreateCourse() && (
+              <div className="flex gap-2">
+                <Button onClick={fetchData} disabled={loading}>
+                  {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
+                  Load Data
+                </Button>
+                {canCreateCourse() && (
                 <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
                   <DialogTrigger asChild>
                     <Button>
@@ -127,10 +121,15 @@ const OrganizationCourses = () => {
                     />
                   </DialogContent>
                 </Dialog>
-              )}
+                )}
+              </div>
             </div>
 
-            {causes.length === 0 ? (
+            {!dataLoaded ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">Click "Load Data" to view available courses</p>
+              </div>
+            ) : causes.length === 0 ? (
               <div className="text-center py-12 text-muted-foreground">
                 No courses available in this organization
               </div>

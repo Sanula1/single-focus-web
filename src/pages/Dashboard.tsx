@@ -37,15 +37,12 @@ const Dashboard = () => {
   const navigate = useNavigate();
   const { backendUrl, accessToken, user } = useUserRole();
   const [organizations, setOrganizations] = useState<Organization[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [isEnrollDialogOpen, setIsEnrollDialogOpen] = useState(false);
   const limit = 10;
-
-  useEffect(() => {
-    fetchEnrolledOrganizations();
-  }, [page]);
 
   const fetchEnrolledOrganizations = async () => {
     if (!backendUrl || !accessToken) return;
@@ -66,6 +63,7 @@ const Dashboard = () => {
       const result = await response.json();
       setOrganizations(result.data);
       setTotalPages(result.pagination.totalPages);
+      setDataLoaded(true);
     } catch (error) {
       toast.error('Failed to load organizations');
       console.error(error);
@@ -96,29 +94,39 @@ const Dashboard = () => {
                 <h2 className="text-2xl font-bold mb-2">Enrolled Organizations</h2>
                 <p className="text-muted-foreground">Organizations you're currently part of</p>
               </div>
-              <Dialog open={isEnrollDialogOpen} onOpenChange={setIsEnrollDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button>
-                    <Plus className="h-4 w-4 mr-2" />
-                    Enroll Organization
-                  </Button>
-                </DialogTrigger>
-                <DialogContent>
-                  <DialogHeader>
-                    <DialogTitle>Enroll in Organization</DialogTitle>
-                  </DialogHeader>
-                  <EnrollOrganizationForm
-                    onSuccess={() => {
-                      setIsEnrollDialogOpen(false);
-                      fetchEnrolledOrganizations();
-                    }}
-                    onCancel={() => setIsEnrollDialogOpen(false)}
-                  />
-                </DialogContent>
-              </Dialog>
+              <div className="flex gap-2">
+                <Button onClick={fetchEnrolledOrganizations} disabled={loading}>
+                  {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
+                  Load Data
+                </Button>
+                <Dialog open={isEnrollDialogOpen} onOpenChange={setIsEnrollDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button>
+                      <Plus className="h-4 w-4 mr-2" />
+                      Enroll Organization
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Enroll in Organization</DialogTitle>
+                    </DialogHeader>
+                    <EnrollOrganizationForm
+                      onSuccess={() => {
+                        setIsEnrollDialogOpen(false);
+                        fetchEnrolledOrganizations();
+                      }}
+                      onCancel={() => setIsEnrollDialogOpen(false)}
+                    />
+                  </DialogContent>
+                </Dialog>
+              </div>
             </div>
 
-            {loading ? (
+            {!dataLoaded ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">Click "Load Data" to view your enrolled organizations</p>
+              </div>
+            ) : loading ? (
               <div className="flex justify-center items-center py-12">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
               </div>

@@ -44,7 +44,8 @@ const GlobalOrganizations = () => {
   const navigate = useNavigate();
   const { backendUrl, accessToken } = useUserRole();
   const [organizations, setOrganizations] = useState<GlobalOrganization[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
   const [enrolling, setEnrolling] = useState(false);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -55,10 +56,6 @@ const GlobalOrganizations = () => {
   const [enrollmentKey, setEnrollmentKey] = useState("");
   const limit = 10;
 
-  useEffect(() => {
-    fetchGlobalOrganizations();
-  }, [page]);
-
   const fetchGlobalOrganizations = async () => {
     if (!backendUrl || !accessToken) return;
     
@@ -67,6 +64,7 @@ const GlobalOrganizations = () => {
       const result = await getNotEnrolledOrganizations(page, limit);
       setOrganizations(result.data);
       setTotalPages(result.pagination.totalPages);
+      setDataLoaded(true);
     } catch (error) {
       toast.error('Failed to load organizations');
       console.error(error);
@@ -132,12 +130,22 @@ const GlobalOrganizations = () => {
           </header>
 
           <div className="p-6">
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2">Global Organizations</h2>
-              <p className="text-muted-foreground">Discover and enroll in available organizations</p>
+            <div className="mb-6 flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold mb-2">Global Organizations</h2>
+                <p className="text-muted-foreground">Discover and enroll in available organizations</p>
+              </div>
+              <Button onClick={fetchGlobalOrganizations} disabled={loading}>
+                {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
+                Load Data
+              </Button>
             </div>
 
-            {loading ? (
+            {!dataLoaded ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">Click "Load Data" to discover available organizations</p>
+              </div>
+            ) : loading ? (
               <div className="flex justify-center items-center py-12">
                 <Loader2 className="h-8 w-8 animate-spin text-primary" />
               </div>

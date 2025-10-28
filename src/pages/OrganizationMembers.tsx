@@ -51,7 +51,8 @@ const OrganizationMembers = () => {
   const { backendUrl, accessToken, user, getCurrentRole } = useUserRole();
   const [members, setMembers] = useState<Member[]>([]);
   const [totalMembers, setTotalMembers] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
   const [removeDialogOpen, setRemoveDialogOpen] = useState(false);
   const [selectedMember, setSelectedMember] = useState<Member | null>(null);
   const [roleDialogOpen, setRoleDialogOpen] = useState(false);
@@ -87,7 +88,6 @@ const OrganizationMembers = () => {
 
   const fetchData = async () => {
     if (!backendUrl || !accessToken || !id) {
-      setLoading(false);
       return;
     }
 
@@ -111,6 +111,7 @@ const OrganizationMembers = () => {
       const membersData = await membersResponse.json();
       setMembers(membersData.members);
       setTotalMembers(membersData.totalMembers);
+      setDataLoaded(true);
       
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -119,10 +120,6 @@ const OrganizationMembers = () => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchData();
-  }, [id, backendUrl, accessToken, navigate]);
 
   const handleRemoveMember = async () => {
     if (!id || !selectedMember) return;
@@ -240,14 +237,6 @@ const OrganizationMembers = () => {
     setPage(0);
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
-
   return (
     <>
       <main className="flex-1">
@@ -270,16 +259,22 @@ const OrganizationMembers = () => {
                     Verified members of this organization ({totalMembers} total)
                   </p>
                 </div>
-                {isPresident() && (
-                  <Button 
-                    onClick={() => setTransferDialogOpen(true)}
-                    variant="outline"
-                    className="gap-2"
-                  >
-                    <Crown className="h-4 w-4" />
-                    Transfer Presidency
+                <div className="flex gap-2">
+                  <Button onClick={fetchData} disabled={loading}>
+                    {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
+                    Load Data
                   </Button>
-                )}
+                  {isPresident() && (
+                    <Button 
+                      onClick={() => setTransferDialogOpen(true)}
+                      variant="outline"
+                      className="gap-2"
+                    >
+                      <Crown className="h-4 w-4" />
+                      Transfer Presidency
+                    </Button>
+                  )}
+                </div>
               </div>
 
               <div className="flex gap-3 mb-4">
@@ -335,7 +330,15 @@ const OrganizationMembers = () => {
               </div>
             </div>
 
-            {filteredMembers.length === 0 ? (
+            {!dataLoaded ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">Click "Load Data" to view organization members</p>
+              </div>
+            ) : loading ? (
+              <div className="text-center py-12">
+                <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto" />
+              </div>
+            ) : filteredMembers.length === 0 ? (
               <div className="text-center py-12 text-muted-foreground">
                 No verified members found
               </div>

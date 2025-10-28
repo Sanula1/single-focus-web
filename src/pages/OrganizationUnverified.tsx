@@ -31,13 +31,13 @@ const OrganizationUnverified = () => {
   const { backendUrl, accessToken } = useUserRole();
   const [unverifiedMembers, setUnverifiedMembers] = useState<UnverifiedMember[]>([]);
   const [totalUnverified, setTotalUnverified] = useState(0);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const fetchData = async () => {
     if (!backendUrl || !accessToken || !id) {
-      setLoading(false);
       return;
     }
 
@@ -61,6 +61,7 @@ const OrganizationUnverified = () => {
       const unverifiedData = await unverifiedResponse.json();
       setUnverifiedMembers(unverifiedData.unverifiedMembers);
       setTotalUnverified(unverifiedData.totalUnverified);
+      setDataLoaded(true);
       
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -69,10 +70,6 @@ const OrganizationUnverified = () => {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    fetchData();
-  }, [id, page, rowsPerPage, backendUrl, accessToken, navigate]);
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -83,13 +80,6 @@ const OrganizationUnverified = () => {
     setPage(0);
   };
 
-  if (loading) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
 
   const handleApprove = async (userId: string, memberName: string) => {
     if (!id) return;
@@ -158,14 +148,28 @@ const OrganizationUnverified = () => {
           </header>
 
           <div className="p-6">
-            <div className="mb-6">
-              <h2 className="text-2xl font-bold mb-2">Pending Member Requests</h2>
-              <p className="text-muted-foreground">
-                Review and approve membership requests ({totalUnverified} pending)
-              </p>
+            <div className="mb-6 flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold mb-2">Pending Member Requests</h2>
+                <p className="text-muted-foreground">
+                  Review and approve membership requests ({totalUnverified} pending)
+                </p>
+              </div>
+              <Button onClick={fetchData} disabled={loading}>
+                {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
+                Load Data
+              </Button>
             </div>
 
-            {unverifiedMembers.length === 0 ? (
+            {!dataLoaded ? (
+              <div className="text-center py-12">
+                <p className="text-muted-foreground">Click "Load Data" to view pending member requests</p>
+              </div>
+            ) : loading ? (
+              <div className="text-center py-12">
+                <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto" />
+              </div>
+            ) : unverifiedMembers.length === 0 ? (
               <div className="text-center py-12 text-muted-foreground">
                 No pending member requests
               </div>

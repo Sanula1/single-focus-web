@@ -5,7 +5,7 @@ import { AppSidebar } from "@/components/AppSidebar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Clock, PlayCircle, FileText, ArrowLeft, Video, ExternalLink, Plus, Pencil } from "lucide-react";
+import { Clock, PlayCircle, FileText, ArrowLeft, Video, ExternalLink, Plus, Pencil, Loader2 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { CreateLectureForm } from "@/components/forms/CreateLectureForm";
 import { UpdateLectureForm } from "@/components/forms/UpdateLectureForm";
@@ -47,7 +47,8 @@ const CourseDetail = () => {
   const navigate = useNavigate();
   const { user, getCurrentRole } = useUserRole();
   const [lectures, setLectures] = useState<Lecture[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [dataLoaded, setDataLoaded] = useState(false);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [totalLectures, setTotalLectures] = useState(0);
@@ -74,18 +75,14 @@ const CourseDetail = () => {
     }
   }, [id]);
 
-  useEffect(() => {
-    if (id) {
-      fetchLectures();
-    }
-  }, [id, page, rowsPerPage]);
-
   const fetchLectures = async () => {
+    if (!id) return;
     try {
       setLoading(true);
-      const data = await getLectures(id!, page + 1, rowsPerPage);
+      const data = await getLectures(id, page + 1, rowsPerPage);
       setLectures(data.data);
       setTotalLectures(data.pagination.totalCount);
+      setDataLoaded(true);
     } catch (error) {
       console.error('Error fetching lectures:', error);
       toast.error('Failed to load lectures');
@@ -103,22 +100,6 @@ const CourseDetail = () => {
     setPage(0);
   };
 
-  if (loading) {
-    return (
-      <SidebarProvider>
-        <div className="min-h-screen flex w-full">
-        <AppSidebar 
-          variant="course"
-          currentOrganization={course?.organizationId ? { id: course.organizationId, name: '' } : undefined}
-          currentCourse={course ? { id: course.id, name: course.title } : undefined}
-        />
-          <main className="flex-1 flex items-center justify-center">
-            <p className="text-muted-foreground">Loading lectures...</p>
-          </main>
-        </div>
-      </SidebarProvider>
-    );
-  }
 
   return (
     <SidebarProvider>
@@ -148,7 +129,12 @@ const CourseDetail = () => {
                 <h2 className="text-2xl font-bold mb-2">{course?.title || 'Course'} - Lectures</h2>
                 <p className="text-muted-foreground">Course content and materials</p>
               </div>
-              {canManageLecture() && (
+              <div className="flex gap-2">
+                <Button onClick={fetchLectures} disabled={loading}>
+                  {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
+                  Load Data
+                </Button>
+                {canManageLecture() && (
                 <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
                   <DialogTrigger asChild>
                     <Button>
@@ -170,10 +156,23 @@ const CourseDetail = () => {
                     />
                   </DialogContent>
                 </Dialog>
-              )}
+                )}
+              </div>
             </div>
 
-            {lectures.length === 0 ? (
+            {!dataLoaded ? (
+              <Card>
+                <CardContent className="flex items-center justify-center py-12">
+                  <p className="text-muted-foreground">Click "Load Data" to view course lectures</p>
+                </CardContent>
+              </Card>
+            ) : loading ? (
+              <Card>
+                <CardContent className="flex items-center justify-center py-12">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                </CardContent>
+              </Card>
+            ) : lectures.length === 0 ? (
               <Card>
                 <CardContent className="flex items-center justify-center py-12">
                   <p className="text-muted-foreground">No lectures available yet.</p>
