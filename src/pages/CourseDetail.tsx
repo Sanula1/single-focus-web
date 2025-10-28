@@ -123,26 +123,28 @@ const CourseDetail = () => {
             </div>
           </header>
 
-          <div className="p-6 flex flex-col flex-1">
-            <div className="mb-6 flex items-center justify-between">
+          <div className="p-4 sm:p-6 flex flex-col flex-1">
+            <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <h2 className="text-2xl font-bold mb-2">{course?.title || 'Course'} - Lectures</h2>
-                <p className="text-muted-foreground">Course content and materials</p>
+                <h2 className="text-xl sm:text-2xl font-bold mb-2">{course?.title || 'Course'} - Lectures</h2>
+                <p className="text-sm sm:text-base text-muted-foreground">Course content and materials</p>
               </div>
-              <div className="flex gap-2">
-                <Button onClick={fetchLectures} disabled={loading}>
-                  {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
-                  Load Data
-                </Button>
+              <div className="flex flex-wrap gap-2">
+                {!dataLoaded && (
+                  <Button onClick={fetchLectures} disabled={loading} className="w-full sm:w-auto">
+                    {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
+                    Load Data
+                  </Button>
+                )}
                 {canManageLecture() && (
                 <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
                   <DialogTrigger asChild>
-                    <Button>
+                    <Button className="w-full sm:w-auto">
                       <Plus className="h-4 w-4 mr-2" />
                       Create Lecture
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                  <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto mx-4">
                     <DialogHeader>
                       <DialogTitle>Create New Lecture</DialogTitle>
                     </DialogHeader>

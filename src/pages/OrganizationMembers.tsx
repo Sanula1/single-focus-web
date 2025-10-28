@@ -250,34 +250,37 @@ const OrganizationMembers = () => {
             </div>
           </header>
 
-          <div className="p-6 flex flex-col flex-1">
+          <div className="p-4 sm:p-6 flex flex-col flex-1">
             <div className="mb-6">
-              <div className="flex items-center justify-between mb-4">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-4">
                 <div>
-                  <h2 className="text-2xl font-bold mb-2">{organization?.name} Members</h2>
-                  <p className="text-muted-foreground">
+                  <h2 className="text-xl sm:text-2xl font-bold mb-2">{organization?.name} Members</h2>
+                  <p className="text-sm sm:text-base text-muted-foreground">
                     Verified members of this organization ({totalMembers} total)
                   </p>
                 </div>
-                <div className="flex gap-2">
-                  <Button onClick={fetchData} disabled={loading}>
-                    {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
-                    Load Data
-                  </Button>
+                <div className="flex flex-wrap gap-2">
+                  {!dataLoaded && (
+                    <Button onClick={fetchData} disabled={loading} className="w-full sm:w-auto">
+                      {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
+                      Load Data
+                    </Button>
+                  )}
                   {isPresident() && (
                     <Button 
                       onClick={() => setTransferDialogOpen(true)}
                       variant="outline"
-                      className="gap-2"
+                      className="gap-2 w-full sm:w-auto"
                     >
                       <Crown className="h-4 w-4" />
-                      Transfer Presidency
+                      <span className="hidden sm:inline">Transfer Presidency</span>
+                      <span className="sm:hidden">Transfer</span>
                     </Button>
                   )}
                 </div>
               </div>
 
-              <div className="flex gap-3 mb-4">
+              <div className="flex flex-col sm:flex-row gap-3 mb-4">
                 <div className="relative flex-1">
                   <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                   <Input
@@ -289,12 +292,12 @@ const OrganizationMembers = () => {
                 </div>
                 <Popover open={showFilters} onOpenChange={setShowFilters}>
                   <PopoverTrigger asChild>
-                    <Button variant="outline" className="gap-2">
+                    <Button variant="outline" className="gap-2 w-full sm:w-auto">
                       <Filter className="h-4 w-4" />
                       Filters
                     </Button>
                   </PopoverTrigger>
-                  <PopoverContent className="w-80">
+                  <PopoverContent className="w-80 mx-4">
                     <div className="space-y-4">
                       <div>
                         <Label>Role</Label>

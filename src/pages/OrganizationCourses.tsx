@@ -85,26 +85,28 @@ const OrganizationCourses = () => {
             </div>
           </header>
 
-          <div className="p-6">
-            <div className="mb-6 flex items-center justify-between">
+          <div className="p-4 sm:p-6">
+            <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <h2 className="text-2xl font-bold mb-2">{organization?.name} Courses</h2>
-                <p className="text-muted-foreground">Available courses in this organization</p>
+                <h2 className="text-xl sm:text-2xl font-bold mb-2">{organization?.name} Courses</h2>
+                <p className="text-sm sm:text-base text-muted-foreground">Available courses in this organization</p>
               </div>
-              <div className="flex gap-2">
-                <Button onClick={fetchData} disabled={loading}>
-                  {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
-                  Load Data
-                </Button>
+              <div className="flex flex-wrap gap-2">
+                {!dataLoaded && (
+                  <Button onClick={fetchData} disabled={loading} className="w-full sm:w-auto">
+                    {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
+                    Load Data
+                  </Button>
+                )}
                 {canCreateCourse() && (
                 <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
                   <DialogTrigger asChild>
-                    <Button>
+                    <Button className="w-full sm:w-auto">
                       <Plus className="h-4 w-4 mr-2" />
                       Create Course
                     </Button>
                   </DialogTrigger>
-                  <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                  <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto mx-4">
                     <DialogHeader>
                       <DialogTitle>Create New Course</DialogTitle>
                     </DialogHeader>
@@ -113,7 +115,6 @@ const OrganizationCourses = () => {
                       onSuccess={() => {
                         setIsCreateDialogOpen(false);
                         toast.success('Course created successfully');
-                        // Trigger data refetch by changing page state
                         setPage(1);
                         fetchData();
                       }}

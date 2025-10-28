@@ -89,24 +89,26 @@ const Dashboard = () => {
           </header>
 
           <div className="p-6">
-            <div className="mb-6 flex items-center justify-between">
+            <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <h2 className="text-2xl font-bold mb-2">Enrolled Organizations</h2>
-                <p className="text-muted-foreground">Organizations you're currently part of</p>
+                <h2 className="text-xl sm:text-2xl font-bold mb-2">Enrolled Organizations</h2>
+                <p className="text-sm sm:text-base text-muted-foreground">Organizations you're currently part of</p>
               </div>
-              <div className="flex gap-2">
-                <Button onClick={fetchEnrolledOrganizations} disabled={loading}>
-                  {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
-                  Load Data
-                </Button>
+              <div className="flex flex-wrap gap-2">
+                {!dataLoaded && (
+                  <Button onClick={fetchEnrolledOrganizations} disabled={loading} className="w-full sm:w-auto">
+                    {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
+                    Load Data
+                  </Button>
+                )}
                 <Dialog open={isEnrollDialogOpen} onOpenChange={setIsEnrollDialogOpen}>
                   <DialogTrigger asChild>
-                    <Button>
+                    <Button className="w-full sm:w-auto">
                       <Plus className="h-4 w-4 mr-2" />
                       Enroll Organization
                     </Button>
                   </DialogTrigger>
-                  <DialogContent>
+                  <DialogContent className="max-w-md mx-4">
                     <DialogHeader>
                       <DialogTitle>Enroll in Organization</DialogTitle>
                     </DialogHeader>

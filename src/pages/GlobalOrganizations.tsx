@@ -129,16 +129,18 @@ const GlobalOrganizations = () => {
             </div>
           </header>
 
-          <div className="p-6">
-            <div className="mb-6 flex items-center justify-between">
+          <div className="p-4 sm:p-6">
+            <div className="mb-6 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div>
-                <h2 className="text-2xl font-bold mb-2">Global Organizations</h2>
-                <p className="text-muted-foreground">Discover and enroll in available organizations</p>
+                <h2 className="text-xl sm:text-2xl font-bold mb-2">Global Organizations</h2>
+                <p className="text-sm sm:text-base text-muted-foreground">Discover and enroll in available organizations</p>
               </div>
-              <Button onClick={fetchGlobalOrganizations} disabled={loading}>
-                {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
-                Load Data
-              </Button>
+              {!dataLoaded && (
+                <Button onClick={fetchGlobalOrganizations} disabled={loading} className="w-full sm:w-auto">
+                  {loading ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : null}
+                  Load Data
+                </Button>
+              )}
             </div>
 
             {!dataLoaded ? (
