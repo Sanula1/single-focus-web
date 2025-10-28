@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,14 +13,40 @@ import { useUserRole } from "@/hooks/useUserRole";
 const loginSchema = z.object({
   email: z.string().trim().email({ message: "Invalid email address" }).max(255),
   password: z.string().min(6, { message: "Password must be at least 6 characters" }).max(100),
-  backendUrl: z.string().trim().url({ message: "Invalid URL format" }).max(500, { message: "URL too long" }),
+  backendUrl: z.string()
+    .trim()
+    .url({ message: "Invalid URL format" })
+    .max(500, { message: "URL too long" })
+    .refine((url) => {
+      try {
+        const parsedUrl = new URL(url);
+        // Only allow http/https protocols
+        if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
+          return false;
+        }
+        // Warn if using http instead of https
+        if (parsedUrl.protocol === 'http:' && !url.includes('localhost')) {
+          console.warn('Warning: Using insecure HTTP connection. HTTPS is recommended for production.');
+        }
+        return true;
+      } catch {
+        return false;
+      }
+    }, "Backend URL must use HTTP or HTTPS protocol"),
 });
 
 const Auth = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
-  const { setUser, setBackendUrl, setTokens } = useUserRole();
+  const { setUser, setBackendUrl, setTokens, accessToken, user } = useUserRole();
   const [errors, setErrors] = useState<Record<string, string>>({});
+
+  // Redirect to dashboard if already authenticated
+  useEffect(() => {
+    if (accessToken && user) {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [accessToken, user, navigate]);
 
   const handleLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

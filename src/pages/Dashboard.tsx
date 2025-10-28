@@ -35,7 +35,7 @@ interface Organization {
 
 const Dashboard = () => {
   const navigate = useNavigate();
-  const { backendUrl, accessToken } = useUserRole();
+  const { backendUrl, accessToken, user } = useUserRole();
   const [organizations, setOrganizations] = useState<Organization[]>([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1);

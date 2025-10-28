@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 import { OrganizationLayout } from "./components/layouts/OrganizationLayout";
 import Auth from "./pages/Auth";
 import Dashboard from "./pages/Dashboard";
@@ -28,18 +29,18 @@ function App() {
           <Sonner />
           <Routes>
             <Route path="/" element={<Auth />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             {/* Global Organizations - view all available organizations */}
-            <Route path="/dashboard/global" element={<GlobalOrganizations />} />
-            <Route path="/dashboard/courses" element={<DashboardCourses />} />
-            <Route path="/dashboard/lectures" element={<DashboardLectures />} />
-            <Route path="/organization/:id" element={<OrganizationLayout />}>
+            <Route path="/dashboard/global" element={<ProtectedRoute><GlobalOrganizations /></ProtectedRoute>} />
+            <Route path="/dashboard/courses" element={<ProtectedRoute><DashboardCourses /></ProtectedRoute>} />
+            <Route path="/dashboard/lectures" element={<ProtectedRoute><DashboardLectures /></ProtectedRoute>} />
+            <Route path="/organization/:id" element={<ProtectedRoute><OrganizationLayout /></ProtectedRoute>}>
               <Route index element={<OrganizationDetail />} />
               <Route path="courses" element={<OrganizationCourses />} />
               <Route path="members" element={<OrganizationMembers />} />
               <Route path="unverified" element={<OrganizationUnverified />} />
             </Route>
-            <Route path="/course/:id" element={<CourseDetail />} />
+            <Route path="/course/:id" element={<ProtectedRoute><CourseDetail /></ProtectedRoute>} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>
