@@ -10,29 +10,11 @@ import { toast } from "sonner";
 import { z } from "zod";
 import { useUserRole } from "@/hooks/useUserRole";
 
+const BACKEND_URL = "https://organizations-923357517997.europe-west1.run.app";
+
 const loginSchema = z.object({
   email: z.string().trim().email({ message: "Invalid email address" }).max(255),
   password: z.string().min(6, { message: "Password must be at least 6 characters" }).max(100),
-  backendUrl: z.string()
-    .trim()
-    .url({ message: "Invalid URL format" })
-    .max(500, { message: "URL too long" })
-    .refine((url) => {
-      try {
-        const parsedUrl = new URL(url);
-        // Only allow http/https protocols
-        if (!['http:', 'https:'].includes(parsedUrl.protocol)) {
-          return false;
-        }
-        // Warn if using http instead of https
-        if (parsedUrl.protocol === 'http:' && !url.includes('localhost')) {
-          console.warn('Warning: Using insecure HTTP connection. HTTPS is recommended for production.');
-        }
-        return true;
-      } catch {
-        return false;
-      }
-    }, "Backend URL must use HTTP or HTTPS protocol"),
 });
 
 const Auth = () => {
@@ -57,7 +39,6 @@ const Auth = () => {
     const data = {
       email: formData.get("email") as string,
       password: formData.get("password") as string,
-      backendUrl: formData.get("backendUrl") as string,
     };
 
     // Validate input
@@ -78,10 +59,10 @@ const Auth = () => {
 
     try {
       // Store backend URL
-      setBackendUrl(data.backendUrl);
+      setBackendUrl(BACKEND_URL);
 
       // Call login API
-      const response = await fetch(`${data.backendUrl}/organization/api/v1/auth/login`, {
+      const response = await fetch(`${BACKEND_URL}/organization/api/v1/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -127,17 +108,6 @@ const Auth = () => {
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="backend-url">Backend URL</Label>
-              <Input 
-                id="backend-url"
-                name="backendUrl"
-                type="url" 
-                placeholder="https://api.example.com"
-                required
-              />
-              {errors.backendUrl && <p className="text-sm text-destructive">{errors.backendUrl}</p>}
-            </div>
             <div className="space-y-2">
               <Label htmlFor="login-email">Email</Label>
               <Input 
