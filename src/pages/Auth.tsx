@@ -98,7 +98,7 @@ const Auth = () => {
   return (
     <div className="min-h-screen flex">
       {/* Left Side - Form */}
-      <div className="flex-1 flex items-center justify-center p-4 sm:p-6 md:p-8 bg-background">
+      <div className="w-full lg:w-2/5 flex items-center justify-center p-4 sm:p-6 md:p-8 bg-background">
         <div className="w-full max-w-md space-y-8">
           {/* Logo and Title */}
           <div className="space-y-3">
@@ -184,7 +184,7 @@ const Auth = () => {
       </div>
 
       {/* Right Side - Image (hidden on mobile) */}
-      <div className="hidden lg:flex flex-1 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 relative overflow-hidden">
+      <div className="hidden lg:flex lg:w-3/5 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(59,130,246,0.3),transparent_50%)]" />
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_70%,rgba(96,165,250,0.2),transparent_50%)]" />
         <div className="relative flex items-center justify-center w-full p-12">

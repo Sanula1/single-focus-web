@@ -1,4 +1,4 @@
-import { Building2, Users, BookOpen, Bell, UserCheck, UserX, LogOut, Globe } from "lucide-react";
+import { Building2, Users, BookOpen, Bell, UserCheck, UserX, LogOut, Globe, ChevronLeft, LayoutDashboard } from "lucide-react";
 import { NavLink, useNavigate } from "react-router-dom";
 import {
   Sidebar,
@@ -9,12 +9,10 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-  SidebarTrigger,
   SidebarHeader,
   SidebarFooter,
 } from "@/components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import { useUserRole } from "@/hooks/useUserRole";
 
 interface AppSidebarProps {
@@ -29,6 +27,7 @@ export function AppSidebar({ currentOrganization, currentCourse, variant = "main
   const effectiveRole = currentOrganization ? getCurrentRole(currentOrganization.id) : null;
 
   const mainMenuItems = [
+    { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
     { title: "Organizations", url: "/dashboard", icon: Building2 },
     { title: "Global Organizations", url: "/dashboard/global", icon: Globe },
   ];
@@ -63,8 +62,8 @@ export function AppSidebar({ currentOrganization, currentCourse, variant = "main
 
   const getNavClassName = ({ isActive }: { isActive: boolean }) =>
     isActive 
-      ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium" 
-      : "hover:bg-sidebar-accent/50 hover:text-sidebar-accent-foreground";
+      ? "bg-blue-50 dark:bg-blue-950 text-primary font-medium border-l-4 border-primary" 
+      : "hover:bg-muted/50 border-l-4 border-transparent";
 
   const handleLogout = () => {
     logout();
@@ -72,52 +71,60 @@ export function AppSidebar({ currentOrganization, currentCourse, variant = "main
   };
 
   return (
-    <Sidebar className="border-r border-sidebar-border">
-      <SidebarHeader className="border-b border-sidebar-border p-6">
-        <div className="flex items-center gap-3">
-          <div className="p-3 rounded-lg bg-primary/10">
-            <Building2 className="h-7 w-7 text-primary" />
+    <Sidebar className="border-r bg-white dark:bg-gray-950">
+      <SidebarHeader className="border-b p-4">
+        <div className="flex items-center gap-3 px-2">
+          <div className="p-2 rounded-lg bg-primary/10">
+            <Building2 className="h-6 w-6 text-primary" />
           </div>
-          <div className="flex flex-col">
-            <span className="font-semibold text-base">Suraksha OMS</span>
-            <span className="text-sm text-muted-foreground">Organization Management System</span>
+          <div className="flex flex-col flex-1 min-w-0">
+            <span className="font-semibold text-base truncate">Suraksha OMS</span>
+            <span className="text-xs text-muted-foreground truncate">Organization Management System</span>
           </div>
         </div>
       </SidebarHeader>
 
-      <SidebarContent>
+      <SidebarContent className="px-3 py-4">
         {(currentOrganization || currentCourse) && (
-          <>
-            <div className="px-6 py-5 bg-muted/50">
-              <p className="text-sm font-medium text-muted-foreground mb-3">Current Selection</p>
+          <div className="mb-6 px-2">
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="mb-3 -ml-2 h-8 text-sm text-primary hover:text-primary hover:bg-primary/10"
+              onClick={() => navigate('/dashboard')}
+            >
+              <ChevronLeft className="h-4 w-4 mr-1" />
+              Back to Dashboard
+            </Button>
+            <div className="space-y-1">
+              <p className="text-xs font-semibold text-primary uppercase tracking-wider">Current Selection</p>
               {currentOrganization && (
-                <div className="flex items-center gap-3 text-base mb-2">
-                  <Building2 className="h-5 w-5 text-primary" />
-                  <span className="font-medium">{currentOrganization.name}</span>
-                </div>
+                <p className="text-sm text-muted-foreground">
+                  Organization: <span className="font-medium text-foreground">{currentOrganization.name}</span>
+                </p>
               )}
               {currentCourse && (
-                <div className="flex items-center gap-3 text-base">
-                  <BookOpen className="h-5 w-5 text-accent" />
-                  <span className="font-medium">{currentCourse.name}</span>
-                </div>
+                <p className="text-sm text-muted-foreground">
+                  Course: <span className="font-medium text-foreground">{currentCourse.name}</span>
+                </p>
               )}
             </div>
-            <Separator />
-          </>
+          </div>
         )}
 
         {variant === "course" && currentCourse && (
-          <SidebarGroup className="px-4 py-4">
-            <SidebarGroupLabel className="text-sm font-semibold mb-3 px-2">Course Management</SidebarGroupLabel>
+          <SidebarGroup>
+            <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-2 mb-2">
+              Course Management
+            </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu className="space-y-2">
+              <SidebarMenu className="space-y-1">
                 {courseMenuItems.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild className="h-12 text-base">
+                    <SidebarMenuButton asChild className="h-10">
                       <NavLink to={item.url} className={getNavClassName}>
-                        <item.icon className="h-5 w-5" />
-                        <span>{item.title}</span>
+                        <item.icon className="h-4 w-4 ml-2" />
+                        <span className="ml-3">{item.title}</span>
                       </NavLink>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -128,16 +135,18 @@ export function AppSidebar({ currentOrganization, currentCourse, variant = "main
         )}
 
         {variant === "organization" && currentOrganization && (
-          <SidebarGroup className="px-4 py-4">
-            <SidebarGroupLabel className="text-sm font-semibold mb-3 px-2">Organization Management</SidebarGroupLabel>
+          <SidebarGroup>
+            <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-2 mb-2">
+              Organization
+            </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu className="space-y-2">
+              <SidebarMenu className="space-y-1">
                 {getOrganizationMenuItems().map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild className="h-12 text-base">
+                    <SidebarMenuButton asChild className="h-10">
                       <NavLink to={item.url} end className={getNavClassName}>
-                        <item.icon className="h-5 w-5" />
-                        <span>{item.title}</span>
+                        <item.icon className="h-4 w-4 ml-2" />
+                        <span className="ml-3">{item.title}</span>
                       </NavLink>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -148,16 +157,18 @@ export function AppSidebar({ currentOrganization, currentCourse, variant = "main
         )}
 
         {variant === "main" && (
-          <SidebarGroup className="px-4 py-4">
-            <SidebarGroupLabel className="text-sm font-semibold mb-3 px-2">Main Menu</SidebarGroupLabel>
+          <SidebarGroup>
+            <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-2 mb-2">
+              Main
+            </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu className="space-y-2">
+              <SidebarMenu className="space-y-1">
                 {mainMenuItems.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild className="h-12 text-base">
+                    <SidebarMenuButton asChild className="h-10">
                       <NavLink to={item.url} end className={getNavClassName}>
-                        <item.icon className="h-5 w-5" />
-                        <span>{item.title}</span>
+                        <item.icon className="h-4 w-4 ml-2" />
+                        <span className="ml-3">{item.title}</span>
                       </NavLink>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -168,13 +179,22 @@ export function AppSidebar({ currentOrganization, currentCourse, variant = "main
         )}
       </SidebarContent>
 
-      <SidebarFooter className="border-t border-sidebar-border p-6">
+      <SidebarFooter className="border-t mt-auto p-4">
+        {user && (
+          <div className="px-2 mb-3 space-y-1">
+            <p className="text-xs text-muted-foreground">Logged in as:</p>
+            <p className="text-sm font-medium">{user.name}</p>
+            {currentOrganization && effectiveRole && (
+              <p className="text-xs text-muted-foreground">Role: {effectiveRole}</p>
+            )}
+          </div>
+        )}
         <Button 
           variant="ghost" 
-          className="w-full justify-start h-12 text-base" 
+          className="w-full justify-start h-10 text-sm hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950" 
           onClick={handleLogout}
         >
-          <LogOut className="h-5 w-5 mr-3" />
+          <LogOut className="h-4 w-4 mr-2" />
           Logout
         </Button>
       </SidebarFooter>
