@@ -62,8 +62,8 @@ export function AppSidebar({ currentOrganization, currentCourse, variant = "main
 
   const getNavClassName = ({ isActive }: { isActive: boolean }) =>
     isActive 
-      ? "bg-blue-50 dark:bg-blue-950 text-primary font-medium border-l-4 border-primary" 
-      : "hover:bg-muted/50 border-l-4 border-transparent";
+      ? "bg-blue-50 dark:bg-blue-950/50 text-primary font-semibold border-l-4 border-primary shadow-sm" 
+      : "hover:bg-muted/50 border-l-4 border-transparent text-muted-foreground hover:text-foreground";
 
   const handleLogout = () => {
     logout();
@@ -114,17 +114,17 @@ export function AppSidebar({ currentOrganization, currentCourse, variant = "main
 
         {variant === "course" && currentCourse && (
           <SidebarGroup>
-            <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-2 mb-2">
+            <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-2 mb-3">
               Course Management
             </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu className="space-y-1">
+              <SidebarMenu className="space-y-2">
                 {courseMenuItems.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild className="h-10">
+                    <SidebarMenuButton asChild className="h-12">
                       <NavLink to={item.url} className={getNavClassName}>
-                        <item.icon className="h-4 w-4 ml-2" />
-                        <span className="ml-3">{item.title}</span>
+                        <item.icon className="h-5 w-5 ml-2" />
+                        <span className="ml-3 text-[15px]">{item.title}</span>
                       </NavLink>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -136,17 +136,17 @@ export function AppSidebar({ currentOrganization, currentCourse, variant = "main
 
         {variant === "organization" && currentOrganization && (
           <SidebarGroup>
-            <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-2 mb-2">
+            <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-2 mb-3">
               Organization
             </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu className="space-y-1">
+              <SidebarMenu className="space-y-2">
                 {getOrganizationMenuItems().map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild className="h-10">
+                    <SidebarMenuButton asChild className="h-12">
                       <NavLink to={item.url} end className={getNavClassName}>
-                        <item.icon className="h-4 w-4 ml-2" />
-                        <span className="ml-3">{item.title}</span>
+                        <item.icon className="h-5 w-5 ml-2" />
+                        <span className="ml-3 text-[15px]">{item.title}</span>
                       </NavLink>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -158,17 +158,17 @@ export function AppSidebar({ currentOrganization, currentCourse, variant = "main
 
         {variant === "main" && (
           <SidebarGroup>
-            <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-2 mb-2">
+            <SidebarGroupLabel className="text-xs font-semibold text-muted-foreground uppercase tracking-wider px-2 mb-3">
               Main
             </SidebarGroupLabel>
             <SidebarGroupContent>
-              <SidebarMenu className="space-y-1">
+              <SidebarMenu className="space-y-2">
                 {mainMenuItems.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild className="h-10">
+                    <SidebarMenuButton asChild className="h-12">
                       <NavLink to={item.url} end className={getNavClassName}>
-                        <item.icon className="h-4 w-4 ml-2" />
-                        <span className="ml-3">{item.title}</span>
+                        <item.icon className="h-5 w-5 ml-2" />
+                        <span className="ml-3 text-[15px]">{item.title}</span>
                       </NavLink>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
@@ -191,10 +191,10 @@ export function AppSidebar({ currentOrganization, currentCourse, variant = "main
         )}
         <Button 
           variant="ghost" 
-          className="w-full justify-start h-10 text-sm hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950" 
+          className="w-full justify-start h-11 text-sm text-red-600 hover:bg-red-50 hover:text-red-700 dark:text-red-400 dark:hover:bg-red-950 dark:hover:text-red-300 font-medium" 
           onClick={handleLogout}
         >
-          <LogOut className="h-4 w-4 mr-2" />
+          <LogOut className="h-5 w-5 mr-2" />
           Logout
         </Button>
       </SidebarFooter>
