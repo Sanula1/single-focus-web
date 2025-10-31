@@ -27,7 +27,6 @@ export function AppSidebar({ currentOrganization, currentCourse, variant = "main
   const effectiveRole = currentOrganization ? getCurrentRole(currentOrganization.id) : null;
 
   const mainMenuItems = [
-    { title: "Dashboard", url: "/dashboard", icon: LayoutDashboard },
     { title: "Organizations", url: "/dashboard", icon: Building2 },
     { title: "Global Organizations", url: "/dashboard/global", icon: Globe },
   ];
@@ -62,8 +61,8 @@ export function AppSidebar({ currentOrganization, currentCourse, variant = "main
 
   const getNavClassName = ({ isActive }: { isActive: boolean }) =>
     isActive 
-      ? "bg-blue-50 dark:bg-blue-950/50 text-primary font-semibold border-l-4 border-primary shadow-sm" 
-      : "hover:bg-muted/50 border-l-4 border-transparent text-muted-foreground hover:text-foreground";
+      ? "bg-blue-100/60 dark:bg-blue-100/10 text-gray-900 dark:text-white font-semibold" 
+      : "hover:bg-gray-100 dark:hover:bg-gray-800 text-gray-900 dark:text-white hover:text-gray-900 dark:hover:text-white";
 
   const handleLogout = () => {
     logout();
