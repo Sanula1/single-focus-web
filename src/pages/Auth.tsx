@@ -3,9 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-
-import { Building2 } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Building2, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import { z } from "zod";
 import { useUserRole } from "@/hooks/useUserRole";
@@ -22,6 +21,8 @@ const Auth = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { setUser, setBackendUrl, setTokens, accessToken, user } = useUserRole();
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(false);
 
   // Redirect to dashboard if already authenticated
   useEffect(() => {
@@ -95,46 +96,124 @@ const Auth = () => {
 
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4" style={{ background: "var(--gradient-subtle)" }}>
-      <Card className="w-full max-w-md shadow-[var(--shadow-elegant)]">
-        <CardHeader className="space-y-1 text-center">
-          <div className="flex justify-center mb-4">
-            <div className="p-3 rounded-xl bg-primary/10">
-              <Building2 className="h-8 w-8 text-primary" />
+    <div className="min-h-screen flex">
+      {/* Left Side - Form */}
+      <div className="flex-1 flex items-center justify-center p-4 sm:p-6 md:p-8 bg-background">
+        <div className="w-full max-w-md space-y-8">
+          {/* Logo and Title */}
+          <div className="space-y-3">
+            <div className="flex items-center gap-3">
+              <div className="p-2 rounded-lg bg-primary/10">
+                <Building2 className="h-6 w-6 text-primary" />
+              </div>
+              <h1 className="text-2xl font-bold">SurakshaLMS</h1>
             </div>
           </div>
-          <CardTitle className="text-2xl font-bold">Suraksha OMS</CardTitle>
-          <CardDescription>Sign in to your account</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
+
+          {/* Welcome Text */}
+          <div className="space-y-2">
+            <h2 className="text-3xl font-bold">Welcome back</h2>
+            <p className="text-muted-foreground">Please enter your details</p>
+          </div>
+
+          {/* Form */}
+          <form onSubmit={handleLogin} className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="login-email">Email</Label>
+              <Label htmlFor="login-email" className="text-sm font-medium">Email address</Label>
               <Input 
                 id="login-email"
                 name="email"
                 type="email" 
-                placeholder="name@example.com"
+                placeholder="Enter your email"
+                className="h-11"
                 required
               />
               {errors.email && <p className="text-sm text-destructive">{errors.email}</p>}
             </div>
+
             <div className="space-y-2">
-              <Label htmlFor="login-password">Password</Label>
-              <Input 
-                id="login-password"
-                name="password"
-                type="password"
-                required
-              />
+              <Label htmlFor="login-password" className="text-sm font-medium">Password</Label>
+              <div className="relative">
+                <Input 
+                  id="login-password"
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  placeholder="Enter your password"
+                  className="h-11 pr-10"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
               {errors.password && <p className="text-sm text-destructive">{errors.password}</p>}
             </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Signing in..." : "Sign In"}
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Checkbox 
+                  id="remember" 
+                  checked={rememberMe}
+                  onCheckedChange={(checked) => setRememberMe(checked === true)}
+                />
+                <Label htmlFor="remember" className="text-sm font-normal cursor-pointer">
+                  Remember for 30 days
+                </Label>
+              </div>
+              <button type="button" className="text-sm text-primary hover:underline font-medium">
+                Forgot password
+              </button>
+            </div>
+
+            <Button type="submit" className="w-full h-11 text-base" disabled={isLoading}>
+              {isLoading ? "Signing in..." : "Sign in"}
             </Button>
+
+            <p className="text-center text-sm text-muted-foreground">
+              Don't have an account?{" "}
+              <button type="button" className="text-primary hover:underline font-medium">
+                Sign up
+              </button>
+            </p>
           </form>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
+
+      {/* Right Side - Image (hidden on mobile) */}
+      <div className="hidden lg:flex flex-1 bg-gradient-to-br from-blue-600 via-blue-700 to-blue-900 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(59,130,246,0.3),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_70%,rgba(96,165,250,0.2),transparent_50%)]" />
+        <div className="relative flex items-center justify-center w-full p-12">
+          <div className="text-white space-y-6 max-w-lg">
+            <div className="space-y-4">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm">
+                <div className="w-2 h-2 rounded-full bg-blue-300 animate-pulse" />
+                <span className="text-sm font-medium">Secure Learning Platform</span>
+              </div>
+              <h2 className="text-4xl font-bold leading-tight">
+                Transform Your Learning Journey
+              </h2>
+              <p className="text-blue-100 text-lg">
+                Access comprehensive courses, track your progress, and achieve your educational goals with our advanced learning management system.
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-4 pt-8">
+              <div className="space-y-2">
+                <div className="text-3xl font-bold">10K+</div>
+                <div className="text-blue-200 text-sm">Active Students</div>
+              </div>
+              <div className="space-y-2">
+                <div className="text-3xl font-bold">500+</div>
+                <div className="text-blue-200 text-sm">Courses Available</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
